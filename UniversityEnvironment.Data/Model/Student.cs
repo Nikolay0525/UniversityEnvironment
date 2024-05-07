@@ -18,5 +18,7 @@ namespace UniversityEnvironment.Data.Model
         public List<QuestionAnswer>? QuestionAnswers { get => _questionAnswers; set => _questionAnswers = value; }
         public List<QuestionAnswerStudent>? QuestionAnswersStudent { get => _questionAnswersStudents; set => _questionAnswersStudents = value; }
         public List<CourseStudent>? CoursesStudents { get => _coursesStudents; set => _coursesStudents = value; }
+
+        public new string Role => "Student";
     }
 }
