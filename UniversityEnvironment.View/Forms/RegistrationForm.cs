@@ -23,70 +23,61 @@ namespace UniversityEnvironment.View.Forms
             InitializeComponent();
         }
 
+        private bool ValidateUserExists<T>(string userName) where T : User
+        {
+           var foundUser = RepositoryManager
+               .GetRepo<T>()
+               .FindByFilter(u => u.Username == userName);
+
+            return foundUser == null;
+        }
+
         private void RegistrateAccountButton_Click(object sender, EventArgs e)
         {
-            if (AdminCheck.Checked)
+            #region Validation
+            var result = AdminCheck.Checked
+                ? ValidateUserExists<Admin>(UsernameTextBox.Text) 
+                : TeacherCheck.Checked
+                    ? ValidateUserExists<Teacher>(UsernameTextBox.Text)
+                    : ValidateUserExists<Student>(UsernameTextBox.Text);
+                    
+            if (!result)
             {
-                if(RepositoryManager.GetRepo<Admin>().FindByFilter(u => u.Username == UsernameTextBox.Text) == null)
-                {
-                    var user = new Admin
-                    {
-                        Username = UsernameTextBox.Text,
-                        FirstName = FirstNameTextBox.Text,
-                        LastName = LastNameTextBox.Text,
-                        Password = PasswordTextBox.Text,
-                        Role = "Admin",
-                        Courses = new List<Course>()
-                    };
-                    RepositoryManager.GetRepo<Admin>()
-                        .Create(user);
-                    MessageBox.Show("Account created successfully!", "Registration", MessageBoxButtons.OK);
-                    return;
-                }
-                MessageBox.Show("Account with such name exist...", "Registration", MessageBoxButtons.OK);
+                  MessageBox.Show("Account with such name exist...", "Registration", MessageBoxButtons.OK);
+                  return;
             }
-            if (TeacherCheck.Checked)
-            {
-                string scienceDegree = Microsoft.VisualBasic.Interaction.InputBox("Введіть вашу ступінь:", "Введення тексту", "");
-                if (RepositoryManager.GetRepo<Teacher>().FindByFilter(u => u.Username == UsernameTextBox.Text) == null)
-                {
-                    var user = new Teacher
-                    {
-                        Username = UsernameTextBox.Text,
-                        FirstName = FirstNameTextBox.Text,
-                        LastName = LastNameTextBox.Text,
-                        Password = PasswordTextBox.Text,
-                        Role = "Teacher",
-                        ScienceDegree = scienceDegree,
-                        Courses = new List<Course>()
-                    };
-                    RepositoryManager.GetRepo<Teacher>()
-                        .Create(user);
-                    MessageBox.Show("Account created successfully!", "Registration", MessageBoxButtons.OK);
-                    return;
-                }
-                MessageBox.Show("Account with such name exist...", "Registration", MessageBoxButtons.OK);
-            }
-            else
-            {
-                if (RepositoryManager.GetRepo<Student>().FindByFilter(u => u.Username == UsernameTextBox.Text) == null)
-                {
-                    var user = new Student
-                    {
-                        Username = UsernameTextBox.Text,
-                        FirstName = FirstNameTextBox.Text,
-                        LastName = LastNameTextBox.Text,
-                        Password = PasswordTextBox.Text,
-                        Role = "Student",
-                        Courses = new List<Course>()
-                    };
-                    RepositoryManager.GetRepo<Student>()
-                        .Create(user);
-                    MessageBox.Show("Account created successfully!", "Registration", MessageBoxButtons.OK);
-                    return;
-                }
-                MessageBox.Show("Account with such name exist...", "Registration", MessageBoxButtons.OK);
-            }
+
+            #endregion
+
+             var userToCreate = new User
+             {
+                 Username = UsernameTextBox.Text,
+                 FirstName = FirstNameTextBox.Text,
+                 LastName = LastNameTextBox.Text,
+                 Password = PasswordTextBox.Text
+             }
+
+             if (AdminCheck.Checked)
+             {
+                var admin = userToCreate as Admin;
+                admin.Role = "Admin";
+                userToCreate = admin;
+             }
+             else if (TeacherCheck.Checked)
+             {
+                var teacher = userToCreate as Teacher;
+                teacher.Role = "Teacher";
+                teacher.SinceDegree = Microsoft.VisualBasic.Interaction.InputBox("Введіть вашу ступінь:", "Введення тексту", "");
+                userToCreate = teacher;
+             }
+             else
+             {
+                var student = userToCreate as Student;
+                student.Role = "Student";
+                userToCreate = student;
+             }
+             
+            RepositoryManager.GetRepo<User>().Create(userToCreate);
         }
 
 
