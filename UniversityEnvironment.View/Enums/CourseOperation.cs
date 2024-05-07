@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UniversityEnvironment.View.Utility
+namespace UniversityEnvironment.View.Enums
 {
-    public static class Constants
+    internal enum CourseOperation : byte
     {
-        
+        Create,
+        Remove,
     }
 }

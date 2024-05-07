@@ -3,20 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UniversityEnvironment.Data.Enums;
 
 namespace UniversityEnvironment.Data.Model
 {
     public sealed class Student : User
     {
-        private List<Test>? _tests;
-        private List<TestStudent>? _testsStudents;
-        private List<QuestionAnswer>? _questionAnswers;
-        private List<QuestionAnswerStudent>? _questionAnswersStudents;
-        private List<CourseStudent>? _coursesStudents;
-        public List<Test>? Tests { get => _tests; set => _tests = value; }
-        public List<TestStudent>? TestsStudents { get => _testsStudents; set => _testsStudents = value; }
-        public List<QuestionAnswer>? QuestionAnswers { get => _questionAnswers; set => _questionAnswers = value; }
-        public List<QuestionAnswerStudent>? QuestionAnswersStudent { get => _questionAnswersStudents; set => _questionAnswersStudents = value; }
-        public List<CourseStudent>? CoursesStudents { get => _coursesStudents; set => _coursesStudents = value; }
+        public List<Test>? Tests { get; set; }
+        public List<TestStudent>? TestsStudents { get; set; }
+        public List<QuestionAnswer>? QuestionAnswers { get; set; }
+        public List<QuestionAnswerStudent>? QuestionAnswersStudent { get; set; }
+        public List<CourseStudent>? CoursesStudents { get; set; }
+
+        public new Role Role => Role.Student;
     }
 }

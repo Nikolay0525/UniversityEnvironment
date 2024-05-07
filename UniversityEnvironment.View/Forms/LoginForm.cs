@@ -16,6 +16,9 @@ using UniversityEnvironment.Data.Model;
 using UniversityEnvironment.View.Utility;
 using static UniversityEnvironment.View.Utility.Constants;
 using UniversityEnvironment.Data.Repositories;
+using static UniversityEnvironment.View.Utility.ViewHelper;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using UniversityEnvironment.Data.Enums;
 
 
 namespace UniversityEnvironment.View.Forms
@@ -28,76 +31,41 @@ namespace UniversityEnvironment.View.Forms
             MaterialFormSkinChanger.SetParametersOfForm(this);
         }
 
+        private T? SetUserRole<T>() where T : User
+        {
+            var role = typeof(T).Name;
+            var user = RepositoryManager.GetRepo<T>()
+                .FindByFilter(u => u.Username == UsernameTextBox.Text && u.Password == PasswordTextBox.Text);
+            if (user == null) return null;
+            if (Enum.TryParse(role, out Role @enum)) user.Role = @enum;
+            else throw new ArgumentException($"Failed to parse {role}");
+            return user;
+        }
+
         private void RegisterButton_Click(object sender, EventArgs e)
         {
-            Hide();
-            RegistrationForm registrationWindow = new RegistrationForm();
-            registrationWindow.FormClosed += (s, arg) =>
-            {
-                Show();
-            };
-            registrationWindow.Show();
+            ShowNextForm(this, new RegistrationForm());
         }
 
         private void LoginButton_Click(object sender, EventArgs e)
         {
-            User actualUser = new User();
+            User? user = new();
             if (AdminCheck.Checked)
             {
-                var ourAdmin = RepositoryManager.GetRepo<User>()
-                    .FindByFilter(u => u.Username == UsernameTextBox.Text && u.Password == PasswordTextBox.Text);
-                if (ourAdmin != null)
-                {
-                    actualUser.Id = ourAdmin.Id;
-                    actualUser.Username = ourAdmin.Username;
-                    actualUser.FirstName = ourAdmin.FirstName;
-                    actualUser.LastName = ourAdmin.LastName;
-                    actualUser.Password = ourAdmin.Password;
-                    actualUser.Courses = ourAdmin.Courses;
-                    actualUser.Role = "Admin";
-                }
+                user = SetUserRole<Admin>();
             }
             else if (TeacherCheck.Checked)
             {
-                var ourTeacher = RepositoryManager.GetRepo<Teacher>()
-                    .FindByFilter(u => u.Username == UsernameTextBox.Text && u.Password == PasswordTextBox.Text);
-                if (ourTeacher != null)
-                {
-                    actualUser.Id = ourTeacher.Id;
-                    actualUser.Username = ourTeacher.Username;
-                    actualUser.FirstName = ourTeacher.FirstName;
-                    actualUser.LastName = ourTeacher.LastName;
-                    actualUser.Password = ourTeacher.Password;
-                    actualUser.Courses = ourTeacher.Courses;
-                    actualUser.Role = "Teacher";
-                }
+                user = SetUserRole<Teacher>();
             }
             else
             {
-                var ourStudent = RepositoryManager.GetRepo<Student>()
-                    .FindByFilter(u => u.Username == UsernameTextBox.Text && u.Password == PasswordTextBox.Text);
-                if (ourStudent != null)
-                {
-                    actualUser.Id = ourStudent.Id;
-                    actualUser.Username = ourStudent.Username;
-                    actualUser.FirstName = ourStudent.FirstName;
-                    actualUser.LastName = ourStudent.LastName;
-                    actualUser.Password = ourStudent.Password;
-                    actualUser.Courses = ourStudent.Courses;
-                    actualUser.Role = "Student";
-                }
+                user = SetUserRole<Student>();
             }
 
-            if (actualUser.Role != null)
+            if (user != null)
             {
-                Hide();
-                EnvironmentForm ViewForm = new EnvironmentForm(actualUser);
-                ViewForm.FormClosed += (s, arg) =>
-                {
-                    Show();
-                };
-                ViewForm.Show();
-                return;
+                ShowNextForm(this, new EnvironmentForm(user));
             }
             MessageBox.Show("Wrong username or password...", "Login", MessageBoxButtons.OK);
         }

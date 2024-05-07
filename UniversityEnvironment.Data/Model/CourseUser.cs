@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace UniversityEnvironment.Data.Model
 {
-    public class CourseAdmin : CourseUser
+    public abstract class CourseUser
     {
-        public Admin? Admin {  get; set; }
-        public Course? Course { get; set; }
+        public Guid UserId { get; set; }
+        public Guid CourseId { get; set; }
     }
 }

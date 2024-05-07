@@ -10,13 +10,15 @@ using System.Linq.Expressions;
 
 namespace UniversityEnvironment.Data.Repository
 {
-    public interface IRepository<TEntity> where TEntity : EnvironmentObject
+    public interface IRepository<TEntity> where TEntity : class
     {
         IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> filter = null);
         TEntity? FindById(Guid id);
         TEntity? FindByFilter(Expression<Func<TEntity, bool>> filter);
-        TEntity Create(TEntity entity);
-        TEntity? Update(TEntity entity);
-        TEntity? Delete(TEntity entity);
+        void Create(TEntity obj);
+        void Create(IEnumerable<TEntity> objects);
+        TEntity? Update(TEntity obj);
+        void Remove(TEntity obj);
+        void Remove(IEnumerable<TEntity> objects);
     }
 }

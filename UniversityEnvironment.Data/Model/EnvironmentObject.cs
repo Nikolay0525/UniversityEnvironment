@@ -12,15 +12,14 @@ namespace UniversityEnvironment.Data.Model
     public abstract class EnvironmentObject
     {
         [Key]
-        private Guid _id;
-        public Guid Id { get => _id; set => _id = value; }
+        public Guid Id { get; set; }
         public EnvironmentObject()
         {
-            _id = Guid.NewGuid();
+            Id = Guid.NewGuid();
         }
         public EnvironmentObject(Guid id)
         {
-            _id = id;
+            Id = id;
         }
     }
 }

@@ -8,10 +8,7 @@ namespace UniversityEnvironment.Data.Model
 {
     public class TestMark : EnvironmentObject
     {
-        private Test? _test;
         private int _mark = 0;
-        private Guid _studentId;
-        public Test? Test { get => _test; set => _test = value; }
         public int Mark
         {
             get => _mark;
@@ -26,6 +23,7 @@ namespace UniversityEnvironment.Data.Model
                 _mark = value;
             }
         }
-        public Guid StudentId { get => _studentId; set => _studentId = value; }
+        public Test? Test { get; set; }
+        public Guid StudentId { get; set; }
     }
 }

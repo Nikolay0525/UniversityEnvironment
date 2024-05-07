@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,6 +13,7 @@ using MaterialSkin.Controls;
 using UniversityEnvironment.Data.Model;
 using static UniversityEnvironment.View.Utility.Constants;
 using UniversityEnvironment.Data.Repositories;
+using static UniversityEnvironment.View.Validator.ViewValidator;
 
 namespace UniversityEnvironment.View.Forms
 {
@@ -25,70 +26,47 @@ namespace UniversityEnvironment.View.Forms
 
         private void RegistrateAccountButton_Click(object sender, EventArgs e)
         {
+            #region Validation
+            var result = AdminCheck.Checked
+                ? ValidateUserExists<Admin>(UsernameTextBox.Text)
+                : TeacherCheck.Checked
+                    ? ValidateUserExists<Teacher>(UsernameTextBox.Text)
+                    : ValidateUserExists<Student>(UsernameTextBox.Text);
+
+            if (!result)
+            {
+                MessageBox.Show("Account with such name exist...", "Registration", MessageBoxButtons.OK);
+                return;
+            }
+            #endregion
+            var userToCreate = new User
+            {
+                Username = UsernameTextBox.Text,
+                FirstName = FirstNameTextBox.Text,
+                LastName = LastNameTextBox.Text,
+                Password = PasswordTextBox.Text
+            };
+
             if (AdminCheck.Checked)
             {
-                if(RepositoryManager.GetRepo<Admin>().FindByFilter(u => u.Username == UsernameTextBox.Text) == null)
-                {
-                    var user = new Admin
-                    {
-                        Username = UsernameTextBox.Text,
-                        FirstName = FirstNameTextBox.Text,
-                        LastName = LastNameTextBox.Text,
-                        Password = PasswordTextBox.Text,
-                        Role = "Admin",
-                        Courses = new List<Course>()
-                    };
-                    RepositoryManager.GetRepo<Admin>()
-                        .Create(user);
-                    MessageBox.Show("Account created successfully!", "Registration", MessageBoxButtons.OK);
-                    return;
-                }
-                MessageBox.Show("Account with such name exist...", "Registration", MessageBoxButtons.OK);
+                var admin = userToCreate as Admin;
+                userToCreate = admin;
             }
-            if (TeacherCheck.Checked)
+            else if (TeacherCheck.Checked)
             {
-                string scienceDegree = Microsoft.VisualBasic.Interaction.InputBox("Введіть вашу ступінь:", "Введення тексту", "");
-                if (RepositoryManager.GetRepo<Teacher>().FindByFilter(u => u.Username == UsernameTextBox.Text) == null)
-                {
-                    var user = new Teacher
-                    {
-                        Username = UsernameTextBox.Text,
-                        FirstName = FirstNameTextBox.Text,
-                        LastName = LastNameTextBox.Text,
-                        Password = PasswordTextBox.Text,
-                        Role = "Teacher",
-                        ScienceDegree = scienceDegree,
-                        Courses = new List<Course>()
-                    };
-                    RepositoryManager.GetRepo<Teacher>()
-                        .Create(user);
-                    MessageBox.Show("Account created successfully!", "Registration", MessageBoxButtons.OK);
-                    return;
-                }
-                MessageBox.Show("Account with such name exist...", "Registration", MessageBoxButtons.OK);
+                var teacher = userToCreate as Teacher;
+                teacher.ScienceDegree = Microsoft.VisualBasic.Interaction.InputBox("Введіть вашу ступінь:", "Введення тексту", "");
+                userToCreate = teacher;
             }
             else
             {
-                if (RepositoryManager.GetRepo<Student>().FindByFilter(u => u.Username == UsernameTextBox.Text) == null)
-                {
-                    var user = new Student
-                    {
-                        Username = UsernameTextBox.Text,
-                        FirstName = FirstNameTextBox.Text,
-                        LastName = LastNameTextBox.Text,
-                        Password = PasswordTextBox.Text,
-                        Role = "Student",
-                        Courses = new List<Course>()
-                    };
-                    RepositoryManager.GetRepo<Student>()
-                        .Create(user);
-                    MessageBox.Show("Account created successfully!", "Registration", MessageBoxButtons.OK);
-                    return;
-                }
-                MessageBox.Show("Account with such name exist...", "Registration", MessageBoxButtons.OK);
+                var student = userToCreate as Student;
+                userToCreate = student;
             }
-        }
 
+            RepositoryManager.GetRepo<User>().Create(userToCreate);
+            MessageBox.Show("Account successfully created", "Registration", MessageBoxButtons.OK);
+        }
 
         private void GoBackButton_Click(object sender, EventArgs e)
         {

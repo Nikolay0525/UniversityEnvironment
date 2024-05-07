@@ -18,9 +18,6 @@ namespace UniversityEnvironment.Data
         public DbSet<TestMark> TestMarks { get; set; }
         public DbSet<TestQuestion> TestQuestions { get; set; }
         public DbSet<QuestionAnswer> QuestionAnswers { get; set; }
-/*        public DbSet<CourseAdmin> CoursesAdmins { get; set; }
-        public DbSet<CourseTeacher> CoursesTeachers { get; set; }
-        public DbSet<CourseStudent> CoursesStudents { get; set; }*/
 
         public UniversityEnvironmentContext() { }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -32,95 +29,95 @@ namespace UniversityEnvironment.Data
         {
             modelBuilder.Entity<CourseAdmin>()
             .ToTable("coursesadmins")
-            .HasKey(cs => new { cs.AdminId, cs.CourseId }); // Define composite primary key
+            .HasKey(cs => new { cs.UserId, cs.CourseId }); 
 
             modelBuilder.Entity<CourseAdmin>()
-            .ToTable("coursesadminss")
+            .ToTable("coursesadmins")
             .HasOne(cs => cs.Admin)
-            .WithMany(s => s.CoursesAdmins) // Assuming Student has a navigation property CourseStudents
-            .HasForeignKey(cs => cs.AdminId)
-            .OnDelete(DeleteBehavior.Cascade); // Specify the delete behavior if a student is deleted
+            .WithMany(s => s.CoursesAdmins) 
+            .HasForeignKey(cs => cs.UserId)
+            .OnDelete(DeleteBehavior.Cascade); 
 
             modelBuilder.Entity<CourseAdmin>()
             .ToTable("coursesadmins")
             .HasOne(cs => cs.Course)
-            .WithMany(c => c.CoursesAdmins) // Assuming Course has a navigation property CourseStudents
+            .WithMany(c => c.CoursesAdmins) 
             .HasForeignKey(cs => cs.CourseId)
-            .OnDelete(DeleteBehavior.Cascade); // Specify the delete behavior if a course is deleted
+            .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<CourseTeacher>()
             .ToTable("coursesteachers")
-            .HasKey(cs => new { cs.TeacherId, cs.CourseId }); // Define composite primary key
+            .HasKey(cs => new { cs.UserId, cs.CourseId }); 
 
             modelBuilder.Entity<CourseTeacher>()
             .ToTable("coursesteachers")
             .HasOne(cs => cs.Teacher)
-            .WithMany(s => s.CoursesTeachers) // Assuming Student has a navigation property CourseStudents
-            .HasForeignKey(cs => cs.TeacherId)
-            .OnDelete(DeleteBehavior.Cascade); // Specify the delete behavior if a student is deleted
+            .WithMany(s => s.CoursesTeachers)
+            .HasForeignKey(cs => cs.UserId)
+            .OnDelete(DeleteBehavior.Cascade); 
 
             modelBuilder.Entity<CourseTeacher>()
             .ToTable("coursesteachers")
             .HasOne(cs => cs.Course)
-            .WithMany(c => c.CoursesTeachers) // Assuming Course has a navigation property CourseStudents
+            .WithMany(c => c.CoursesTeachers) 
             .HasForeignKey(cs => cs.CourseId)
-            .OnDelete(DeleteBehavior.Cascade); // Specify the delete behavior if a course is deleted
+            .OnDelete(DeleteBehavior.Cascade); 
 
             modelBuilder.Entity<CourseStudent>()
             .ToTable("coursesstudents")
-            .HasKey(cs => new { cs.StudentId, cs.CourseId }); // Define composite primary key
+            .HasKey(cs => new { cs.UserId, cs.CourseId }); 
 
             modelBuilder.Entity<CourseStudent>()
             .ToTable("coursesstudents")
             .HasOne(cs => cs.Student)
-            .WithMany(s => s.CoursesStudents) // Assuming Student has a navigation property CourseStudents
-            .HasForeignKey(cs => cs.StudentId)
-            .OnDelete(DeleteBehavior.Cascade); // Specify the delete behavior if a student is deleted
+            .WithMany(s => s.CoursesStudents) 
+            .HasForeignKey(cs => cs.UserId)
+            .OnDelete(DeleteBehavior.Cascade); 
 
             modelBuilder.Entity<CourseStudent>()
             .ToTable("coursesstudents")
             .HasOne(cs => cs.Course)
-            .WithMany(c => c.CoursesStudents) // Assuming Course has a navigation property CourseStudents
+            .WithMany(c => c.CoursesStudents) 
             .HasForeignKey(cs => cs.CourseId)
-            .OnDelete(DeleteBehavior.Cascade); // Specify the delete behavior if a course is deleted
+            .OnDelete(DeleteBehavior.Cascade); 
 
 
             modelBuilder.Entity<TestStudent>()
             .ToTable("testsstudents")
-            .HasKey(cs => new { cs.StudentId, cs.TestId }); // Define composite primary key
+            .HasKey(cs => new { cs.StudentId, cs.TestId }); 
 
             modelBuilder.Entity<TestStudent>()
             .ToTable("testsstudents")
             .HasOne(cs => cs.Student)
-            .WithMany(s => s.TestsStudents) // Assuming Student has a navigation property CourseStudents
+            .WithMany(s => s.TestsStudents) 
             .HasForeignKey(cs => cs.StudentId)
-            .OnDelete(DeleteBehavior.Cascade); // Specify the delete behavior if a student is deleted
+            .OnDelete(DeleteBehavior.Cascade); 
 
             modelBuilder.Entity<TestStudent>()
             .ToTable("testsstudents")
             .HasOne(cs => cs.Test)
-            .WithMany(c => c.TestsStudents) // Assuming Course has a navigation property CourseStudents
+            .WithMany(c => c.TestsStudents) 
             .HasForeignKey(cs => cs.TestId)
-            .OnDelete(DeleteBehavior.Cascade); // Specify the delete behavior if a course is deleted
+            .OnDelete(DeleteBehavior.Cascade); 
 
 
             modelBuilder.Entity<QuestionAnswerStudent>()
             .ToTable("questionanswersstudents")
-            .HasKey(cs => new { cs.StudentId, cs.QuestionAnswerId }); // Define composite primary key
+            .HasKey(cs => new { cs.StudentId, cs.QuestionAnswerId }); 
 
             modelBuilder.Entity<QuestionAnswerStudent>()
             .ToTable("questionanswersstudents")
             .HasOne(cs => cs.Student)
-            .WithMany(s => s.QuestionAnswersStudent) // Assuming Student has a navigation property CourseStudents
+            .WithMany(s => s.QuestionAnswersStudent) 
             .HasForeignKey(cs => cs.StudentId)
-            .OnDelete(DeleteBehavior.Cascade); // Specify the delete behavior if a student is deleted
+            .OnDelete(DeleteBehavior.Cascade); 
 
             modelBuilder.Entity<QuestionAnswerStudent>()
             .ToTable("questionanswersstudents")
             .HasOne(cs => cs.QuestionAnswer)
-            .WithMany(c => c.QuestionAnswersStudents) // Assuming Course has a navigation property CourseStudents
+            .WithMany(c => c.QuestionAnswersStudents) 
             .HasForeignKey(cs => cs.QuestionAnswerId)
-            .OnDelete(DeleteBehavior.Cascade); // Specify the delete behavior if a course is deleted
+            .OnDelete(DeleteBehavior.Cascade); 
         }
     }
 }

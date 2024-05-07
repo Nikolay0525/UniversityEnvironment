@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UniversityEnvironment.Data.Enums;
 
 namespace UniversityEnvironment.Data.Model
 {
     public class Teacher : User
     {
-        private string? _scienceDegree;
-        private List<CourseTeacher>? _coursesTeachers;
-        public string? ScienceDegree { get => _scienceDegree; set => _scienceDegree = value; }
-        public List<CourseTeacher>? CoursesTeachers { get => _coursesTeachers; set => _coursesTeachers = value; }
+        public string? ScienceDegree { get; set; }
+        public List<CourseTeacher>? CoursesTeachers { get; set; }
+
+        public new Role Role => Role.Teacher;
     }
 }

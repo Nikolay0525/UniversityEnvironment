@@ -8,9 +8,7 @@ namespace UniversityEnvironment.Data.Model
 {
     public sealed class TestQuestion : EnvironmentObject
     {
-        private Test? _test;
-        private List<QuestionAnswer>? _answers;
-        public Test? Test { get => _test; set => _test = value; }
-        public List<QuestionAnswer>? Answers { get => _answers; set => _answers = value; }
+        public Test? Test { get; set; }
+        public List<QuestionAnswer>? Answers { get; set; }
     }
 }

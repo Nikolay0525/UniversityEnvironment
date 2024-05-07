@@ -13,7 +13,7 @@ using System.Linq.Expressions;
 
 namespace UniversityEnvironment.Data.Repository
 {
-    public class RepoImplementation<TEntity> : IRepository<TEntity> where TEntity : EnvironmentObject
+    public class RepoImplementation<TEntity> : IRepository<TEntity> where TEntity : class
     {
         private UniversityEnvironmentContext _context;
         private static RepoImplementation<TEntity>? _instance;
@@ -50,21 +50,31 @@ namespace UniversityEnvironment.Data.Repository
             return _objects.Find(id);
         }
 
-        public TEntity Create(TEntity obj)
+        public void Create(TEntity obj)
         {
             _objects.Add(obj);
             _context.SaveChanges();
-            return obj;
+        }
+
+        public void Create(IEnumerable<TEntity> objects)
+        {
+            foreach (var obj in objects)
+            {
+                if (_objects.Any(o => o == obj)) { continue; }
+                _objects.Add(obj);
+            }
+
+            _context.SaveChanges();
         }
 
         public TEntity? Update(TEntity obj)
         {
-            _objects.Entry(obj).State = EntityState.Modified;
-            _context.SaveChanges();
-            return obj;
+        _objects.Entry(obj).State = EntityState.Modified;
+        _context.SaveChanges();
+        return obj;
         }
 
-        public TEntity? Delete(TEntity obj)
+        public void Remove(TEntity obj)
         {
             if (_context.Entry(obj).State == EntityState.Detached)
             {
@@ -73,7 +83,20 @@ namespace UniversityEnvironment.Data.Repository
 
             _objects.Remove(obj);
             _context.SaveChanges();
-            return obj;
+        }
+        public void Remove(IEnumerable<TEntity> objects)
+        {
+            foreach (var obj in objects)
+            {
+                if (_context.Entry(obj).State == EntityState.Detached)
+                {
+                    _objects.Attach(obj);
+                }
+
+                _objects.Remove(obj);
+            }
+
+            _context.SaveChanges();
         }
     }
 }

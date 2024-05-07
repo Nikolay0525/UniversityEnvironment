@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UniversityEnvironment.Data.Enums;
 
 namespace UniversityEnvironment.Data.Model
 {
     public class Admin : User
     {
-        private List<CourseAdmin>? _coursesAdmins;
-        public List<CourseAdmin>? CoursesAdmins { get => _coursesAdmins; set => _coursesAdmins = value; } 
+        public List<CourseAdmin>? CoursesAdmins { get; set; }
+        public new Role Role => Role.Admin;
     }
 }

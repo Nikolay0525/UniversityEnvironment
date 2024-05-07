@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UniversityEnvironment.View.Utility
+namespace UniversityEnvironment.Data.Enums
 {
-    public static class Constants
+    public enum Role
     {
-        
+        Admin,
+        Teacher,
+        Student,
     }
 }
