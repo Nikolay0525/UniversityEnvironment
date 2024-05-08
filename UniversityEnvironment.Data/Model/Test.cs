@@ -11,7 +11,6 @@ namespace UniversityEnvironment.Data.Model
         public string? Name { get; set; }
         public string? Description { get; set; }
         public Course? Course { get; set; }
-        public List<Student>? Students { get; set; }
         public List<TestMark>? Marks { get; set; }
         public List<TestQuestion>? Questions { get; set; }
         public List<TestStudent>? TestsStudents { get; set; }

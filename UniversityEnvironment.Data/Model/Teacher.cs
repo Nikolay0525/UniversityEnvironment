@@ -12,6 +12,6 @@ namespace UniversityEnvironment.Data.Model
         public string? ScienceDegree { get; set; }
         public List<CourseTeacher>? CoursesTeachers { get; set; }
 
-        public new Role Role => Role.Teacher;
+        public override Role Role => Role.Teacher;
     }
 }

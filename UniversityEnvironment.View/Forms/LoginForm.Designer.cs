@@ -35,10 +35,10 @@
             label1 = new Label();
             label2 = new Label();
             groupBox1 = new GroupBox();
+            StudentCheck = new RadioButton();
             TeacherCheck = new RadioButton();
             AdminCheck = new RadioButton();
             ForgetButton = new Button();
-            StudentCheck = new RadioButton();
             groupBox1.SuspendLayout();
             SuspendLayout();
             // 
@@ -119,6 +119,18 @@
             groupBox1.TabIndex = 11;
             groupBox1.TabStop = false;
             // 
+            // StudentCheck
+            // 
+            StudentCheck.AutoSize = true;
+            StudentCheck.Checked = true;
+            StudentCheck.Location = new Point(0, 68);
+            StudentCheck.Name = "StudentCheck";
+            StudentCheck.Size = new Size(89, 24);
+            StudentCheck.TabIndex = 0;
+            StudentCheck.TabStop = true;
+            StudentCheck.Text = "Student?";
+            StudentCheck.UseVisualStyleBackColor = true;
+            // 
             // TeacherCheck
             // 
             TeacherCheck.AutoSize = true;
@@ -150,17 +162,6 @@
             ForgetButton.TabIndex = 12;
             ForgetButton.Text = "Forget Password";
             ForgetButton.UseVisualStyleBackColor = false;
-            // 
-            // StudentCheck
-            // 
-            StudentCheck.AutoSize = true;
-            StudentCheck.Location = new Point(0, 68);
-            StudentCheck.Name = "StudentCheck";
-            StudentCheck.Size = new Size(89, 24);
-            StudentCheck.TabIndex = 0;
-            StudentCheck.TabStop = true;
-            StudentCheck.Text = "Student?";
-            StudentCheck.UseVisualStyleBackColor = true;
             // 
             // LoginForm
             // 

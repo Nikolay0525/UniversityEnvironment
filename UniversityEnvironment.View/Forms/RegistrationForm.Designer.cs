@@ -38,11 +38,11 @@
             LastNameTextBox = new TextBox();
             UsernameTextBox = new TextBox();
             FirstNameTextBox = new TextBox();
-            groupBox1 = new GroupBox();
-            StudentCheck = new RadioButton();
-            TeacherCheck = new RadioButton();
-            AdminCheck = new RadioButton();
-            groupBox1.SuspendLayout();
+            RoleGroupBox = new GroupBox();
+            Student = new RadioButton();
+            Teacher = new RadioButton();
+            Admin = new RadioButton();
+            RoleGroupBox.SuspendLayout();
             SuspendLayout();
             // 
             // RegistrateAccountButton
@@ -137,55 +137,55 @@
             FirstNameTextBox.Size = new Size(181, 27);
             FirstNameTextBox.TabIndex = 9;
             // 
-            // groupBox1
+            // RoleGroupBox
             // 
-            groupBox1.BackColor = SystemColors.ControlLightLight;
-            groupBox1.Controls.Add(StudentCheck);
-            groupBox1.Controls.Add(TeacherCheck);
-            groupBox1.Controls.Add(AdminCheck);
-            groupBox1.Location = new Point(12, 216);
-            groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(88, 93);
-            groupBox1.TabIndex = 12;
-            groupBox1.TabStop = false;
+            RoleGroupBox.BackColor = SystemColors.ControlLightLight;
+            RoleGroupBox.Controls.Add(Student);
+            RoleGroupBox.Controls.Add(Teacher);
+            RoleGroupBox.Controls.Add(Admin);
+            RoleGroupBox.Location = new Point(12, 216);
+            RoleGroupBox.Name = "RoleGroupBox";
+            RoleGroupBox.Size = new Size(88, 93);
+            RoleGroupBox.TabIndex = 12;
+            RoleGroupBox.TabStop = false;
             // 
-            // StudentCheck
+            // Student
             // 
-            StudentCheck.AutoSize = true;
-            StudentCheck.Checked = true;
-            StudentCheck.Location = new Point(0, 68);
-            StudentCheck.Name = "StudentCheck";
-            StudentCheck.Size = new Size(89, 24);
-            StudentCheck.TabIndex = 0;
-            StudentCheck.TabStop = true;
-            StudentCheck.Text = "Student?";
-            StudentCheck.UseVisualStyleBackColor = true;
+            Student.AutoSize = true;
+            Student.Checked = true;
+            Student.Location = new Point(0, 68);
+            Student.Name = "Student";
+            Student.Size = new Size(89, 24);
+            Student.TabIndex = 0;
+            Student.TabStop = true;
+            Student.Text = "Student?";
+            Student.UseVisualStyleBackColor = true;
             // 
-            // TeacherCheck
+            // Teacher
             // 
-            TeacherCheck.AutoSize = true;
-            TeacherCheck.Location = new Point(0, 40);
-            TeacherCheck.Name = "TeacherCheck";
-            TeacherCheck.Size = new Size(92, 24);
-            TeacherCheck.TabIndex = 0;
-            TeacherCheck.Text = "Teacher?";
-            TeacherCheck.UseVisualStyleBackColor = true;
+            Teacher.AutoSize = true;
+            Teacher.Location = new Point(0, 40);
+            Teacher.Name = "Teacher";
+            Teacher.Size = new Size(92, 24);
+            Teacher.TabIndex = 0;
+            Teacher.Text = "Teacher?";
+            Teacher.UseVisualStyleBackColor = true;
             // 
-            // AdminCheck
+            // Admin
             // 
-            AdminCheck.Location = new Point(0, 10);
-            AdminCheck.Name = "AdminCheck";
-            AdminCheck.Size = new Size(107, 30);
-            AdminCheck.TabIndex = 0;
-            AdminCheck.Text = "Admin?";
-            AdminCheck.UseVisualStyleBackColor = true;
+            Admin.Location = new Point(0, 10);
+            Admin.Name = "Admin";
+            Admin.Size = new Size(107, 30);
+            Admin.TabIndex = 0;
+            Admin.Text = "Admin?";
+            Admin.UseVisualStyleBackColor = true;
             // 
             // RegistrationForm
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(304, 368);
-            Controls.Add(groupBox1);
+            Controls.Add(RoleGroupBox);
             Controls.Add(FirstNameTextBox);
             Controls.Add(UsernameTextBox);
             Controls.Add(LastNameTextBox);
@@ -200,8 +200,8 @@
             Margin = new Padding(4);
             Name = "RegistrationForm";
             Text = "Registration";
-            groupBox1.ResumeLayout(false);
-            groupBox1.PerformLayout();
+            RoleGroupBox.ResumeLayout(false);
+            RoleGroupBox.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -220,9 +220,9 @@
         private TextBox LastNameTextBox;
         private TextBox UsernameTextBox;
         private TextBox FirstNameTextBox;
-        private GroupBox groupBox1;
-        private RadioButton StudentCheck;
-        private RadioButton TeacherCheck;
-        private RadioButton AdminCheck;
+        private GroupBox RoleGroupBox;
+        private RadioButton Student;
+        private RadioButton Teacher;
+        private RadioButton Admin;
     }
 }

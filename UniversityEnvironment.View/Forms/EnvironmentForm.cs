@@ -28,7 +28,11 @@ namespace UniversityEnvironment.View.Forms
             PersonRole.Text = user.Role.ToString();
             UpdateTableWithAvailableCourses(AvailableCoursesTable, RepositoryManager.GetRepo<Course>()
                 .GetAll().ToList());
-            UpdateTableWithActualCourses(ActualCoursesTable, user);
+
+            if(_user.Role == Role.Admin) UpdateTableWithActualCourses<Admin>(ActualCoursesTable, user);
+            else if(_user.Role == Role.Admin) UpdateTableWithActualCourses<Teacher>(ActualCoursesTable, user);
+            else UpdateTableWithActualCourses<Student>(ActualCoursesTable, user);
+
         }
         
         private void SignButton_Click(object sender, EventArgs e)
@@ -37,7 +41,8 @@ namespace UniversityEnvironment.View.Forms
                 UserCourseOperation<CourseAdmin, Admin>(AvailableCoursesTable, _user, CourseOperation.Create);
             else if (_user.Role == Role.Teacher)
                 UserCourseOperation<CourseTeacher, Teacher>(AvailableCoursesTable, _user, CourseOperation.Create);
-            else UserCourseOperation<CourseStudent, Student>(AvailableCoursesTable, _user, CourseOperation.Create);
+            else 
+                UserCourseOperation<CourseStudent, Student>(AvailableCoursesTable, _user, CourseOperation.Create);
         }
 
         private void UnsignButton_Click(object sender, EventArgs e)
@@ -45,8 +50,9 @@ namespace UniversityEnvironment.View.Forms
             if (_user.Role == Role.Admin)
                 UserCourseOperation<CourseAdmin, Admin>(AvailableCoursesTable, _user, CourseOperation.Remove);
             else if (_user.Role == Role.Teacher)
-                UserCourseOperation<CourseTeacher, Teacher>(AvailableCoursesTable, _user, CourseOperation.Create);
-            else UserCourseOperation<CourseStudent, Student>(AvailableCoursesTable, _user, CourseOperation.Create);
+                UserCourseOperation<CourseTeacher, Teacher>(AvailableCoursesTable, _user, CourseOperation.Remove);
+            else 
+                UserCourseOperation<CourseStudent, Student>(AvailableCoursesTable, _user, CourseOperation.Remove);
         }
 
         private void ActualCoursesTable_CellContentClick(object sender, DataGridViewCellEventArgs e)

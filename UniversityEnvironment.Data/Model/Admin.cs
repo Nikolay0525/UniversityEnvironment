@@ -10,6 +10,7 @@ namespace UniversityEnvironment.Data.Model
     public class Admin : User
     {
         public List<CourseAdmin>? CoursesAdmins { get; set; }
-        public new Role Role => Role.Admin;
+        public override Role Role => Role.Admin;
     }
+
 }

@@ -8,8 +8,8 @@ namespace UniversityEnvironment.Data.Enums
 {
     public enum Role
     {
-        Admin,
-        Teacher,
-        Student,
+        Admin = 1,
+        Teacher = 2,
+        Student = 3
     }
 }

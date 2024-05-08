@@ -16,11 +16,13 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.VisualBasic.Devices;
 using MaterialSkin.Controls;
 using UniversityEnvironment.View.Enums;
+using UniversityEnvironment.Data.Enums;
 
 namespace UniversityEnvironment.View.Utility
 {
     internal static class ViewHelper
     {
+        
         internal static void ShowNextForm(MaterialForm current, MaterialForm next)
         {
             current.Hide();
@@ -46,7 +48,7 @@ namespace UniversityEnvironment.View.Utility
             }
         }
 
-        internal static void UpdateTableWithActualCourses<T>(DataGridView table, T user) where T : User
+        internal static void UpdateTableWithActualCourses<T>(DataGridView table, User user) where T : User
         {
             T? foundedUser = RepositoryManager.GetRepo<T>().FindById(user.Id);
             ArgumentNullException.ThrowIfNull(foundedUser);

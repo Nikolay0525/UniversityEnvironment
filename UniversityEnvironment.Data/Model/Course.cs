@@ -13,9 +13,6 @@ namespace UniversityEnvironment.Data.Model
         public string? Name { get; set; }
         public string? FacultyName { get; set; }
         public List<Test>? Tests { get; set; }
-        public List<Admin>? Admins { get; set; }
-        public List<Teacher>? Teachers { get; set; }
-        public List<Student>? Students { get; set; }
         public List<CourseAdmin>? CoursesAdmins { get; set; }
         public List<CourseTeacher>? CoursesTeachers { get; set; }
         public List<CourseStudent>? CoursesStudents { get; set; }

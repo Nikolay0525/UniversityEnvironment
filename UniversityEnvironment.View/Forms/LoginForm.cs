@@ -33,12 +33,9 @@ namespace UniversityEnvironment.View.Forms
 
         private T? SetUserRole<T>() where T : User
         {
-            var role = typeof(T).Name;
             var user = RepositoryManager.GetRepo<T>()
                 .FindByFilter(u => u.Username == UsernameTextBox.Text && u.Password == PasswordTextBox.Text);
             if (user == null) return null;
-            if (Enum.TryParse(role, out Role @enum)) user.Role = @enum;
-            else throw new ArgumentException($"Failed to parse {role}");
             return user;
         }
 
@@ -66,6 +63,7 @@ namespace UniversityEnvironment.View.Forms
             if (user != null)
             {
                 ShowNextForm(this, new EnvironmentForm(user));
+                return;
             }
             MessageBox.Show("Wrong username or password...", "Login", MessageBoxButtons.OK);
         }
