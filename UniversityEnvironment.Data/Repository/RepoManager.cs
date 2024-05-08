@@ -8,7 +8,7 @@ namespace UniversityEnvironment.Data.Repositories
         public static IRepository<TEntity> GetRepo<TEntity>() where TEntity : class
         {
             var context = new UniversityEnvironmentContext();
-            var repo = RepoImplementation<TEntity>.GetRepo(context);
+            var repo = RepoImplementation<TEntity>.GetRepository(context);
             return repo;
         }
     }

@@ -10,12 +10,15 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MaterialSkin;
 using MaterialSkin.Controls;
-using UniversityEnvironment.Data.Model;
+using UniversityEnvironment.Data.Model.Tables;
+using UniversityEnvironment.Data.Model.MtoMTables;
 using static UniversityEnvironment.View.Utility.AuthorizationHelper;
 using UniversityEnvironment.Data.Repositories;
 using static UniversityEnvironment.View.Validator.ViewValidator;
 using UniversityEnvironment.Data.Enums;
 using System.CodeDom;
+using UniversityEnvironment.Data.Model;
+using UniversityEnvironment.Data;
 
 namespace UniversityEnvironment.View.Forms
 {
@@ -46,24 +49,34 @@ namespace UniversityEnvironment.View.Forms
             {
                 User userToCreate = CreateUser<Admin>(UsernameTextBox.Text, FirstNameTextBox.Text, LastNameTextBox.Text, PasswordTextBox.Text);
                 var admin = userToCreate as Admin;
-                RepositoryManager.GetRepo<Admin>().Create(admin);
+                var adminRepo = RepositoryManager.GetRepo<Admin>();
+                if(adminRepo.GetAll().Count() == 0) 
+                {
+                    admin.Confirmed = true;
+                    MessageBox.Show("You are the first admin and the main, be fair!", "Registration", MessageBoxButtons.OK);
+                }
+                else MessageBox.Show("Request on creating sended", "Registration", MessageBoxButtons.OK);
+                adminRepo.Create(admin);
             }
             else if (Teacher.Checked)
             {
                 User userToCreate = CreateUser<Teacher>(UsernameTextBox.Text, FirstNameTextBox.Text, LastNameTextBox.Text, PasswordTextBox.Text);
                 var teacher = userToCreate as Teacher;
                 teacher.ScienceDegree = Microsoft.VisualBasic.Interaction.InputBox("Введіть вашу ступінь:", "Введення тексту", "");
+                teacher.CoursesTeachers = new();
                 RepositoryManager.GetRepo<Teacher>().Create(teacher);
+                MessageBox.Show("Request on creating sended", "Registration", MessageBoxButtons.OK);
             }
             else
             {
                 User userToCreate = CreateUser<Student>(UsernameTextBox.Text, FirstNameTextBox.Text, LastNameTextBox.Text, PasswordTextBox.Text);
                 var student = userToCreate as Student;
+                student.TestsStudents = new();
                 student.CoursesStudents = new();
                 student.QuestionAnswersStudent = new();
                 RepositoryManager.GetRepo<Student>().Create(student);
+                MessageBox.Show("Account successfully created", "Registration", MessageBoxButtons.OK);
             }
-            MessageBox.Show("Account successfully created", "Registration", MessageBoxButtons.OK);
         }
 
         private void GoBackButton_Click(object sender, EventArgs e)

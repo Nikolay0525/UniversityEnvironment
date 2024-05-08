@@ -1,11 +1,11 @@
-﻿using UniversityEnvironment.Data.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using UniversityEnvironment.View.Forms;
+using UniversityEnvironment.Data.Model.Tables;
 
 namespace UniversityEnvironment.View.Utility
 {

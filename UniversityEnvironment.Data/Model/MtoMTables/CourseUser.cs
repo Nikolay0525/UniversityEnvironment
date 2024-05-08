@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UniversityEnvironment.Data.Model
+namespace UniversityEnvironment.Data.Model.MtoMTables
 {
     public abstract class CourseUser
     {

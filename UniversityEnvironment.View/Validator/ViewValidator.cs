@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UniversityEnvironment.Data.Model;
+using UniversityEnvironment.Data.Model.Tables;
 using UniversityEnvironment.Data.Repositories;
 
 namespace UniversityEnvironment.View.Validator

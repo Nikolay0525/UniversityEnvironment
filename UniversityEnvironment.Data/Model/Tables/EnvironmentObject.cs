@@ -7,7 +7,7 @@ using System.IO;
 using System.Xml.Linq;
 using System.ComponentModel.DataAnnotations;
 
-namespace UniversityEnvironment.Data.Model
+namespace UniversityEnvironment.Data.Model.Tables
 {
     public abstract class EnvironmentObject
     {

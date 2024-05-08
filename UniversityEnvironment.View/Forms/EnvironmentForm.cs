@@ -2,7 +2,6 @@
 using System;
 using System.IO;
 using System.Windows.Forms;
-using UniversityEnvironment.Data.Model;
 using System.Xml.Linq;
 using UniversityEnvironment.View.Utility;
 using System.Collections.Generic;
@@ -12,6 +11,8 @@ using UniversityEnvironment.Data.Repositories;
 using static UniversityEnvironment.View.Utility.ViewHelper;
 using UniversityEnvironment.View.Enums;
 using UniversityEnvironment.Data.Enums;
+using UniversityEnvironment.Data.Model.Tables;
+using UniversityEnvironment.Data.Model.MtoMTables;
 
 namespace UniversityEnvironment.View.Forms
 
@@ -29,17 +30,14 @@ namespace UniversityEnvironment.View.Forms
             UpdateTableWithAvailableCourses(AvailableCoursesTable, RepositoryManager.GetRepo<Course>()
                 .GetAll().ToList());
 
-            if(_user.Role == Role.Admin) UpdateTableWithActualCourses<Admin>(ActualCoursesTable, user);
-            else if(_user.Role == Role.Admin) UpdateTableWithActualCourses<Teacher>(ActualCoursesTable, user);
-            else UpdateTableWithActualCourses<Student>(ActualCoursesTable, user);
+            if(_user.Role == Role.Teacher) UpdateTableWithActualCourses<CourseTeacher>(ActualCoursesTable, user);
+            else UpdateTableWithActualCourses<CourseStudent>(ActualCoursesTable, user);
 
         }
         
         private void SignButton_Click(object sender, EventArgs e)
         {
-            if (_user.Role == Role.Admin)
-                UserCourseOperation<CourseAdmin, Admin>(AvailableCoursesTable, _user, CourseOperation.Create);
-            else if (_user.Role == Role.Teacher)
+            if (_user.Role == Role.Teacher)
                 UserCourseOperation<CourseTeacher, Teacher>(AvailableCoursesTable, _user, CourseOperation.Create);
             else 
                 UserCourseOperation<CourseStudent, Student>(AvailableCoursesTable, _user, CourseOperation.Create);
@@ -47,9 +45,7 @@ namespace UniversityEnvironment.View.Forms
 
         private void UnsignButton_Click(object sender, EventArgs e)
         {
-            if (_user.Role == Role.Admin)
-                UserCourseOperation<CourseAdmin, Admin>(AvailableCoursesTable, _user, CourseOperation.Remove);
-            else if (_user.Role == Role.Teacher)
+            if (_user.Role == Role.Teacher)
                 UserCourseOperation<CourseTeacher, Teacher>(AvailableCoursesTable, _user, CourseOperation.Remove);
             else 
                 UserCourseOperation<CourseStudent, Student>(AvailableCoursesTable, _user, CourseOperation.Remove);

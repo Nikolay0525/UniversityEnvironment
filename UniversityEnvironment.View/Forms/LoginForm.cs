@@ -12,13 +12,13 @@ using System.Windows.Forms;
 using MaterialSkin;
 using MaterialSkin.Controls;
 using UniversityEnvironment.View.Forms;
-using UniversityEnvironment.Data.Model;
 using UniversityEnvironment.View.Utility;
 using static UniversityEnvironment.View.Utility.Constants;
 using UniversityEnvironment.Data.Repositories;
 using static UniversityEnvironment.View.Utility.ViewHelper;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using UniversityEnvironment.Data.Enums;
+using UniversityEnvironment.Data.Model.Tables;
 
 
 namespace UniversityEnvironment.View.Forms
@@ -50,6 +50,7 @@ namespace UniversityEnvironment.View.Forms
             if (AdminCheck.Checked)
             {
                 user = SetUserRole<Admin>();
+                
             }
             else if (TeacherCheck.Checked)
             {
@@ -60,12 +61,25 @@ namespace UniversityEnvironment.View.Forms
                 user = SetUserRole<Student>();
             }
 
-            if (user != null)
+            #region Validation
+            if (user == null)
+            {
+                MessageBox.Show("Wrong username or password...", "Login", MessageBoxButtons.OK);
+                return;
+            }
+            #endregion
+
+            if (user.Role == Role.Admin && user.Confirmed) 
+            {
+                ShowNextForm(this, new AdminControlForm(user));
+                return;
+            } 
+            else if (user.Confirmed)
             {
                 ShowNextForm(this, new EnvironmentForm(user));
                 return;
             }
-            MessageBox.Show("Wrong username or password...", "Login", MessageBoxButtons.OK);
+            else MessageBox.Show("Wait until admins accept you're request...", "Login", MessageBoxButtons.OK);   
         }
     }
 }

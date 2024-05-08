@@ -35,8 +35,6 @@
             PersonRole = new Label();
             PersonName = new Label();
             ActualCoursesTable = new DataGridView();
-            ActualGridColumnCourseName = new DataGridViewTextBoxColumn();
-            ActualGridColumnCourseFaculty = new DataGridViewTextBoxColumn();
             label2 = new Label();
             label1 = new Label();
             pictureBox1 = new PictureBox();
@@ -45,26 +43,38 @@
             UnsignButton = new Button();
             SignButton = new Button();
             AvailableCoursesTable = new DataGridView();
+            tabPage3 = new TabPage();
+            dataGridView1 = new DataGridView();
             RowCheck = new DataGridViewCheckBoxColumn();
-            dataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
-            dataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
+            CourseColumn = new DataGridViewTextBoxColumn();
+            FacultyColumn = new DataGridViewTextBoxColumn();
+            ActualColumnCourse = new DataGridViewTextBoxColumn();
+            ActualColumnFaculty = new DataGridViewTextBoxColumn();
+            InitialsColumn = new DataGridViewTextBoxColumn();
+            FromCourseColumn = new DataGridViewTextBoxColumn();
+            MessageColumn = new DataGridViewTextBoxColumn();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)ActualCoursesTable).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)AvailableCoursesTable).BeginInit();
+            tabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
             // tabControl1
             // 
             tabControl1.Controls.Add(tabPage1);
             tabControl1.Controls.Add(tabPage2);
+            tabControl1.Controls.Add(tabPage3);
             tabControl1.Dock = DockStyle.Bottom;
+            tabControl1.ItemSize = new Size(198, 25);
             tabControl1.Location = new Point(0, 63);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
             tabControl1.Size = new Size(600, 337);
+            tabControl1.SizeMode = TabSizeMode.Fixed;
             tabControl1.TabIndex = 0;
             // 
             // tabPage1
@@ -127,27 +137,13 @@
             ActualCoursesTable.AllowUserToDeleteRows = false;
             ActualCoursesTable.BackgroundColor = SystemColors.Control;
             ActualCoursesTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            ActualCoursesTable.Columns.AddRange(new DataGridViewColumn[] { ActualGridColumnCourseName, ActualGridColumnCourseFaculty });
+            ActualCoursesTable.Columns.AddRange(new DataGridViewColumn[] { ActualColumnCourse, ActualColumnFaculty });
             ActualCoursesTable.Location = new Point(171, 26);
             ActualCoursesTable.Name = "ActualCoursesTable";
             ActualCoursesTable.ReadOnly = true;
             ActualCoursesTable.Size = new Size(414, 231);
             ActualCoursesTable.TabIndex = 2;
             ActualCoursesTable.CellContentClick += ActualCoursesTable_CellContentClick;
-            // 
-            // ActualGridColumnCourseName
-            // 
-            ActualGridColumnCourseName.HeaderText = "Course";
-            ActualGridColumnCourseName.Name = "ActualGridColumnCourseName";
-            ActualGridColumnCourseName.ReadOnly = true;
-            ActualGridColumnCourseName.Width = 150;
-            // 
-            // ActualGridColumnCourseFaculty
-            // 
-            ActualGridColumnCourseFaculty.HeaderText = "Faculty";
-            ActualGridColumnCourseFaculty.Name = "ActualGridColumnCourseFaculty";
-            ActualGridColumnCourseFaculty.ReadOnly = true;
-            ActualGridColumnCourseFaculty.Width = 220;
             // 
             // label2
             // 
@@ -233,11 +229,34 @@
             AvailableCoursesTable.AllowUserToDeleteRows = false;
             AvailableCoursesTable.BackgroundColor = SystemColors.Control;
             AvailableCoursesTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            AvailableCoursesTable.Columns.AddRange(new DataGridViewColumn[] { RowCheck, dataGridViewTextBoxColumn1, dataGridViewTextBoxColumn2 });
+            AvailableCoursesTable.Columns.AddRange(new DataGridViewColumn[] { RowCheck, CourseColumn, FacultyColumn });
             AvailableCoursesTable.Location = new Point(172, 28);
             AvailableCoursesTable.Name = "AvailableCoursesTable";
             AvailableCoursesTable.Size = new Size(414, 268);
             AvailableCoursesTable.TabIndex = 3;
+            // 
+            // tabPage3
+            // 
+            tabPage3.BackColor = SystemColors.ControlLightLight;
+            tabPage3.Controls.Add(dataGridView1);
+            tabPage3.Location = new Point(4, 29);
+            tabPage3.Name = "tabPage3";
+            tabPage3.Padding = new Padding(3);
+            tabPage3.Size = new Size(592, 304);
+            tabPage3.TabIndex = 2;
+            tabPage3.Text = "Notifications";
+            // 
+            // dataGridView1
+            // 
+            dataGridView1.AllowUserToAddRows = false;
+            dataGridView1.AllowUserToDeleteRows = false;
+            dataGridView1.BackgroundColor = SystemColors.Control;
+            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { InitialsColumn, FromCourseColumn, MessageColumn });
+            dataGridView1.Location = new Point(0, 0);
+            dataGridView1.Name = "dataGridView1";
+            dataGridView1.Size = new Size(592, 304);
+            dataGridView1.TabIndex = 4;
             // 
             // RowCheck
             // 
@@ -247,17 +266,49 @@
             RowCheck.SortMode = DataGridViewColumnSortMode.Automatic;
             RowCheck.Width = 20;
             // 
-            // dataGridViewTextBoxColumn1
+            // CourseColumn
             // 
-            dataGridViewTextBoxColumn1.HeaderText = "Course";
-            dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            dataGridViewTextBoxColumn1.Width = 150;
+            CourseColumn.HeaderText = "Course";
+            CourseColumn.Name = "CourseColumn";
+            CourseColumn.Width = 150;
             // 
-            // dataGridViewTextBoxColumn2
+            // FacultyColumn
             // 
-            dataGridViewTextBoxColumn2.HeaderText = "Faculty";
-            dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
-            dataGridViewTextBoxColumn2.Width = 200;
+            FacultyColumn.HeaderText = "Faculty";
+            FacultyColumn.Name = "FacultyColumn";
+            FacultyColumn.Width = 200;
+            // 
+            // ActualColumnCourse
+            // 
+            ActualColumnCourse.HeaderText = "Course";
+            ActualColumnCourse.Name = "ActualColumnCourse";
+            ActualColumnCourse.ReadOnly = true;
+            ActualColumnCourse.Width = 150;
+            // 
+            // ActualColumnFaculty
+            // 
+            ActualColumnFaculty.HeaderText = "Faculty";
+            ActualColumnFaculty.Name = "ActualColumnFaculty";
+            ActualColumnFaculty.ReadOnly = true;
+            ActualColumnFaculty.Width = 220;
+            // 
+            // InitialsColumn
+            // 
+            InitialsColumn.HeaderText = "Initials";
+            InitialsColumn.Name = "InitialsColumn";
+            InitialsColumn.Width = 200;
+            // 
+            // FromCourseColumn
+            // 
+            FromCourseColumn.HeaderText = "Course";
+            FromCourseColumn.Name = "FromCourseColumn";
+            FromCourseColumn.Width = 149;
+            // 
+            // MessageColumn
+            // 
+            MessageColumn.HeaderText = "Message";
+            MessageColumn.Name = "MessageColumn";
+            MessageColumn.Width = 200;
             // 
             // EnvironmentForm
             // 
@@ -277,6 +328,8 @@
             tabPage2.ResumeLayout(false);
             tabPage2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)AvailableCoursesTable).EndInit();
+            tabPage3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
         }
 
@@ -291,16 +344,21 @@
         private Label label1;
         private Button CloseButton;
         private Label PersonRole;
-        private DataGridViewTextBoxColumn ActualGridColumnCourseName;
-        private DataGridViewTextBoxColumn ActualGridColumnCourseFaculty;
         private Label label2;
         private Label label3;
         private Button SignButton;
         private DataGridView AvailableCoursesTable;
         private Label label4;
         private Button UnsignButton;
+        private TabPage tabPage3;
+        private DataGridViewTextBoxColumn ActualColumnCourse;
+        private DataGridViewTextBoxColumn ActualColumnFaculty;
         private DataGridViewCheckBoxColumn RowCheck;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private DataGridViewTextBoxColumn CourseColumn;
+        private DataGridViewTextBoxColumn FacultyColumn;
+        private DataGridView dataGridView1;
+        private DataGridViewTextBoxColumn InitialsColumn;
+        private DataGridViewTextBoxColumn FromCourseColumn;
+        private DataGridViewTextBoxColumn MessageColumn;
     }
 }

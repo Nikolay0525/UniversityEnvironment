@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using UniversityEnvironment.Data.Enums;
 
-namespace UniversityEnvironment.Data.Model
+namespace UniversityEnvironment.Data.Model.Tables
 {
     public class Admin : User
     {
-        public List<CourseAdmin>? CoursesAdmins { get; set; }
         public override Role Role => Role.Admin;
+        public override bool Confirmed { get; set; } = false;
     }
 
 }

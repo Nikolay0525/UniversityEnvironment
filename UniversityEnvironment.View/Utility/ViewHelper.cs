@@ -1,5 +1,4 @@
-﻿using UniversityEnvironment.Data.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,6 +16,8 @@ using Microsoft.VisualBasic.Devices;
 using MaterialSkin.Controls;
 using UniversityEnvironment.View.Enums;
 using UniversityEnvironment.Data.Enums;
+using UniversityEnvironment.Data.Model.Tables;
+using UniversityEnvironment.Data.Model.MtoMTables;
 
 namespace UniversityEnvironment.View.Utility
 {
@@ -48,12 +49,13 @@ namespace UniversityEnvironment.View.Utility
             }
         }
 
-        internal static void UpdateTableWithActualCourses<T>(DataGridView table, User user) where T : User
+        internal static void UpdateTableWithActualCourses<T>(DataGridView table, User user) where T : CourseUser
         {
-            T? foundedUser = RepositoryManager.GetRepo<T>().FindById(user.Id);
-            ArgumentNullException.ThrowIfNull(foundedUser);
-            if (foundedUser.Courses == null) { return; }
-            CoursesTableAddRows(table, foundedUser.Courses);
+            var courseList = RepositoryManager.GetRepo<Course>().GetAll().ToList();
+            List<T> courseUser = RepositoryManager.GetRepo<T>().GetAll(u => u.UserId == user.Id).ToList();
+            courseList.RemoveAll(course => !courseUser.Any(cu => cu.CourseId == course.Id));
+            ArgumentNullException.ThrowIfNull(courseList);
+            CoursesTableAddRows(table, courseList);
         }
 
         internal static void UserCourseOperation<T,Q>(DataGridView table, User user, CourseOperation @op) where T : CourseUser,new() where Q : User

@@ -10,6 +10,7 @@ using System.Reflection;
 using UniversityEnvironment.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using UniversityEnvironment.Data.Model.Tables;
 
 namespace UniversityEnvironment.Data.Repository
 {
@@ -25,7 +26,7 @@ namespace UniversityEnvironment.Data.Repository
             _objects = context.Set<TEntity>();
         }
 
-        public static RepoImplementation<TEntity> GetRepo(UniversityEnvironmentContext context)
+        public static RepoImplementation<TEntity> GetRepository(UniversityEnvironmentContext context)
         {
             return _instance ?? new RepoImplementation<TEntity>(context);
         }

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UniversityEnvironment.Data.Model.MtoMTables;
 
-namespace UniversityEnvironment.Data.Model
+namespace UniversityEnvironment.Data.Model.Tables
 {
     public sealed class Test : EnvironmentObject
     {

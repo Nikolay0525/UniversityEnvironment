@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using System.Xml.Linq;
 using UniversityEnvironment.Data.Enums;
-using UniversityEnvironment.Data.Model;
+using UniversityEnvironment.Data.Repositories;
+using UniversityEnvironment.Data.Model.Tables;
 
 namespace UniversityEnvironment.View.Utility
 {
     internal static class AuthorizationHelper
     {
-        public static T CreateUser<T>(string username, string fname, string lname, string password) where T : User,new()
+        internal static T CreateUser<T>(string username, string fname, string lname, string password) where T : User,new()
         {
             var userToCreate = new T()
             {
@@ -20,7 +21,6 @@ namespace UniversityEnvironment.View.Utility
                 FirstName = fname,
                 LastName = lname,
                 Password = password,
-                Courses = new(),
             };
             return userToCreate;
         }

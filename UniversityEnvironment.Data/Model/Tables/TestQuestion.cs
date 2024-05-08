@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UniversityEnvironment.Data.Model
+namespace UniversityEnvironment.Data.Model.Tables
 {
     public sealed class TestQuestion : EnvironmentObject
     {
