@@ -38,7 +38,7 @@ namespace UniversityEnvironment.View.Forms
                     ? ValidateUserExists<Teacher>(UsernameTextBox.Text)
                     : ValidateUserExists<Student>(UsernameTextBox.Text);
 
-            if (!result)
+            if (result)
             {
                 MessageBox.Show("Account with such name exist...", "Registration", MessageBoxButtons.OK);
                 return;

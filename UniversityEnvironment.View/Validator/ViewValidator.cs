@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UniversityEnvironment.Data.Model.Tables;
+using UniversityEnvironment.Data.Model.MtoMTables;
 using UniversityEnvironment.Data.Repositories;
 
 namespace UniversityEnvironment.View.Validator
@@ -16,7 +17,7 @@ namespace UniversityEnvironment.View.Validator
                 .GetRepo<T>()
                 .FindByFilter(u => u.Username == userName);
 
-            return foundUser == null;
+            return foundUser != null;
         }
     }
 }

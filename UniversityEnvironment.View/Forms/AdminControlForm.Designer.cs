@@ -28,19 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             tabControl1 = new TabControl();
             tabPage1 = new TabPage();
             groupBox1 = new GroupBox();
             TeacherCheck = new RadioButton();
             AdminCheck = new RadioButton();
             FilterTextBox = new TextBox();
-            label3 = new Label();
-            StudentsButton = new Button();
-            TeachersButton = new Button();
-            AdminsButton = new Button();
+            UsersMessageBox = new Label();
+            StudentUsers = new Button();
+            TeacherUsers = new Button();
+            AdminUsers = new Button();
             ApplyFilterButton = new Button();
             NextButton = new Button();
             PreviousButton = new Button();
@@ -49,7 +46,14 @@
             UsernameColumn = new DataGridViewTextBoxColumn();
             Initials = new DataGridViewTextBoxColumn();
             RoleColumn = new DataGridViewTextBoxColumn();
+            tabPage3 = new TabPage();
+            StudentsRequests = new Button();
+            TeachersRequests = new Button();
+            AdminsRequests = new Button();
+            RequestsTable = new DataGridView();
             tabPage2 = new TabPage();
+            NextPageCourses = new Button();
+            PreviousPageCourses = new Button();
             label4 = new Label();
             UnsignButton = new Button();
             CreateButton = new Button();
@@ -57,26 +61,27 @@
             RowCheck = new DataGridViewCheckBoxColumn();
             CourseColumn = new DataGridViewTextBoxColumn();
             FacultyColumn = new DataGridViewTextBoxColumn();
-            tabPage3 = new TabPage();
-            RequestsTable = new DataGridView();
+            MessageBox = new Label();
+            NextPageRequests = new Button();
+            PreviousPageRequests = new Button();
             FromUsernameColumn = new DataGridViewTextBoxColumn();
-            InitialsColumn = new DataGridViewTextBoxColumn();
             MessageColumn = new DataGridViewTextBoxColumn();
+            TypeColumn = new DataGridViewTextBoxColumn();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)ActualCoursesTable).BeginInit();
-            tabPage2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)AvailableCoursesTable).BeginInit();
             tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)RequestsTable).BeginInit();
+            tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)AvailableCoursesTable).BeginInit();
             SuspendLayout();
             // 
             // tabControl1
             // 
             tabControl1.Controls.Add(tabPage1);
-            tabControl1.Controls.Add(tabPage2);
             tabControl1.Controls.Add(tabPage3);
+            tabControl1.Controls.Add(tabPage2);
             tabControl1.Dock = DockStyle.Bottom;
             tabControl1.ItemSize = new Size(198, 25);
             tabControl1.Location = new Point(0, 63);
@@ -90,10 +95,10 @@
             // 
             tabPage1.Controls.Add(groupBox1);
             tabPage1.Controls.Add(FilterTextBox);
-            tabPage1.Controls.Add(label3);
-            tabPage1.Controls.Add(StudentsButton);
-            tabPage1.Controls.Add(TeachersButton);
-            tabPage1.Controls.Add(AdminsButton);
+            tabPage1.Controls.Add(UsersMessageBox);
+            tabPage1.Controls.Add(StudentUsers);
+            tabPage1.Controls.Add(TeacherUsers);
+            tabPage1.Controls.Add(AdminUsers);
             tabPage1.Controls.Add(ApplyFilterButton);
             tabPage1.Controls.Add(NextButton);
             tabPage1.Controls.Add(PreviousButton);
@@ -104,7 +109,7 @@
             tabPage1.Padding = new Padding(3);
             tabPage1.Size = new Size(592, 304);
             tabPage1.TabIndex = 0;
-            tabPage1.Text = "Profile";
+            tabPage1.Text = "Users";
             tabPage1.UseVisualStyleBackColor = true;
             // 
             // groupBox1
@@ -145,44 +150,48 @@
             FilterTextBox.Size = new Size(146, 27);
             FilterTextBox.TabIndex = 6;
             // 
-            // label3
+            // UsersMessageBox
             // 
-            label3.AutoSize = true;
-            label3.Location = new Point(353, 3);
-            label3.Name = "label3";
-            label3.Size = new Size(48, 20);
-            label3.TabIndex = 5;
-            label3.Text = "Users";
+            UsersMessageBox.AutoSize = true;
+            UsersMessageBox.ForeColor = Color.IndianRed;
+            UsersMessageBox.Location = new Point(330, 5);
+            UsersMessageBox.Name = "UsersMessageBox";
+            UsersMessageBox.Size = new Size(92, 20);
+            UsersMessageBox.TabIndex = 5;
+            UsersMessageBox.Text = "Choose role";
             // 
-            // StudentsButton
+            // StudentUsers
             // 
-            StudentsButton.FlatStyle = FlatStyle.Flat;
-            StudentsButton.Location = new Point(448, 263);
-            StudentsButton.Name = "StudentsButton";
-            StudentsButton.Size = new Size(138, 35);
-            StudentsButton.TabIndex = 4;
-            StudentsButton.Text = "Students";
-            StudentsButton.UseVisualStyleBackColor = true;
+            StudentUsers.FlatStyle = FlatStyle.Flat;
+            StudentUsers.Location = new Point(448, 263);
+            StudentUsers.Name = "StudentUsers";
+            StudentUsers.Size = new Size(138, 35);
+            StudentUsers.TabIndex = 4;
+            StudentUsers.Text = "Students";
+            StudentUsers.UseVisualStyleBackColor = true;
+            StudentUsers.Click += StudentUsers_Click;
             // 
-            // TeachersButton
+            // TeacherUsers
             // 
-            TeachersButton.FlatStyle = FlatStyle.Flat;
-            TeachersButton.Location = new Point(304, 263);
-            TeachersButton.Name = "TeachersButton";
-            TeachersButton.Size = new Size(138, 35);
-            TeachersButton.TabIndex = 4;
-            TeachersButton.Text = "Teachers";
-            TeachersButton.UseVisualStyleBackColor = true;
+            TeacherUsers.FlatStyle = FlatStyle.Flat;
+            TeacherUsers.Location = new Point(304, 263);
+            TeacherUsers.Name = "TeacherUsers";
+            TeacherUsers.Size = new Size(138, 35);
+            TeacherUsers.TabIndex = 4;
+            TeacherUsers.Text = "Teachers";
+            TeacherUsers.UseVisualStyleBackColor = true;
+            TeacherUsers.Click += TeacherUsers_Click;
             // 
-            // AdminsButton
+            // AdminUsers
             // 
-            AdminsButton.FlatStyle = FlatStyle.Flat;
-            AdminsButton.Location = new Point(160, 263);
-            AdminsButton.Name = "AdminsButton";
-            AdminsButton.Size = new Size(138, 35);
-            AdminsButton.TabIndex = 4;
-            AdminsButton.Text = "Admins";
-            AdminsButton.UseVisualStyleBackColor = true;
+            AdminUsers.FlatStyle = FlatStyle.Flat;
+            AdminUsers.Location = new Point(160, 263);
+            AdminUsers.Name = "AdminUsers";
+            AdminUsers.Size = new Size(138, 35);
+            AdminUsers.TabIndex = 4;
+            AdminUsers.Text = "Admins";
+            AdminUsers.UseVisualStyleBackColor = true;
+            AdminUsers.Click += AdminUsers_Click;
             // 
             // ApplyFilterButton
             // 
@@ -231,10 +240,10 @@
             ActualCoursesTable.BackgroundColor = SystemColors.Control;
             ActualCoursesTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             ActualCoursesTable.Columns.AddRange(new DataGridViewColumn[] { UsernameColumn, Initials, RoleColumn });
-            ActualCoursesTable.Location = new Point(160, 26);
+            ActualCoursesTable.Location = new Point(160, 30);
             ActualCoursesTable.Name = "ActualCoursesTable";
             ActualCoursesTable.ReadOnly = true;
-            ActualCoursesTable.Size = new Size(425, 231);
+            ActualCoursesTable.Size = new Size(425, 227);
             ActualCoursesTable.TabIndex = 2;
             // 
             // UsernameColumn
@@ -258,8 +267,73 @@
             RoleColumn.ReadOnly = true;
             RoleColumn.Width = 72;
             // 
+            // tabPage3
+            // 
+            tabPage3.BackColor = SystemColors.ControlLightLight;
+            tabPage3.Controls.Add(MessageBox);
+            tabPage3.Controls.Add(StudentsRequests);
+            tabPage3.Controls.Add(TeachersRequests);
+            tabPage3.Controls.Add(PreviousPageRequests);
+            tabPage3.Controls.Add(NextPageRequests);
+            tabPage3.Controls.Add(AdminsRequests);
+            tabPage3.Controls.Add(RequestsTable);
+            tabPage3.Location = new Point(4, 29);
+            tabPage3.Name = "tabPage3";
+            tabPage3.Padding = new Padding(3);
+            tabPage3.Size = new Size(592, 304);
+            tabPage3.TabIndex = 2;
+            tabPage3.Text = "Requests";
+            // 
+            // StudentsRequests
+            // 
+            StudentsRequests.FlatStyle = FlatStyle.Flat;
+            StudentsRequests.Location = new Point(398, 266);
+            StudentsRequests.Name = "StudentsRequests";
+            StudentsRequests.Size = new Size(190, 35);
+            StudentsRequests.TabIndex = 5;
+            StudentsRequests.Text = "Students";
+            StudentsRequests.UseVisualStyleBackColor = true;
+            StudentsRequests.Click += StudentsRequests_Click;
+            // 
+            // TeachersRequests
+            // 
+            TeachersRequests.FlatStyle = FlatStyle.Flat;
+            TeachersRequests.Location = new Point(202, 266);
+            TeachersRequests.Name = "TeachersRequests";
+            TeachersRequests.Size = new Size(190, 35);
+            TeachersRequests.TabIndex = 6;
+            TeachersRequests.Text = "Teachers";
+            TeachersRequests.UseVisualStyleBackColor = true;
+            TeachersRequests.Click += TeachersRequests_Click;
+            // 
+            // AdminsRequests
+            // 
+            AdminsRequests.FlatStyle = FlatStyle.Flat;
+            AdminsRequests.Location = new Point(6, 266);
+            AdminsRequests.Name = "AdminsRequests";
+            AdminsRequests.Size = new Size(190, 35);
+            AdminsRequests.TabIndex = 7;
+            AdminsRequests.Text = "Admins";
+            AdminsRequests.UseVisualStyleBackColor = true;
+            AdminsRequests.Click += AdminsRequests_Click;
+            // 
+            // RequestsTable
+            // 
+            RequestsTable.AllowUserToAddRows = false;
+            RequestsTable.AllowUserToDeleteRows = false;
+            RequestsTable.BackgroundColor = SystemColors.Control;
+            RequestsTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            RequestsTable.Columns.AddRange(new DataGridViewColumn[] { FromUsernameColumn, MessageColumn, TypeColumn });
+            RequestsTable.Location = new Point(73, 29);
+            RequestsTable.Name = "RequestsTable";
+            RequestsTable.Size = new Size(447, 231);
+            RequestsTable.TabIndex = 4;
+            RequestsTable.CellContentClick += RequestsTable_CellContentClick;
+            // 
             // tabPage2
             // 
+            tabPage2.Controls.Add(NextPageCourses);
+            tabPage2.Controls.Add(PreviousPageCourses);
             tabPage2.Controls.Add(label4);
             tabPage2.Controls.Add(UnsignButton);
             tabPage2.Controls.Add(CreateButton);
@@ -271,6 +345,26 @@
             tabPage2.TabIndex = 1;
             tabPage2.Text = "Courses";
             tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // NextPageCourses
+            // 
+            NextPageCourses.FlatStyle = FlatStyle.Flat;
+            NextPageCourses.Location = new Point(8, 28);
+            NextPageCourses.Name = "NextPageCourses";
+            NextPageCourses.Size = new Size(158, 40);
+            NextPageCourses.TabIndex = 11;
+            NextPageCourses.Text = "Next page =>";
+            NextPageCourses.UseVisualStyleBackColor = true;
+            // 
+            // PreviousPageCourses
+            // 
+            PreviousPageCourses.FlatStyle = FlatStyle.Flat;
+            PreviousPageCourses.Location = new Point(8, 74);
+            PreviousPageCourses.Name = "PreviousPageCourses";
+            PreviousPageCourses.Size = new Size(158, 40);
+            PreviousPageCourses.TabIndex = 12;
+            PreviousPageCourses.Text = "<= Previous page";
+            PreviousPageCourses.UseVisualStyleBackColor = true;
             // 
             // label4
             // 
@@ -285,9 +379,9 @@
             // 
             UnsignButton.BackColor = SystemColors.ControlLightLight;
             UnsignButton.FlatStyle = FlatStyle.Flat;
-            UnsignButton.Location = new Point(8, 190);
+            UnsignButton.Location = new Point(8, 211);
             UnsignButton.Name = "UnsignButton";
-            UnsignButton.Size = new Size(158, 106);
+            UnsignButton.Size = new Size(158, 85);
             UnsignButton.TabIndex = 8;
             UnsignButton.Text = "Remove selected course";
             UnsignButton.UseVisualStyleBackColor = false;
@@ -296,9 +390,9 @@
             // 
             CreateButton.BackColor = SystemColors.ControlLightLight;
             CreateButton.FlatStyle = FlatStyle.Flat;
-            CreateButton.Location = new Point(8, 28);
+            CreateButton.Location = new Point(8, 120);
             CreateButton.Name = "CreateButton";
-            CreateButton.Size = new Size(158, 156);
+            CreateButton.Size = new Size(158, 85);
             CreateButton.TabIndex = 9;
             CreateButton.Text = "Create new course";
             CreateButton.UseVisualStyleBackColor = false;
@@ -335,71 +429,55 @@
             FacultyColumn.Name = "FacultyColumn";
             FacultyColumn.Width = 200;
             // 
-            // tabPage3
+            // MessageBox
             // 
-            tabPage3.BackColor = SystemColors.ControlLightLight;
-            tabPage3.Controls.Add(RequestsTable);
-            tabPage3.Location = new Point(4, 29);
-            tabPage3.Name = "tabPage3";
-            tabPage3.Padding = new Padding(3);
-            tabPage3.Size = new Size(592, 304);
-            tabPage3.TabIndex = 2;
-            tabPage3.Text = "Requests";
+            MessageBox.AutoSize = true;
+            MessageBox.ForeColor = Color.IndianRed;
+            MessageBox.Location = new Point(258, 3);
+            MessageBox.Name = "MessageBox";
+            MessageBox.Size = new Size(92, 20);
+            MessageBox.TabIndex = 8;
+            MessageBox.Text = "Choose role";
             // 
-            // RequestsTable
+            // NextPageRequests
             // 
-            RequestsTable.AllowUserToAddRows = false;
-            RequestsTable.AllowUserToDeleteRows = false;
-            RequestsTable.BackgroundColor = SystemColors.Control;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = SystemColors.Control;
-            dataGridViewCellStyle1.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
-            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            RequestsTable.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            RequestsTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            RequestsTable.Columns.AddRange(new DataGridViewColumn[] { FromUsernameColumn, InitialsColumn, MessageColumn });
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Window;
-            dataGridViewCellStyle2.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
-            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
-            RequestsTable.DefaultCellStyle = dataGridViewCellStyle2;
-            RequestsTable.Location = new Point(0, 0);
-            RequestsTable.Name = "RequestsTable";
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = SystemColors.Control;
-            dataGridViewCellStyle3.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
-            dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
-            RequestsTable.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
-            RequestsTable.Size = new Size(592, 304);
-            RequestsTable.TabIndex = 4;
-            RequestsTable.CellContentClick += RequestsTable_CellContentClick;
+            NextPageRequests.FlatStyle = FlatStyle.Flat;
+            NextPageRequests.Location = new Point(524, 29);
+            NextPageRequests.Name = "NextPageRequests";
+            NextPageRequests.Size = new Size(60, 231);
+            NextPageRequests.TabIndex = 7;
+            NextPageRequests.Text = "=>";
+            NextPageRequests.UseVisualStyleBackColor = true;
+            NextPageRequests.Click += AdminsRequests_Click;
+            // 
+            // PreviousPageRequests
+            // 
+            PreviousPageRequests.FlatStyle = FlatStyle.Flat;
+            PreviousPageRequests.Location = new Point(8, 29);
+            PreviousPageRequests.Name = "PreviousPageRequests";
+            PreviousPageRequests.Size = new Size(60, 231);
+            PreviousPageRequests.TabIndex = 7;
+            PreviousPageRequests.Text = "<=";
+            PreviousPageRequests.UseVisualStyleBackColor = true;
+            PreviousPageRequests.Click += AdminsRequests_Click;
             // 
             // FromUsernameColumn
             // 
             FromUsernameColumn.HeaderText = "Username";
             FromUsernameColumn.Name = "FromUsernameColumn";
-            FromUsernameColumn.Width = 160;
-            // 
-            // InitialsColumn
-            // 
-            InitialsColumn.HeaderText = "Initials";
-            InitialsColumn.Name = "InitialsColumn";
-            InitialsColumn.Width = 240;
+            FromUsernameColumn.Width = 180;
             // 
             // MessageColumn
             // 
             MessageColumn.HeaderText = "Role";
             MessageColumn.Name = "MessageColumn";
-            MessageColumn.Width = 149;
+            MessageColumn.Width = 80;
+            // 
+            // TypeColumn
+            // 
+            TypeColumn.HeaderText = "Type of request";
+            TypeColumn.Name = "TypeColumn";
+            TypeColumn.Width = 142;
             // 
             // AdminControlForm
             // 
@@ -415,11 +493,12 @@
             tabPage1.PerformLayout();
             groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)ActualCoursesTable).EndInit();
+            tabPage3.ResumeLayout(false);
+            tabPage3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)RequestsTable).EndInit();
             tabPage2.ResumeLayout(false);
             tabPage2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)AvailableCoursesTable).EndInit();
-            tabPage3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)RequestsTable).EndInit();
             ResumeLayout(false);
         }
 
@@ -431,9 +510,9 @@
         private Button CloseButton;
         private DataGridView ActualCoursesTable;
         private TabPage tabPage2;
-        private Button StudentsButton;
-        private Button TeachersButton;
-        private Button AdminsButton;
+        private Button StudentUsers;
+        private Button TeacherUsers;
+        private Button AdminUsers;
         private Label label4;
         private Button UnsignButton;
         private Button CreateButton;
@@ -450,11 +529,20 @@
         private RadioButton AdminCheck;
         private TabPage tabPage3;
         private DataGridView RequestsTable;
-        private DataGridViewTextBoxColumn FromUsernameColumn;
-        private DataGridViewTextBoxColumn InitialsColumn;
-        private DataGridViewTextBoxColumn MessageColumn;
         private DataGridViewTextBoxColumn UsernameColumn;
         private DataGridViewTextBoxColumn Initials;
         private DataGridViewTextBoxColumn RoleColumn;
+        private Button StudentsRequests;
+        private Button TeachersRequests;
+        private Button AdminsRequests;
+        private Button NextPageCourses;
+        private Button PreviousPageCourses;
+        private Label UsersMessageBox;
+        private Label MessageBox;
+        private Button PreviousPageRequests;
+        private Button NextPageRequests;
+        private DataGridViewTextBoxColumn FromUsernameColumn;
+        private DataGridViewTextBoxColumn MessageColumn;
+        private DataGridViewTextBoxColumn TypeColumn;
     }
 }

@@ -53,26 +53,29 @@ namespace UniversityEnvironment.Data.Repository
 
         public void Create(TEntity obj)
         {
-            _objects.Add(obj);
+            if (!_objects.Any(o => o == obj)) _objects.Add(obj);
             _context.SaveChanges();
         }
 
-        public void Create(IEnumerable<TEntity> objects)
+        public int Create(IEnumerable<TEntity> objects)
         {
+            int count = 0;
             foreach (var obj in objects)
             {
                 if (_objects.Any(o => o == obj)) { continue; }
                 _objects.Add(obj);
+                count++;
             }
 
             _context.SaveChanges();
+            return count;
         }
 
         public TEntity? Update(TEntity obj)
         {
-        _objects.Entry(obj).State = EntityState.Modified;
-        _context.SaveChanges();
-        return obj;
+            _objects.Entry(obj).State = EntityState.Modified;
+            _context.SaveChanges();
+            return obj;
         }
 
         public void Remove(TEntity obj)
@@ -82,22 +85,22 @@ namespace UniversityEnvironment.Data.Repository
                 _objects.Attach(obj);
             }
 
-            _objects.Remove(obj);
+            if (_objects.Any(o => o == obj)) _objects.Remove(obj);
             _context.SaveChanges();
         }
-        public void Remove(IEnumerable<TEntity> objects)
+        public int Remove(IEnumerable<TEntity> objects)
         {
+            int count = 0;
             foreach (var obj in objects)
             {
-                if (_context.Entry(obj).State == EntityState.Detached)
-                {
-                    _objects.Attach(obj);
-                }
-
+                if (_context.Entry(obj).State == EntityState.Detached) _objects.Attach(obj);
+                if (!_objects.Any(o => o == obj)) { continue; }
                 _objects.Remove(obj);
+                count++;
             }
 
             _context.SaveChanges();
+            return count;
         }
     }
 }

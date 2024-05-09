@@ -78,6 +78,7 @@
             // label1
             // 
             label1.AutoSize = true;
+            label1.BackColor = SystemColors.ControlLightLight;
             label1.Location = new Point(47, 95);
             label1.Name = "label1";
             label1.Size = new Size(80, 20);
@@ -87,6 +88,7 @@
             // label2
             // 
             label2.AutoSize = true;
+            label2.BackColor = SystemColors.ControlLightLight;
             label2.Location = new Point(114, 168);
             label2.Name = "label2";
             label2.Size = new Size(79, 20);
@@ -120,6 +122,7 @@
             // label9
             // 
             label9.AutoSize = true;
+            label9.BackColor = SystemColors.ControlLightLight;
             label9.Location = new Point(200, 95);
             label9.Name = "label9";
             label9.Size = new Size(40, 20);

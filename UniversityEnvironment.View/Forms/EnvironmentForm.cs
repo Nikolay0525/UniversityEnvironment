@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using System.Xml.Linq;
 using UniversityEnvironment.View.Utility;
 using System.Collections.Generic;
-using static UniversityEnvironment.View.Utility.Constants;
+using static UniversityEnvironment.View.Validator.ViewValidator;
 using UniversityEnvironment.Data.Repository;
 using UniversityEnvironment.Data.Repositories;
 using static UniversityEnvironment.View.Utility.ViewHelper;
@@ -27,28 +27,41 @@ namespace UniversityEnvironment.View.Forms
             _user = user;
             PersonName.Text = user.FirstName + " " + user.LastName;
             PersonRole.Text = user.Role.ToString();
-            UpdateTableWithAvailableCourses(AvailableCoursesTable, RepositoryManager.GetRepo<Course>()
-                .GetAll().ToList());
-
+            AvailableCoursesTableAddRows(AvailableCoursesTable, RepositoryManager.GetRepo<Course>().GetAll().ToList());
             if(_user.Role == Role.Teacher) UpdateTableWithActualCourses<CourseTeacher>(ActualCoursesTable, user);
             else UpdateTableWithActualCourses<CourseStudent>(ActualCoursesTable, user);
-
         }
         
         private void SignButton_Click(object sender, EventArgs e)
         {
+            
             if (_user.Role == Role.Teacher)
+            {
                 UserCourseOperation<CourseTeacher, Teacher>(AvailableCoursesTable, _user, CourseOperation.Create);
-            else 
+                UpdateTableWithActualCourses<CourseTeacher>(ActualCoursesTable, _user);
+            }
+                
+            else
+            {
                 UserCourseOperation<CourseStudent, Student>(AvailableCoursesTable, _user, CourseOperation.Create);
+                UpdateTableWithActualCourses<CourseStudent>(ActualCoursesTable, _user);
+            }
+                
         }
 
         private void UnsignButton_Click(object sender, EventArgs e)
         {
             if (_user.Role == Role.Teacher)
+            {
                 UserCourseOperation<CourseTeacher, Teacher>(AvailableCoursesTable, _user, CourseOperation.Remove);
-            else 
+                UpdateTableWithActualCourses<CourseTeacher>(ActualCoursesTable, _user);
+            }
+
+            else
+            {
                 UserCourseOperation<CourseStudent, Student>(AvailableCoursesTable, _user, CourseOperation.Remove);
+                UpdateTableWithActualCourses<CourseStudent>(ActualCoursesTable, _user);
+            }
         }
 
         private void ActualCoursesTable_CellContentClick(object sender, DataGridViewCellEventArgs e)

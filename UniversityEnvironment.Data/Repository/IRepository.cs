@@ -16,9 +16,9 @@ namespace UniversityEnvironment.Data.Repository
         TEntity? FindById(Guid id);
         TEntity? FindByFilter(Expression<Func<TEntity, bool>> filter);
         void Create(TEntity obj);
-        void Create(IEnumerable<TEntity> objects);
+        int Create(IEnumerable<TEntity> objects);
         TEntity? Update(TEntity obj);
         void Remove(TEntity obj);
-        void Remove(IEnumerable<TEntity> objects);
+        int Remove(IEnumerable<TEntity> objects);
     }
 }
