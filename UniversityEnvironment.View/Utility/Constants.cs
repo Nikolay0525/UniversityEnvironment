@@ -8,6 +8,6 @@ namespace UniversityEnvironment.View.Utility
 {
     public static class Constants
     {
-        
+        public static readonly int RowsPerPage = 5; 
     }
 }

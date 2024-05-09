@@ -47,10 +47,16 @@
             Initials = new DataGridViewTextBoxColumn();
             RoleColumn = new DataGridViewTextBoxColumn();
             tabPage3 = new TabPage();
+            RequestMessageBox = new Label();
             StudentsRequests = new Button();
             TeachersRequests = new Button();
+            PreviousPageRequests = new Button();
+            NextPageRequests = new Button();
             AdminsRequests = new Button();
             RequestsTable = new DataGridView();
+            FromUsernameColumn = new DataGridViewTextBoxColumn();
+            MessageColumn = new DataGridViewTextBoxColumn();
+            TypeColumn = new DataGridViewTextBoxColumn();
             tabPage2 = new TabPage();
             NextPageCourses = new Button();
             PreviousPageCourses = new Button();
@@ -61,12 +67,6 @@
             RowCheck = new DataGridViewCheckBoxColumn();
             CourseColumn = new DataGridViewTextBoxColumn();
             FacultyColumn = new DataGridViewTextBoxColumn();
-            MessageBox = new Label();
-            NextPageRequests = new Button();
-            PreviousPageRequests = new Button();
-            FromUsernameColumn = new DataGridViewTextBoxColumn();
-            MessageColumn = new DataGridViewTextBoxColumn();
-            TypeColumn = new DataGridViewTextBoxColumn();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             groupBox1.SuspendLayout();
@@ -232,6 +232,7 @@
             CloseButton.TabIndex = 4;
             CloseButton.Text = "Sign out";
             CloseButton.UseVisualStyleBackColor = true;
+            CloseButton.Click += CloseButton_Click;
             // 
             // ActualCoursesTable
             // 
@@ -270,7 +271,7 @@
             // tabPage3
             // 
             tabPage3.BackColor = SystemColors.ControlLightLight;
-            tabPage3.Controls.Add(MessageBox);
+            tabPage3.Controls.Add(RequestMessageBox);
             tabPage3.Controls.Add(StudentsRequests);
             tabPage3.Controls.Add(TeachersRequests);
             tabPage3.Controls.Add(PreviousPageRequests);
@@ -283,6 +284,16 @@
             tabPage3.Size = new Size(592, 304);
             tabPage3.TabIndex = 2;
             tabPage3.Text = "Requests";
+            // 
+            // RequestMessageBox
+            // 
+            RequestMessageBox.AutoSize = true;
+            RequestMessageBox.ForeColor = Color.IndianRed;
+            RequestMessageBox.Location = new Point(258, 3);
+            RequestMessageBox.Name = "RequestMessageBox";
+            RequestMessageBox.Size = new Size(92, 20);
+            RequestMessageBox.TabIndex = 8;
+            RequestMessageBox.Text = "Choose role";
             // 
             // StudentsRequests
             // 
@@ -305,6 +316,28 @@
             TeachersRequests.Text = "Teachers";
             TeachersRequests.UseVisualStyleBackColor = true;
             TeachersRequests.Click += TeachersRequests_Click;
+            // 
+            // PreviousPageRequests
+            // 
+            PreviousPageRequests.FlatStyle = FlatStyle.Flat;
+            PreviousPageRequests.Location = new Point(8, 29);
+            PreviousPageRequests.Name = "PreviousPageRequests";
+            PreviousPageRequests.Size = new Size(60, 231);
+            PreviousPageRequests.TabIndex = 7;
+            PreviousPageRequests.Text = "<=";
+            PreviousPageRequests.UseVisualStyleBackColor = true;
+            PreviousPageRequests.Click += PreviousPageRequests_Click;
+            // 
+            // NextPageRequests
+            // 
+            NextPageRequests.FlatStyle = FlatStyle.Flat;
+            NextPageRequests.Location = new Point(524, 29);
+            NextPageRequests.Name = "NextPageRequests";
+            NextPageRequests.Size = new Size(60, 231);
+            NextPageRequests.TabIndex = 7;
+            NextPageRequests.Text = "=>";
+            NextPageRequests.UseVisualStyleBackColor = true;
+            NextPageRequests.Click += NextPageRequests_Click;
             // 
             // AdminsRequests
             // 
@@ -329,6 +362,24 @@
             RequestsTable.Size = new Size(447, 231);
             RequestsTable.TabIndex = 4;
             RequestsTable.CellContentClick += RequestsTable_CellContentClick;
+            // 
+            // FromUsernameColumn
+            // 
+            FromUsernameColumn.HeaderText = "Username";
+            FromUsernameColumn.Name = "FromUsernameColumn";
+            FromUsernameColumn.Width = 180;
+            // 
+            // MessageColumn
+            // 
+            MessageColumn.HeaderText = "Role";
+            MessageColumn.Name = "MessageColumn";
+            MessageColumn.Width = 80;
+            // 
+            // TypeColumn
+            // 
+            TypeColumn.HeaderText = "Type of request";
+            TypeColumn.Name = "TypeColumn";
+            TypeColumn.Width = 142;
             // 
             // tabPage2
             // 
@@ -429,56 +480,6 @@
             FacultyColumn.Name = "FacultyColumn";
             FacultyColumn.Width = 200;
             // 
-            // MessageBox
-            // 
-            MessageBox.AutoSize = true;
-            MessageBox.ForeColor = Color.IndianRed;
-            MessageBox.Location = new Point(258, 3);
-            MessageBox.Name = "MessageBox";
-            MessageBox.Size = new Size(92, 20);
-            MessageBox.TabIndex = 8;
-            MessageBox.Text = "Choose role";
-            // 
-            // NextPageRequests
-            // 
-            NextPageRequests.FlatStyle = FlatStyle.Flat;
-            NextPageRequests.Location = new Point(524, 29);
-            NextPageRequests.Name = "NextPageRequests";
-            NextPageRequests.Size = new Size(60, 231);
-            NextPageRequests.TabIndex = 7;
-            NextPageRequests.Text = "=>";
-            NextPageRequests.UseVisualStyleBackColor = true;
-            NextPageRequests.Click += AdminsRequests_Click;
-            // 
-            // PreviousPageRequests
-            // 
-            PreviousPageRequests.FlatStyle = FlatStyle.Flat;
-            PreviousPageRequests.Location = new Point(8, 29);
-            PreviousPageRequests.Name = "PreviousPageRequests";
-            PreviousPageRequests.Size = new Size(60, 231);
-            PreviousPageRequests.TabIndex = 7;
-            PreviousPageRequests.Text = "<=";
-            PreviousPageRequests.UseVisualStyleBackColor = true;
-            PreviousPageRequests.Click += AdminsRequests_Click;
-            // 
-            // FromUsernameColumn
-            // 
-            FromUsernameColumn.HeaderText = "Username";
-            FromUsernameColumn.Name = "FromUsernameColumn";
-            FromUsernameColumn.Width = 180;
-            // 
-            // MessageColumn
-            // 
-            MessageColumn.HeaderText = "Role";
-            MessageColumn.Name = "MessageColumn";
-            MessageColumn.Width = 80;
-            // 
-            // TypeColumn
-            // 
-            TypeColumn.HeaderText = "Type of request";
-            TypeColumn.Name = "TypeColumn";
-            TypeColumn.Width = 142;
-            // 
             // AdminControlForm
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
@@ -538,7 +539,7 @@
         private Button NextPageCourses;
         private Button PreviousPageCourses;
         private Label UsersMessageBox;
-        private Label MessageBox;
+        private Label RequestMessageBox;
         private Button PreviousPageRequests;
         private Button NextPageRequests;
         private DataGridViewTextBoxColumn FromUsernameColumn;

@@ -24,5 +24,12 @@ namespace UniversityEnvironment.View.Utility
             };
             return userToCreate;
         }
+        internal static T? SetUserRole<T>(string? name) where T : User
+        {
+            var user = RepositoryManager.GetRepo<T>()
+                .FindByFilter(u => u.Username == name);
+            if (user == null) return null;
+            return user;
+        }
     }
 }

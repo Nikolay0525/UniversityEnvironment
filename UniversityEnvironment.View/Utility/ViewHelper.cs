@@ -23,18 +23,18 @@ namespace UniversityEnvironment.View.Utility
 {
     internal static class ViewHelper
     {
-        
+        internal delegate void UpdateRequestAfterClosing();
         internal static void ShowNextForm(MaterialForm current, MaterialForm next)
         {
             current.Hide();
             next.FormClosed += (s, arg) => current.Show();
             next.Show();
         }
-        internal static void ShowNextForm(MaterialForm current, MaterialForm next, DataGridView table)
+        internal static void ShowNextForm(MaterialForm current, MaterialForm next, UpdateRequestAfterClosing operation)
         {
             current.Hide();
             next.FormClosed += (s, arg) => current.Show();
-            next.FormClosed += (s, arg) => table.Rows.Clear();
+            next.FormClosed += (s, arg) => operation();
             next.Show();
         }
         internal static void AvailableCoursesTableAddRows(DataGridView table, IEnumerable<Course> courses)

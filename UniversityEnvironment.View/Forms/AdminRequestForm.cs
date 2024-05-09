@@ -29,22 +29,32 @@ namespace UniversityEnvironment.View.Forms
             RoleText.Text = user.Role.ToString();
         }
 
+        private void GenericAccept<T>() where T : User
+        {
+            var foundedUser = RepositoryManager.GetRepo<T>().FindByFilter(a => _user.Username == a.Username);
+            ArgumentNullException.ThrowIfNull(foundedUser);
+            foundedUser.Confirmed = true;
+            RepositoryManager.GetRepo<T>().Update(foundedUser);
+            Close();
+        }
+        private void GenericDecline<T>() where T : User
+        {
+            var foundedUser = RepositoryManager.GetRepo<T>().FindByFilter(a => _user.Username == a.Username);
+            ArgumentNullException.ThrowIfNull(foundedUser);
+            RepositoryManager.GetRepo<T>().Remove(foundedUser);
+            Close();
+        }
+
         private void AcceptButton_Click(object sender, EventArgs e)
         {
             #region Account confirm
             if (_user.Role == Role.Admin && !_user.Confirmed)
             {
-                var foundedAdmin = RepositoryManager.GetRepo<Admin>().FindByFilter(a => _user.Username == a.Username);
-                ArgumentNullException.ThrowIfNull(foundedAdmin);
-                foundedAdmin.Confirmed = true;
-                Close();
+                GenericAccept<Admin>();
             }
             else if(_user.Role == Role.Teacher && !_user.Confirmed)
             {
-                var foundedTeacher = RepositoryManager.GetRepo<Teacher>().FindByFilter(a => _user.Username == a.Username);
-                ArgumentNullException.ThrowIfNull(foundedTeacher);
-                foundedTeacher.Confirmed = true;
-                Close();
+                GenericAccept<Teacher>();
             }
             #endregion
             #region Reseting account password
@@ -68,17 +78,11 @@ namespace UniversityEnvironment.View.Forms
             #region Regret account confirm
             if (_user.Role == Role.Admin && !_user.Confirmed)
             {
-                var foundedAdmin = RepositoryManager.GetRepo<Admin>().FindByFilter(a => _user.Username == a.Username);
-                ArgumentNullException.ThrowIfNull(foundedAdmin);
-                RepositoryManager.GetRepo<Admin>().Remove(foundedAdmin);
-                Close();
+                GenericDecline<Admin>();    
             }
             else if (_user.Role == Role.Teacher && !_user.Confirmed)
             {
-                var foundedTeacher = RepositoryManager.GetRepo<Teacher>().FindByFilter(a => _user.Username == a.Username);
-                ArgumentNullException.ThrowIfNull(foundedTeacher);
-                RepositoryManager.GetRepo<Teacher>().Remove(foundedTeacher);
-                Close();
+                GenericDecline<Teacher>();
             }
             #endregion
             #region Regret reseting password
