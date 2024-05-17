@@ -114,7 +114,7 @@
             Description.ReadOnly = true;
             Description.Width = 210;
             // 
-            // CourseEnvironmentForm
+            // BaseCourseForm
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -125,8 +125,7 @@
             Controls.Add(TeacherTable);
             Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
             Margin = new Padding(4);
-            Name = "CourseEnvironmentForm";
-            Text = "CourseEnvironmentForm";
+            Name = "BaseCourseForm";
             ((System.ComponentModel.ISupportInitialize)TeacherTable).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);

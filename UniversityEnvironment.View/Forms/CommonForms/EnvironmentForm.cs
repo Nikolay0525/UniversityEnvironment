@@ -13,23 +13,26 @@ using UniversityEnvironment.View.Enums;
 using UniversityEnvironment.Data.Enums;
 using UniversityEnvironment.Data.Model.Tables;
 using UniversityEnvironment.Data.Model.MtoMTables;
+using UniversityEnvironment.Data;
 
 namespace UniversityEnvironment.View.Forms
 
 {
     public partial class EnvironmentForm : MaterialForm
     {
+        private UniversityEnvironmentContext _context;
         private readonly User _user;
 
         public EnvironmentForm(User user)
         {
-            InitializeComponent();
+            _context = new UniversityEnvironmentContext();
             _user = user;
+            InitializeComponent();
             PersonName.Text = user.FirstName + " " + user.LastName;
             PersonRole.Text = user.Role.ToString();
-            AvailableCoursesTableAddRows(AvailableCoursesTable, RepositoryManager.GetRepo<Course>().GetAll().ToList());
-            if(_user.Role == Role.Teacher) UpdateTableWithActualCourses<CourseTeacher>(ActualCoursesTable, user);
-            else UpdateTableWithActualCourses<CourseStudent>(ActualCoursesTable, user);
+            AvailableCoursesTableAddRows(AvailableCoursesTable, RepositoryManager.GetRepo<Course>(_context).FindAll().ToList());
+            if(_user.Role == Role.Teacher) UpdateTableWithActualCourses<CourseTeacher>(_context, ActualCoursesTable, user);
+            else UpdateTableWithActualCourses<CourseStudent>(_context, ActualCoursesTable, user);
         }
         
         private void SignButton_Click(object sender, EventArgs e)
@@ -37,14 +40,14 @@ namespace UniversityEnvironment.View.Forms
             
             if (_user.Role == Role.Teacher)
             {
-                UserCourseOperation<CourseTeacher, Teacher>(AvailableCoursesTable, _user, CourseOperation.Create);
-                UpdateTableWithActualCourses<CourseTeacher>(ActualCoursesTable, _user);
+                UserCourseOperation<CourseTeacher, Teacher>(_context, AvailableCoursesTable, _user, CourseOperation.Create);
+                UpdateTableWithActualCourses<CourseTeacher>(_context, ActualCoursesTable, _user);
             }
                 
             else
             {
-                UserCourseOperation<CourseStudent, Student>(AvailableCoursesTable, _user, CourseOperation.Create);
-                UpdateTableWithActualCourses<CourseStudent>(ActualCoursesTable, _user);
+                UserCourseOperation<CourseStudent, Student>(_context, AvailableCoursesTable, _user, CourseOperation.Create);
+                UpdateTableWithActualCourses<CourseStudent>(_context, ActualCoursesTable, _user);
             }
                 
         }
@@ -53,20 +56,20 @@ namespace UniversityEnvironment.View.Forms
         {
             if (_user.Role == Role.Teacher)
             {
-                UserCourseOperation<CourseTeacher, Teacher>(AvailableCoursesTable, _user, CourseOperation.Remove);
-                UpdateTableWithActualCourses<CourseTeacher>(ActualCoursesTable, _user);
+                UserCourseOperation<CourseTeacher, Teacher>(_context, AvailableCoursesTable, _user, CourseOperation.Remove);
+                UpdateTableWithActualCourses<CourseTeacher>(_context, ActualCoursesTable, _user);
             }
 
             else
             {
-                UserCourseOperation<CourseStudent, Student>(AvailableCoursesTable, _user, CourseOperation.Remove);
-                UpdateTableWithActualCourses<CourseStudent>(ActualCoursesTable, _user);
+                UserCourseOperation<CourseStudent, Student>(_context, AvailableCoursesTable, _user, CourseOperation.Remove);
+                UpdateTableWithActualCourses<CourseStudent>(_context, ActualCoursesTable, _user);
             }
         }
 
         private void ActualCoursesTable_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            ClickOnCourse(this,ActualCoursesTable,e,_user);
+            ClickOnCourse(_context, this,ActualCoursesTable,e,_user);
         }
 
         private void CloseButton_Click(object sender, EventArgs e)

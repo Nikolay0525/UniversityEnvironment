@@ -30,11 +30,12 @@
         {
             tabControl1 = new TabControl();
             tabPage1 = new TabPage();
-            label3 = new Label();
             CloseButton = new Button();
             PersonRole = new Label();
             PersonName = new Label();
             ActualCoursesTable = new DataGridView();
+            ActualColumnCourse = new DataGridViewTextBoxColumn();
+            ActualColumnFaculty = new DataGridViewTextBoxColumn();
             label2 = new Label();
             label1 = new Label();
             pictureBox1 = new PictureBox();
@@ -43,16 +44,15 @@
             UnsignButton = new Button();
             SignButton = new Button();
             AvailableCoursesTable = new DataGridView();
-            tabPage3 = new TabPage();
-            dataGridView1 = new DataGridView();
             RowCheck = new DataGridViewCheckBoxColumn();
             CourseColumn = new DataGridViewTextBoxColumn();
             FacultyColumn = new DataGridViewTextBoxColumn();
-            ActualColumnCourse = new DataGridViewTextBoxColumn();
-            ActualColumnFaculty = new DataGridViewTextBoxColumn();
+            tabPage3 = new TabPage();
+            dataGridView1 = new DataGridView();
             InitialsColumn = new DataGridViewTextBoxColumn();
             FromCourseColumn = new DataGridViewTextBoxColumn();
             MessageColumn = new DataGridViewTextBoxColumn();
+            label3 = new Label();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)ActualCoursesTable).BeginInit();
@@ -95,15 +95,6 @@
             tabPage1.Text = "Profile";
             tabPage1.UseVisualStyleBackColor = true;
             // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new Point(315, 3);
-            label3.Name = "label3";
-            label3.Size = new Size(101, 20);
-            label3.TabIndex = 5;
-            label3.Text = "Your courses";
-            // 
             // CloseButton
             // 
             CloseButton.FlatStyle = FlatStyle.Flat;
@@ -144,6 +135,20 @@
             ActualCoursesTable.Size = new Size(414, 231);
             ActualCoursesTable.TabIndex = 2;
             ActualCoursesTable.CellContentClick += ActualCoursesTable_CellContentClick;
+            // 
+            // ActualColumnCourse
+            // 
+            ActualColumnCourse.HeaderText = "Course";
+            ActualColumnCourse.Name = "ActualColumnCourse";
+            ActualColumnCourse.ReadOnly = true;
+            ActualColumnCourse.Width = 150;
+            // 
+            // ActualColumnFaculty
+            // 
+            ActualColumnFaculty.HeaderText = "Faculty";
+            ActualColumnFaculty.Name = "ActualColumnFaculty";
+            ActualColumnFaculty.ReadOnly = true;
+            ActualColumnFaculty.Width = 220;
             // 
             // label2
             // 
@@ -235,6 +240,26 @@
             AvailableCoursesTable.Size = new Size(414, 268);
             AvailableCoursesTable.TabIndex = 3;
             // 
+            // RowCheck
+            // 
+            RowCheck.HeaderText = "";
+            RowCheck.Name = "RowCheck";
+            RowCheck.Resizable = DataGridViewTriState.True;
+            RowCheck.SortMode = DataGridViewColumnSortMode.Automatic;
+            RowCheck.Width = 20;
+            // 
+            // CourseColumn
+            // 
+            CourseColumn.HeaderText = "Course";
+            CourseColumn.Name = "CourseColumn";
+            CourseColumn.Width = 150;
+            // 
+            // FacultyColumn
+            // 
+            FacultyColumn.HeaderText = "Faculty";
+            FacultyColumn.Name = "FacultyColumn";
+            FacultyColumn.Width = 200;
+            // 
             // tabPage3
             // 
             tabPage3.BackColor = SystemColors.ControlLightLight;
@@ -258,40 +283,6 @@
             dataGridView1.Size = new Size(592, 304);
             dataGridView1.TabIndex = 4;
             // 
-            // RowCheck
-            // 
-            RowCheck.HeaderText = "";
-            RowCheck.Name = "RowCheck";
-            RowCheck.Resizable = DataGridViewTriState.True;
-            RowCheck.SortMode = DataGridViewColumnSortMode.Automatic;
-            RowCheck.Width = 20;
-            // 
-            // CourseColumn
-            // 
-            CourseColumn.HeaderText = "Course";
-            CourseColumn.Name = "CourseColumn";
-            CourseColumn.Width = 150;
-            // 
-            // FacultyColumn
-            // 
-            FacultyColumn.HeaderText = "Faculty";
-            FacultyColumn.Name = "FacultyColumn";
-            FacultyColumn.Width = 200;
-            // 
-            // ActualColumnCourse
-            // 
-            ActualColumnCourse.HeaderText = "Course";
-            ActualColumnCourse.Name = "ActualColumnCourse";
-            ActualColumnCourse.ReadOnly = true;
-            ActualColumnCourse.Width = 150;
-            // 
-            // ActualColumnFaculty
-            // 
-            ActualColumnFaculty.HeaderText = "Faculty";
-            ActualColumnFaculty.Name = "ActualColumnFaculty";
-            ActualColumnFaculty.ReadOnly = true;
-            ActualColumnFaculty.Width = 220;
-            // 
             // InitialsColumn
             // 
             InitialsColumn.HeaderText = "Initials";
@@ -309,6 +300,15 @@
             MessageColumn.HeaderText = "Message";
             MessageColumn.Name = "MessageColumn";
             MessageColumn.Width = 200;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(315, 3);
+            label3.Name = "label3";
+            label3.Size = new Size(101, 20);
+            label3.TabIndex = 5;
+            label3.Text = "Your courses";
             // 
             // EnvironmentForm
             // 
@@ -345,7 +345,6 @@
         private Button CloseButton;
         private Label PersonRole;
         private Label label2;
-        private Label label3;
         private Button SignButton;
         private DataGridView AvailableCoursesTable;
         private Label label4;
@@ -360,5 +359,6 @@
         private DataGridViewTextBoxColumn InitialsColumn;
         private DataGridViewTextBoxColumn FromCourseColumn;
         private DataGridViewTextBoxColumn MessageColumn;
+        private Label label3;
     }
 }

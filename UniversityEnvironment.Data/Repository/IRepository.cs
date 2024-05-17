@@ -12,7 +12,7 @@ namespace UniversityEnvironment.Data.Repository
 {
     public interface IRepository<TEntity> where TEntity : class
     {
-        IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> filter = null);
+        IEnumerable<TEntity> FindAll(Expression<Func<TEntity, bool>> filter = null);
         TEntity? FindById(Guid id);
         TEntity? FindByFilter(Expression<Func<TEntity, bool>> filter);
         void Create(TEntity obj);

@@ -19,17 +19,31 @@ namespace UniversityEnvironment.View.Forms.AdminForms
         {
             InitializeComponent();
         }
-
+        private void FindAndRemove<T>(Guid id) where T : User
+        {
+            List<T> users = RepositoryManager.GetRepo<T>(_context).FindAll().ToList();
+            T? user = users.FirstOrDefault(a => a.Id == id);
+            if (user != null) users.Remove(user);
+        }
+        private void DeleteButton_Click(object sender, EventArgs e)
+        {
+            if (_user.Role == Data.Enums.Role.Admin) 
+            {
+                FindAndRemove<Admin>(_user.Id);
+            } 
+            else if (_user.Role == Data.Enums.Role.Teacher)
+            {
+                FindAndRemove<Teacher>(_user.Id);
+            }
+            else
+            {
+                FindAndRemove<Student>(_user.Id);
+            }
+        }
         private void CloseButton_Click(object sender, EventArgs e)
         {
             Close();
         }
 
-        private void DeleteButton_Click(object sender, EventArgs e)
-        {
-            User user = new 
-            if (_user.Role == Data.Enums.Role.Admin) RepositoryManager.GetRepo<Admin>().FindById(_user.Id);
-            else if (_user.Role == Data.Enums.Role.Teacher) RepositoryManager.GetRepo<Teacher>().FindById(_user.Id);
-        }
     }
 }

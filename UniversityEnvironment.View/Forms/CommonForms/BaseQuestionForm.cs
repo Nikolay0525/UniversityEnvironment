@@ -10,16 +10,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using UniversityEnvironment.Data.Model.Tables;
+using UniversityEnvironment.Data;
 
 namespace UniversityEnvironment.View.Forms.CommonForms
 {
     public partial class BaseQuestionForm : MaterialForm
     {
+        private UniversityEnvironmentContext _context;
         private Test _test;
         private User _user;
 
         public BaseQuestionForm(Test test, User user)
         {
+            _context = new UniversityEnvironmentContext();
             _test = test;
             _user = user;
             InitializeComponent();

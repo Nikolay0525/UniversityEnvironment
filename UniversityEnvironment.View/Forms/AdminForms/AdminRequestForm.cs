@@ -14,14 +14,18 @@ using UniversityEnvironment.Data.Model;
 using UniversityEnvironment.Data.Repositories;
 using static UniversityEnvironment.View.Utility.AuthorizationHelper;
 using UniversityEnvironment.Data.Enums;
+using UniversityEnvironment.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace UniversityEnvironment.View.Forms
 {
     public partial class AdminRequestForm : MaterialForm 
     {
+        private UniversityEnvironmentContext _context;
         private User _user;
         public AdminRequestForm(User user)
         {
+            _context = new UniversityEnvironmentContext();
             _user = user;
             InitializeComponent();
             UsernameText.Text = user.Username;
@@ -31,17 +35,17 @@ namespace UniversityEnvironment.View.Forms
 
         private void GenericAccept<T>() where T : User
         {
-            var foundedUser = RepositoryManager.GetRepo<T>().FindByFilter(a => _user.Username == a.Username);
+            var foundedUser = RepositoryManager.GetRepo<T>(_context).FindByFilter(a => _user.Username == a.Username);
             ArgumentNullException.ThrowIfNull(foundedUser);
             foundedUser.Confirmed = true;
-            RepositoryManager.GetRepo<T>().Update(foundedUser);
+            RepositoryManager.GetRepo<T>(_context).Update(foundedUser);
             Close();
         }
         private void GenericDecline<T>() where T : User
         {
-            var foundedUser = RepositoryManager.GetRepo<T>().FindByFilter(a => _user.Username == a.Username);
+            var foundedUser = RepositoryManager.GetRepo<T>(_context).FindByFilter(a => _user.Username == a.Username);
             ArgumentNullException.ThrowIfNull(foundedUser);
-            RepositoryManager.GetRepo<T>().Remove(foundedUser);
+            RepositoryManager.GetRepo<T>(_context).Remove(foundedUser);
             Close();
         }
 

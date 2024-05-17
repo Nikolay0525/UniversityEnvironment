@@ -30,7 +30,7 @@ namespace UniversityEnvironment.Data.Repository
         {
             return new RepoImplementation<TEntity>(context);
         }
-        public IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> filter = null)
+        public IEnumerable<TEntity> FindAll(Expression<Func<TEntity, bool>> filter = null)
         {
             IQueryable<TEntity> query = _objects;
 

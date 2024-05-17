@@ -12,15 +12,15 @@ using MaterialSkin.Controls;
 using UniversityEnvironment.Data;
 using UniversityEnvironment.Data.Model.Tables;
 using UniversityEnvironment.Data.Repositories;
-using static UniversityEnvironment.View.Utility.Constants;
+using static UniversityEnvironment.View.Utility.ViewHelper;
 
 namespace UniversityEnvironment.View.Forms
 {
     public partial class BaseCourseForm : MaterialForm
     {
         private UniversityEnvironmentContext _context;
-        private readonly User? _user;
-        private readonly Course? _course;
+        private readonly User _user;
+        private readonly Course _course;
 
         public BaseCourseForm(User user, Course course)
         {
@@ -29,7 +29,7 @@ namespace UniversityEnvironment.View.Forms
             _course = course;
             this.Text = "Welcome to " + course.Name + " course!";
             InitializeComponent();
-            //RepositoryManager.GetRepo<Course>(_context).ReadingOperationsWithTable<Course>(TeacherTable, 1, _course, UpdateTeacherTable);
+            UpdateTeacherTable(_context, TeacherTable, _course);
         }
 
         private void JournalButton_Click(object sender, EventArgs e)

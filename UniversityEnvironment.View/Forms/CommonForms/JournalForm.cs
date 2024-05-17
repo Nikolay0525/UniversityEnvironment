@@ -58,7 +58,7 @@ namespace UniversityEnvironment.View.Forms
         {
             if (_user.Role == Data.Enums.Role.Teacher)
             {
-                RepositoryManager.GetRepo<Course>(CoursesDBPath).ReadAndWriteOperationsWithTable<Course>(JournalTable, 0, _course, ApplyChangesToDBJournal);
+                //RepositoryManager.GetRepo<Course>(CoursesDBPath).ReadAndWriteOperationsWithTable<Course>(JournalTable, 0, _course, ApplyChangesToDBJournal);
                 return;
             }
             MessageBox.Show("You aren't teacher!", "Journal", MessageBoxButtons.OK);

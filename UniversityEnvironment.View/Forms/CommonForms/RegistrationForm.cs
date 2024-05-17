@@ -24,8 +24,10 @@ namespace UniversityEnvironment.View.Forms
 {
     public partial class RegistrationForm : MaterialForm
     {
+        private UniversityEnvironmentContext _context;
         public RegistrationForm()
         {
+            _context = new UniversityEnvironmentContext();
             InitializeComponent();
         }
 
@@ -33,10 +35,10 @@ namespace UniversityEnvironment.View.Forms
         {
             #region Validation
             var result = Admin.Checked
-                ? ValidateUserExists<Admin>(UsernameTextBox.Text)
+                ? ValidateUserExists<Admin>(_context,UsernameTextBox.Text)
                 : Teacher.Checked
-                    ? ValidateUserExists<Teacher>(UsernameTextBox.Text)
-                    : ValidateUserExists<Student>(UsernameTextBox.Text);
+                    ? ValidateUserExists<Teacher>(_context,UsernameTextBox.Text)
+                    : ValidateUserExists<Student>(_context, UsernameTextBox.Text);
 
             if (result)
             {
@@ -49,8 +51,9 @@ namespace UniversityEnvironment.View.Forms
             {
                 User userToCreate = CreateUser<Admin>(UsernameTextBox.Text, FirstNameTextBox.Text, LastNameTextBox.Text, PasswordTextBox.Text);
                 var admin = userToCreate as Admin;
-                var adminRepo = RepositoryManager.GetRepo<Admin>();
-                if(adminRepo.GetAll().Count() == 0) 
+                var adminRepo = RepositoryManager.GetRepo<Admin>(_context);
+                ArgumentNullException.ThrowIfNull(admin);
+                if (adminRepo.FindAll().Count() == 0) 
                 {
                     admin.Confirmed = true;
                     MessageBox.Show("You are the first admin and the main, be fair!", "Registration", MessageBoxButtons.OK);
@@ -62,19 +65,21 @@ namespace UniversityEnvironment.View.Forms
             {
                 User userToCreate = CreateUser<Teacher>(UsernameTextBox.Text, FirstNameTextBox.Text, LastNameTextBox.Text, PasswordTextBox.Text);
                 var teacher = userToCreate as Teacher;
+                ArgumentNullException.ThrowIfNull(teacher);
                 teacher.ScienceDegree = Microsoft.VisualBasic.Interaction.InputBox("Введіть вашу ступінь:", "Введення тексту", "");
                 teacher.CoursesTeachers = new();
-                RepositoryManager.GetRepo<Teacher>().Create(teacher);
+                RepositoryManager.GetRepo<Teacher>(_context).Create(teacher);
                 MessageBox.Show("Request on creating sended", "Registration", MessageBoxButtons.OK);
             }
             else
             {
                 User userToCreate = CreateUser<Student>(UsernameTextBox.Text, FirstNameTextBox.Text, LastNameTextBox.Text, PasswordTextBox.Text);
                 var student = userToCreate as Student;
+                ArgumentNullException.ThrowIfNull(student);
                 student.TestsStudents = new();
                 student.CoursesStudents = new();
                 student.QuestionAnswersStudent = new();
-                RepositoryManager.GetRepo<Student>().Create(student);
+                RepositoryManager.GetRepo<Student>(_context).Create(student);
                 MessageBox.Show("Account successfully created", "Registration", MessageBoxButtons.OK);
             }
         }
