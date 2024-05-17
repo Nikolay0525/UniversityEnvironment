@@ -32,12 +32,12 @@
             UserName = new DataGridViewTextBoxColumn();
             CloseButton = new Button();
             JournalButton = new Button();
-            dataGridView1 = new DataGridView();
+            TestsTable = new DataGridView();
             CheckColumn = new DataGridViewCheckBoxColumn();
             TestColumn = new DataGridViewTextBoxColumn();
             Description = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)TeacherTable).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)TestsTable).BeginInit();
             SuspendLayout();
             // 
             // TeacherTable
@@ -84,15 +84,16 @@
             JournalButton.UseVisualStyleBackColor = false;
             JournalButton.Click += JournalButton_Click;
             // 
-            // dataGridView1
+            // TestsTable
             // 
-            dataGridView1.BackgroundColor = SystemColors.Control;
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { CheckColumn, TestColumn, Description });
-            dataGridView1.Location = new Point(12, 70);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.Size = new Size(377, 318);
-            dataGridView1.TabIndex = 2;
+            TestsTable.BackgroundColor = SystemColors.Control;
+            TestsTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            TestsTable.Columns.AddRange(new DataGridViewColumn[] { CheckColumn, TestColumn, Description });
+            TestsTable.Location = new Point(12, 70);
+            TestsTable.Name = "TestsTable";
+            TestsTable.Size = new Size(377, 318);
+            TestsTable.TabIndex = 2;
+            TestsTable.CellContentClick += TestsTable_CellContentClick;
             // 
             // CheckColumn
             // 
@@ -119,7 +120,7 @@
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(600, 400);
-            Controls.Add(dataGridView1);
+            Controls.Add(TestsTable);
             Controls.Add(JournalButton);
             Controls.Add(CloseButton);
             Controls.Add(TeacherTable);
@@ -127,7 +128,7 @@
             Margin = new Padding(4);
             Name = "BaseCourseForm";
             ((System.ComponentModel.ISupportInitialize)TeacherTable).EndInit();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)TestsTable).EndInit();
             ResumeLayout(false);
         }
 
@@ -137,7 +138,7 @@
         private Button CloseButton;
         private Button JournalButton;
         private DataGridViewTextBoxColumn UserName;
-        private DataGridView dataGridView1;
+        private DataGridView TestsTable;
         private DataGridViewCheckBoxColumn CheckColumn;
         private DataGridViewTextBoxColumn TestColumn;
         private DataGridViewTextBoxColumn Description;

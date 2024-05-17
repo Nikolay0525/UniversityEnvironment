@@ -20,7 +20,7 @@ namespace UniversityEnvironment.View.Forms
     {
         private UniversityEnvironmentContext _context;
         private readonly User _user;
-        private readonly Course _course;
+        private Course _course;
 
         public BaseCourseForm(User user, Course course)
         {
@@ -30,19 +30,17 @@ namespace UniversityEnvironment.View.Forms
             this.Text = "Welcome to " + course.Name + " course!";
             InitializeComponent();
             UpdateTeacherTable(_context, TeacherTable, _course);
+            UpdateTestsTable(_context, TestsTable, _course);
         }
 
         private void JournalButton_Click(object sender, EventArgs e)
         {
-            //RepositoryManager.GetRepo<Course>(CoursesDBPath).ReadingOperationsWithTable<Course>(TeacherTable, 1, _course, UpdateTeacherTable);
-            Hide();
-            JournalForm journalForm = new JournalForm(_user, _course);
-            journalForm.FormClosed += (s, arg) =>
-            {
-                Show();
-            };
-            journalForm.Show();
+            ShowNextForm(this, new JournalForm(_user, _course));
             return;
+        }
+        private void TestsTable_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            ClickOnTest(this, TestsTable, e, _user, _course);
         }
 
         private void CloseButton_Click(object sender, EventArgs e)

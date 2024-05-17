@@ -9,6 +9,7 @@ namespace UniversityEnvironment.Data.Model.Tables
 {
     public sealed class QuestionAnswer : EnvironmentObject
     {
+        public string? AnswerText {  get; set; }
         public TestQuestion? Question { get; set; }
         public List<Student>? Students { get; set; }
         public List<QuestionAnswerStudent>? QuestionAnswersStudents { get; set; }

@@ -17,7 +17,7 @@ using Microsoft.EntityFrameworkCore;
 using UniversityEnvironment.Data;
 using UniversityEnvironment.Data.Enums;
 using UniversityEnvironment.View.Utility;
-//using UniversityEnvironment.View.Forms.AdminForms;
+using UniversityEnvironment.View.Forms.AdminForms;
 
 namespace UniversityEnvironment.View.Forms
 {
@@ -55,7 +55,7 @@ namespace UniversityEnvironment.View.Forms
         }
         private void UsersTable_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            /*if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
             {
                 DataGridViewRow selectedRow = RequestsTable.Rows[e.RowIndex];
                 string? selectedUsername = selectedRow.Cells["FromUsernameColumn"].Value.ToString();
@@ -73,7 +73,7 @@ namespace UniversityEnvironment.View.Forms
                     GenericClick<Student>(this, new AdminUserForm(user), user, selectedUsername, StudentRequestUpdate);
                 }
 
-            }*/
+            }
         }
         #endregion
         private void GenericClick<T>(MaterialForm thisForm,MaterialForm nextForm, User? user, string? username, UpdateRequestAfterClosing operation) where T : User

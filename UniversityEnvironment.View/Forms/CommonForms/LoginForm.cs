@@ -64,6 +64,7 @@ namespace UniversityEnvironment.View.Forms
             else
             {
                 user = SetUserRole<Student>();
+                
             }
 
             #region Validation

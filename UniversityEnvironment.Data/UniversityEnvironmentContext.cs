@@ -32,11 +32,9 @@ namespace UniversityEnvironment.Data
         public UniversityEnvironmentContext() { }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            /*var json = File.ReadAllText("../../../../UniversityEnvironment.Data/ConnectionString.json");
+            var json = File.ReadAllText("../../../../UniversityEnvironment.Data/ConnectionString.json");
             var jsonConverted = JsonConvert.DeserializeObject<Connection>(json);
-            optionsBuilder.UseMySql(jsonConverted.ConnectionString, new MySqlServerVersion(jsonConverted.Version));*/
-            var serverVersion = new MySqlServerVersion(new Version(8, 3, 0));
-            optionsBuilder.UseMySql("server=localhost;user=root;password=1111;database=UniversalEnvironment", serverVersion);
+            optionsBuilder.UseMySql(jsonConverted.ConnectionString, new MySqlServerVersion(jsonConverted.Version));
             optionsBuilder.LogTo(message => Debug.WriteLine(message));
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -38,11 +38,11 @@
             // 
             CloseButton.BackColor = SystemColors.ControlLightLight;
             CloseButton.FlatStyle = FlatStyle.Flat;
-            CloseButton.Location = new Point(12, 357);
+            CloseButton.Location = new Point(12, 327);
             CloseButton.Name = "CloseButton";
-            CloseButton.Size = new Size(295, 31);
+            CloseButton.Size = new Size(129, 31);
             CloseButton.TabIndex = 0;
-            CloseButton.Text = "Go back (Results will not save)";
+            CloseButton.Text = "Go back";
             CloseButton.UseVisualStyleBackColor = false;
             CloseButton.Click += CloseButton_Click;
             // 
@@ -52,25 +52,25 @@
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView1.Location = new Point(12, 75);
             dataGridView1.Name = "dataGridView1";
-            dataGridView1.Size = new Size(576, 276);
+            dataGridView1.Size = new Size(280, 246);
             dataGridView1.TabIndex = 1;
             // 
             // SendAnswersButton
             // 
             SendAnswersButton.BackColor = SystemColors.ControlLightLight;
             SendAnswersButton.FlatStyle = FlatStyle.Flat;
-            SendAnswersButton.Location = new Point(313, 357);
+            SendAnswersButton.Location = new Point(147, 327);
             SendAnswersButton.Name = "SendAnswersButton";
-            SendAnswersButton.Size = new Size(275, 31);
+            SendAnswersButton.Size = new Size(145, 31);
             SendAnswersButton.TabIndex = 2;
-            SendAnswersButton.Text = "SendAnswers";
+            SendAnswersButton.Text = "Send answers";
             SendAnswersButton.UseVisualStyleBackColor = false;
             // 
             // BaseTestForm
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(600, 400);
+            ClientSize = new Size(304, 368);
             Controls.Add(SendAnswersButton);
             Controls.Add(dataGridView1);
             Controls.Add(CloseButton);

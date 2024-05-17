@@ -18,6 +18,7 @@ using UniversityEnvironment.View.Enums;
 using UniversityEnvironment.Data.Enums;
 using UniversityEnvironment.Data.Model.Tables;
 using UniversityEnvironment.Data.Model.MtoMTables;
+using UniversityEnvironment.View.Forms.CommonForms;
 //using Microsoft.VisualBasic.ApplicationServices;
 
 namespace UniversityEnvironment.View.Utility
@@ -56,7 +57,7 @@ namespace UniversityEnvironment.View.Utility
                 table.Rows.Add(course.Name, course.FacultyName);
             }
         }
-
+        #region ClickOnMethods
         internal static void ClickOnCourse(UniversityEnvironmentContext context,MaterialForm form,DataGridView table, DataGridViewCellEventArgs e, User user)
         {
             if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
@@ -68,11 +69,39 @@ namespace UniversityEnvironment.View.Utility
                 var course = courses.FirstOrDefault(c => c.Name == selectedCourse);
                 if (course != null)
                 {
-                    //ShowNextForm(form, new View.Forms.BaseCourseForm(user, course));
+                    ShowNextForm(form, new View.Forms.BaseCourseForm(user, course));
                 }
             }
         }
-
+        internal static void ClickOnTest(MaterialForm form,DataGridView table, DataGridViewCellEventArgs e, User user, Course course)
+        {
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+            {
+                DataGridViewRow selectedRow = table.Rows[e.RowIndex];
+                string? selectedTest = selectedRow.Cells["TestName"].Value.ToString();
+                Test? test = course.Tests.FirstOrDefault(t => t.Name == selectedTest);
+                ArgumentNullException.ThrowIfNull(selectedTest);
+                if (test != null)
+                {
+                    ShowNextForm(form, new View.Forms.BaseTestForm(user, course, test));
+                }
+            }
+        }
+        internal static void ClickOnQuestion(MaterialForm form, DataGridView table,DataGridViewCellEventArgs e, User user ,Test test)
+        {
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+            {
+                DataGridViewRow selectedRow = table.Rows[e.RowIndex];
+                string? selectedQuestion = selectedRow.Cells["QuestionName"].Value.ToString();
+                TestQuestion? question = test.Questions.FirstOrDefault(q => q.Name == selectedQuestion);
+                ArgumentNullException.ThrowIfNull(question);
+                if (question != null)
+                {
+                    ShowNextForm(form, new BaseQuestionForm(test,user));
+                }
+            }
+        }
+        #endregion
         internal static void UpdateTableWithActualCourses<T>(UniversityEnvironmentContext context,DataGridView table, User user) where T : CourseUser
         {
             table.Rows.Clear();
@@ -144,10 +173,17 @@ namespace UniversityEnvironment.View.Utility
             
             foreach (var courseTeacher in coursesTeachers)
             {
-                var t = allTeachers.FirstOrDefault(t => t.Id == courseTeacher.UserId);
-                if(t != null) teachers.Add(t);
+                var teacher = allTeachers.FirstOrDefault(t => t.Id == courseTeacher.UserId);
+                if(teacher != null) teachers.Add(teacher);
             }
             teachers.ForEach(t => table.Rows.Add(t.FirstName + " " + t.LastName));
+        }
+
+        internal static void UpdateTestsTable(UniversityEnvironmentContext context, DataGridView table, Course course)
+        {
+            if (course.Tests == null) return;
+            table.Rows.Clear();
+            course.Tests.ForEach(t => table.Rows.Add(t.Name,t.Description));
         }
         /*internal static void UpdateContentOfTableJournal(DataGridView table, List<Course> courses, Course course)
         {
