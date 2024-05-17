@@ -66,23 +66,7 @@ namespace UniversityEnvironment.View.Forms
 
         private void ActualCoursesTable_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            /*if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
-            {
-                DataGridViewRow selectedRow = ActualCoursesTable.Rows[e.RowIndex];
-                string? selectedCourse = selectedRow.Cells["ActualGridColumnCourseName"].Value.ToString();
-                if (RepositoryManager.GetRepo<Course>(CoursesDBPath).GetObjectByFilter(c => c.Name == selectedCourse) != null)
-                {
-                    Course? course = RepositoryManager.GetRepo<Course>(CoursesDBPath).GetObjectByFilter(c => c.Name == selectedCourse);
-                    Hide();
-                    Form formInstance = FormCreater.CreateForm(course.Name + "CourseEnvironmentForm", _user, course);
-                    formInstance.FormClosed += (s, arg) =>
-                    {
-                        Show();
-                    };
-                    formInstance.Show();
-                }
-
-            }*/
+            ClickOnCourse(this,ActualCoursesTable,e,_user);
         }
 
         private void CloseButton_Click(object sender, EventArgs e)

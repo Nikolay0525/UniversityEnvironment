@@ -1,3 +1,7 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using System.Drawing.Text;
 namespace UniversityEnvironment.View
 {
     internal static class Program

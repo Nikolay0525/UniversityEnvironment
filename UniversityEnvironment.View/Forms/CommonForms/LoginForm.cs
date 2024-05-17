@@ -19,21 +19,26 @@ using static UniversityEnvironment.View.Utility.ViewHelper;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using UniversityEnvironment.Data.Enums;
 using UniversityEnvironment.Data.Model.Tables;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using UniversityEnvironment.Data;
 
 
 namespace UniversityEnvironment.View.Forms
 {
     public partial class LoginForm : MaterialForm
     {
+        private UniversityEnvironmentContext _context;
         public LoginForm()
         {
             InitializeComponent();
             MaterialFormSkinChanger.SetParametersOfForm(this);
+            _context = new UniversityEnvironmentContext();
         }
 
         private T? SetUserRole<T>() where T : User
         {
-            var user = RepositoryManager.GetRepo<T>()
+            var user = RepositoryManager.GetRepo<T>(_context)
                 .FindByFilter(u => u.Username == UsernameTextBox.Text && u.Password == PasswordTextBox.Text);
             if (user == null) return null;
             return user;

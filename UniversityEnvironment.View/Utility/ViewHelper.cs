@@ -56,21 +56,40 @@ namespace UniversityEnvironment.View.Utility
             }
         }
 
-        internal static void UpdateTableWithActualCourses<T>(DataGridView table, User user) where T : CourseUser
+        internal static void ClickOnCourse(UniversityEnvironmentContext context,MaterialForm form,DataGridView table, DataGridViewCellEventArgs e, User user)
+        {
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+            {
+                List<Course> courses = RepositoryManager.GetRepo<Course>(context).GetAll().ToList();
+                DataGridViewRow selectedRow = table.Rows[e.RowIndex];
+                string? selectedCourse = selectedRow.Cells["ActualGridColumnCourseName"].Value.ToString();
+                ArgumentNullException.ThrowIfNull(selectedCourse);
+                var course = courses.FirstOrDefault(c => c.Name == selectedCourse);
+                if (course != null)
+                {
+                    ArgumentNullException.ThrowIfNull(course);
+                    MaterialForm formInstance = FormCreater.CreateForm(course.Name + "CourseEnvironmentForm", user, course);
+                    formInstance.Show();
+                    ShowNextForm(form, formInstance);
+                }
+            }
+        }
+
+        internal static void UpdateTableWithActualCourses<T>(UniversityEnvironmentContext context,DataGridView table, User user) where T : CourseUser
         {
             table.Rows.Clear();
-            var courseList = RepositoryManager.GetRepo<Course>().GetAll().ToList();
-            List<T> courseUser = RepositoryManager.GetRepo<T>().GetAll(u => u.UserId == user.Id).ToList();
+            var courseList = RepositoryManager.GetRepo<Course>(context).GetAll().ToList();
+            List<T> courseUser = RepositoryManager.GetRepo<T>(context).GetAll(u => u.UserId == user.Id).ToList();
             courseList.RemoveAll(course => !courseUser.Any(cu => cu.CourseId == course.Id));
             ArgumentNullException.ThrowIfNull(courseList);
             ActualCoursesTableAddRows(table, courseList);
         }
 
-        internal static void UserCourseOperation<T,Q>(DataGridView table, User user, CourseOperation @op) where T : CourseUser,new() where Q : User
+        internal static void UserCourseOperation<T,Q>(UniversityEnvironmentContext context,DataGridView table, User user, CourseOperation @op) where T : CourseUser,new() where Q : User
         {
-            List<Course> courses = RepositoryManager.GetRepo<Course>().GetAll().ToList();
+            List<Course> courses = RepositoryManager.GetRepo<Course>(context).GetAll().ToList();
             var userCourses = new List<T>();
-            var foundedUser = RepositoryManager.GetRepo<Q>().FindById(user.Id);
+            var foundedUser = RepositoryManager.GetRepo<Q>(context).FindById(user.Id);
             ArgumentNullException.ThrowIfNull(foundedUser);
             for (int i = 0; i < courses.Count; i++)
             {
@@ -82,14 +101,13 @@ namespace UniversityEnvironment.View.Utility
             }
             if(@op == 0) 
             { 
-                var count = RepositoryManager.GetRepo<T>().Create(userCourses);
+                var count = RepositoryManager.GetRepo<T>(context).Create(userCourses);
                 if (count == 0) return;
                 MessageBox.Show("Successfully signed on courses!", "Environment", MessageBoxButtons.OK);
             }
             else 
             {
-                var count = RepositoryManager.GetRepo<T>().Create(userCourses);
-                RepositoryManager.GetRepo<T>().Remove(userCourses);
+                var count = RepositoryManager.GetRepo<T>(context).Remove(userCourses);
                 if (count != 0) return;
                 MessageBox.Show("Successfully unsigned from courses!", "Environment", MessageBoxButtons.OK);
             }
@@ -107,6 +125,18 @@ namespace UniversityEnvironment.View.Utility
                 else if(user.ForgetPassword) table.Rows.Add(user.Username, user.Role, "Forget password");
             }
         }
+        public static void UpdateUsersTable<T>(DataGridView table, IEnumerable<T> users) where T : User
+        {
+            ArgumentNullException.ThrowIfNull(users);
+            table.Rows.Clear();
+
+            foreach (var user in users)
+            {
+                table.Rows.Add(user.Username,user.FirstName + " " + user.LastName, user.Role);
+            }
+        }
+
+
         /* internal static void UpdateTeacherTable(DataGridView table, List<Course> courses, Course course)
          {
              foreach (var user in course.Users)

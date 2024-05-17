@@ -42,7 +42,7 @@
             NextButton = new Button();
             PreviousButton = new Button();
             CloseButton = new Button();
-            ActualCoursesTable = new DataGridView();
+            UsersTable = new DataGridView();
             UsernameColumn = new DataGridViewTextBoxColumn();
             Initials = new DataGridViewTextBoxColumn();
             RoleColumn = new DataGridViewTextBoxColumn();
@@ -70,7 +70,7 @@
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)ActualCoursesTable).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)UsersTable).BeginInit();
             tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)RequestsTable).BeginInit();
             tabPage2.SuspendLayout();
@@ -103,7 +103,7 @@
             tabPage1.Controls.Add(NextButton);
             tabPage1.Controls.Add(PreviousButton);
             tabPage1.Controls.Add(CloseButton);
-            tabPage1.Controls.Add(ActualCoursesTable);
+            tabPage1.Controls.Add(UsersTable);
             tabPage1.Location = new Point(4, 29);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
@@ -234,18 +234,19 @@
             CloseButton.UseVisualStyleBackColor = true;
             CloseButton.Click += CloseButton_Click;
             // 
-            // ActualCoursesTable
+            // UsersTable
             // 
-            ActualCoursesTable.AllowUserToAddRows = false;
-            ActualCoursesTable.AllowUserToDeleteRows = false;
-            ActualCoursesTable.BackgroundColor = SystemColors.Control;
-            ActualCoursesTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            ActualCoursesTable.Columns.AddRange(new DataGridViewColumn[] { UsernameColumn, Initials, RoleColumn });
-            ActualCoursesTable.Location = new Point(160, 30);
-            ActualCoursesTable.Name = "ActualCoursesTable";
-            ActualCoursesTable.ReadOnly = true;
-            ActualCoursesTable.Size = new Size(425, 227);
-            ActualCoursesTable.TabIndex = 2;
+            UsersTable.AllowUserToAddRows = false;
+            UsersTable.AllowUserToDeleteRows = false;
+            UsersTable.BackgroundColor = SystemColors.Control;
+            UsersTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            UsersTable.Columns.AddRange(new DataGridViewColumn[] { UsernameColumn, Initials, RoleColumn });
+            UsersTable.Location = new Point(160, 30);
+            UsersTable.Name = "UsersTable";
+            UsersTable.ReadOnly = true;
+            UsersTable.Size = new Size(425, 227);
+            UsersTable.TabIndex = 2;
+            UsersTable.CellContentClick += this.UsersTable_CellContentClick;
             // 
             // UsernameColumn
             // 
@@ -400,7 +401,7 @@
             // NextPageCourses
             // 
             NextPageCourses.FlatStyle = FlatStyle.Flat;
-            NextPageCourses.Location = new Point(8, 28);
+            NextPageCourses.Location = new Point(8, 210);
             NextPageCourses.Name = "NextPageCourses";
             NextPageCourses.Size = new Size(158, 40);
             NextPageCourses.TabIndex = 11;
@@ -410,7 +411,7 @@
             // PreviousPageCourses
             // 
             PreviousPageCourses.FlatStyle = FlatStyle.Flat;
-            PreviousPageCourses.Location = new Point(8, 74);
+            PreviousPageCourses.Location = new Point(8, 256);
             PreviousPageCourses.Name = "PreviousPageCourses";
             PreviousPageCourses.Size = new Size(158, 40);
             PreviousPageCourses.TabIndex = 12;
@@ -430,7 +431,7 @@
             // 
             UnsignButton.BackColor = SystemColors.ControlLightLight;
             UnsignButton.FlatStyle = FlatStyle.Flat;
-            UnsignButton.Location = new Point(8, 211);
+            UnsignButton.Location = new Point(8, 119);
             UnsignButton.Name = "UnsignButton";
             UnsignButton.Size = new Size(158, 85);
             UnsignButton.TabIndex = 8;
@@ -441,7 +442,7 @@
             // 
             CreateButton.BackColor = SystemColors.ControlLightLight;
             CreateButton.FlatStyle = FlatStyle.Flat;
-            CreateButton.Location = new Point(8, 120);
+            CreateButton.Location = new Point(8, 28);
             CreateButton.Name = "CreateButton";
             CreateButton.Size = new Size(158, 85);
             CreateButton.TabIndex = 9;
@@ -493,7 +494,7 @@
             tabPage1.ResumeLayout(false);
             tabPage1.PerformLayout();
             groupBox1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)ActualCoursesTable).EndInit();
+            ((System.ComponentModel.ISupportInitialize)UsersTable).EndInit();
             tabPage3.ResumeLayout(false);
             tabPage3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)RequestsTable).EndInit();
@@ -509,7 +510,7 @@
         private TabPage tabPage1;
         private Label label3;
         private Button CloseButton;
-        private DataGridView ActualCoursesTable;
+        private DataGridView UsersTable;
         private TabPage tabPage2;
         private Button StudentUsers;
         private Button TeacherUsers;

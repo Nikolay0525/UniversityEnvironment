@@ -8,9 +8,16 @@ using System.Threading.Tasks;
 using UniversityEnvironment.Data.Model;
 using UniversityEnvironment.Data.Model.Tables;
 using UniversityEnvironment.Data.Model.MtoMTables;
+using Newtonsoft.Json;
 
 namespace UniversityEnvironment.Data
 {
+    public struct Connection
+    {
+        public Version Version { get; set; }
+        public string ConnectionString { get; set; }
+    };
+
     public class UniversityEnvironmentContext : DbContext
     {
         public DbSet<Admin> Admins { get; set; }
@@ -25,8 +32,9 @@ namespace UniversityEnvironment.Data
         public UniversityEnvironmentContext() { }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var serverVersion = new MySqlServerVersion(new Version(8, 3, 0));
-            optionsBuilder.UseMySql("server=localhost;user=root;password=1234;database=UniversalEnvironment", serverVersion);
+            var json = File.ReadAllText("../../../../UniversityEnvironment.Data/ConnectionString.json");
+            var jsonConverted = JsonConvert.DeserializeObject<Connection>(json);
+            optionsBuilder.UseMySql(jsonConverted.ConnectionString, new MySqlServerVersion(jsonConverted.Version));
 
             optionsBuilder.LogTo(message => Debug.WriteLine(message));
         }

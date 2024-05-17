@@ -17,7 +17,7 @@ namespace UniversityEnvironment.Data.Repository
     public class RepoImplementation<TEntity> : IRepository<TEntity> where TEntity : class
     {
         private UniversityEnvironmentContext _context;
-        private static RepoImplementation<TEntity>? _instance;
+        //private static RepoImplementation<TEntity>? _instance;
         private DbSet<TEntity> _objects;
 
         private RepoImplementation(UniversityEnvironmentContext context)
@@ -28,7 +28,7 @@ namespace UniversityEnvironment.Data.Repository
 
         public static RepoImplementation<TEntity> GetRepository(UniversityEnvironmentContext context)
         {
-            return _instance ?? new RepoImplementation<TEntity>(context);
+            return new RepoImplementation<TEntity>(context);
         }
         public IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> filter = null)
         {
