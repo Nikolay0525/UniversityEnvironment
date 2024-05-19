@@ -73,17 +73,16 @@ namespace UniversityEnvironment.View.Utility
                 }
             }
         }
-        internal static void ClickOnTest(MaterialForm form,DataGridView table, DataGridViewCellEventArgs e, User user, Course course)
+        internal static void ClickOnTest(UniversityEnvironmentContext context, MaterialForm form,DataGridView table, DataGridViewCellEventArgs e, User user, Course course)
         {
             if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
             {
                 DataGridViewRow selectedRow = table.Rows[e.RowIndex];
                 string? selectedTest = selectedRow.Cells["TestName"].Value.ToString();
-                Test? test = course.Tests.FirstOrDefault(t => t.Name == selectedTest);
-                ArgumentNullException.ThrowIfNull(selectedTest);
-                if (test != null)
+                var tests = context.Tests.Where(t => t.CourseId == course.Id);
+                foreach(var test in tests)
                 {
-                    ShowNextForm(form, new View.Forms.BaseTestForm(user, course, test));
+                    if(test.Name == selectedTest) ShowNextForm(form, new View.Forms.BaseTestForm(user, course, test));
                 }
             }
         }
@@ -181,9 +180,11 @@ namespace UniversityEnvironment.View.Utility
 
         internal static void UpdateTestsTable(UniversityEnvironmentContext context, DataGridView table, Course course)
         {
-            if (course.Tests == null) return;
+            var tests = context.Tests.Where(t => t.CourseId == course.Id);
+            if (tests == null) return;
             table.Rows.Clear();
-            course.Tests.ForEach(t => table.Rows.Add(t.Name,t.Description));
+            foreach ( var test in tests) { table.Rows.Add(false,test.Name, test.Description); }
+            
         }
         /*internal static void UpdateContentOfTableJournal(DataGridView table, List<Course> courses, Course course)
         {

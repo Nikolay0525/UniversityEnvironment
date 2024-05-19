@@ -11,8 +11,8 @@ namespace UniversityEnvironment.Data.Model.Tables
     {
         public string? Name { get; set; }
         public string? Description { get; set; }
+        public Guid CourseId {  get; set; }
         public Course? Course { get; set; }
-        public List<TestMark>? Marks { get; set; }
         public List<TestQuestion>? Questions { get; set; }
         public List<TestStudent>? TestsStudents { get; set; }
     }

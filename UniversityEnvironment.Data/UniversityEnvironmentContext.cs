@@ -25,14 +25,13 @@ namespace UniversityEnvironment.Data
         public DbSet<Student> Students { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<Test> Tests { get; set; }
-        public DbSet<TestMark> TestMarks { get; set; }
         public DbSet<TestQuestion> TestQuestions { get; set; }
         public DbSet<QuestionAnswer> QuestionAnswers { get; set; }
 
         public UniversityEnvironmentContext() { }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var json = File.ReadAllText("../../../../UniversityEnvironment.Data/ConnectionString.json");
+            var json = File.ReadAllText("E:/Desktop/Labs/OOP/UniversityEnvironment/UniversityEnvironment.Data/ConnectionString.json");
             var jsonConverted = JsonConvert.DeserializeObject<Connection>(json);
             optionsBuilder.UseMySql(jsonConverted.ConnectionString, new MySqlServerVersion(jsonConverted.Version));
             optionsBuilder.LogTo(message => Debug.WriteLine(message));

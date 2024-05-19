@@ -40,7 +40,7 @@ namespace UniversityEnvironment.View.Forms
         }
         private void TestsTable_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            ClickOnTest(this, TestsTable, e, _user, _course);
+            ClickOnTest(_context, this, TestsTable, e, _user, _course);
         }
 
         private void CloseButton_Click(object sender, EventArgs e)

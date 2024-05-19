@@ -34,8 +34,8 @@
             JournalButton = new Button();
             TestsTable = new DataGridView();
             CheckColumn = new DataGridViewCheckBoxColumn();
-            TestColumn = new DataGridViewTextBoxColumn();
-            Description = new DataGridViewTextBoxColumn();
+            TestName = new DataGridViewTextBoxColumn();
+            TestDescription = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)TeacherTable).BeginInit();
             ((System.ComponentModel.ISupportInitialize)TestsTable).BeginInit();
             SuspendLayout();
@@ -88,7 +88,7 @@
             // 
             TestsTable.BackgroundColor = SystemColors.Control;
             TestsTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            TestsTable.Columns.AddRange(new DataGridViewColumn[] { CheckColumn, TestColumn, Description });
+            TestsTable.Columns.AddRange(new DataGridViewColumn[] { CheckColumn, TestName, TestDescription });
             TestsTable.Location = new Point(12, 70);
             TestsTable.Name = "TestsTable";
             TestsTable.Size = new Size(377, 318);
@@ -102,18 +102,18 @@
             CheckColumn.ReadOnly = true;
             CheckColumn.Width = 20;
             // 
-            // TestColumn
+            // TestName
             // 
-            TestColumn.HeaderText = "Test";
-            TestColumn.Name = "TestColumn";
-            TestColumn.Width = 103;
+            TestName.HeaderText = "Test";
+            TestName.Name = "TestName";
+            TestName.Width = 103;
             // 
-            // Description
+            // TestDescription
             // 
-            Description.HeaderText = "Description";
-            Description.Name = "Description";
-            Description.ReadOnly = true;
-            Description.Width = 210;
+            TestDescription.HeaderText = "Description";
+            TestDescription.Name = "TestDescription";
+            TestDescription.ReadOnly = true;
+            TestDescription.Width = 210;
             // 
             // BaseCourseForm
             // 
@@ -140,7 +140,7 @@
         private DataGridViewTextBoxColumn UserName;
         private DataGridView TestsTable;
         private DataGridViewCheckBoxColumn CheckColumn;
-        private DataGridViewTextBoxColumn TestColumn;
-        private DataGridViewTextBoxColumn Description;
+        private DataGridViewTextBoxColumn TestName;
+        private DataGridViewTextBoxColumn TestDescription;
     }
 }

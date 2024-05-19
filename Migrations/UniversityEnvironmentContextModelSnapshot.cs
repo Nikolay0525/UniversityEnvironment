@@ -231,7 +231,7 @@ namespace UniversityEnvironment.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("CourseId")
+                    b.Property<Guid?>("CourseId")
                         .HasColumnType("char(36)");
 
                     b.Property<string>("Description")
@@ -365,9 +365,7 @@ namespace UniversityEnvironment.Data.Migrations
                 {
                     b.HasOne("UniversityEnvironment.Data.Model.Tables.Course", "Course")
                         .WithMany("Tests")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CourseId");
 
                     b.Navigation("Course");
                 });

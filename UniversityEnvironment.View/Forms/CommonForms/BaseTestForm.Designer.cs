@@ -31,6 +31,8 @@
             CloseButton = new Button();
             dataGridView1 = new DataGridView();
             SendAnswersButton = new Button();
+            IdColumn = new DataGridViewTextBoxColumn();
+            QuestionColumn = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -50,6 +52,7 @@
             // 
             dataGridView1.BackgroundColor = SystemColors.Control;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { IdColumn, QuestionColumn });
             dataGridView1.Location = new Point(12, 75);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.Size = new Size(280, 246);
@@ -65,6 +68,18 @@
             SendAnswersButton.TabIndex = 2;
             SendAnswersButton.Text = "Send answers";
             SendAnswersButton.UseVisualStyleBackColor = false;
+            // 
+            // IdColumn
+            // 
+            IdColumn.HeaderText = "Id";
+            IdColumn.Name = "IdColumn";
+            IdColumn.Width = 30;
+            // 
+            // QuestionColumn
+            // 
+            QuestionColumn.HeaderText = "Question";
+            QuestionColumn.Name = "QuestionColumn";
+            QuestionColumn.Width = 207;
             // 
             // BaseTestForm
             // 
@@ -87,5 +102,7 @@
         private Button CloseButton;
         private DataGridView dataGridView1;
         private Button SendAnswersButton;
+        private DataGridViewTextBoxColumn IdColumn;
+        private DataGridViewTextBoxColumn QuestionColumn;
     }
 }

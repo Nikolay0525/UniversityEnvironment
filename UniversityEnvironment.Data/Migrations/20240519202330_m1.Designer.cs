@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UniversityEnvironment.Data;
 
@@ -11,9 +12,11 @@ using UniversityEnvironment.Data;
 namespace UniversityEnvironment.Data.Migrations
 {
     [DbContext(typeof(UniversityEnvironmentContext))]
-    partial class UniversityEnvironmentContextModelSnapshot : ModelSnapshot
+    [Migration("20240519202330_m1")]
+    partial class m1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -231,7 +234,7 @@ namespace UniversityEnvironment.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("CourseId")
+                    b.Property<Guid?>("CourseId")
                         .HasColumnType("char(36)");
 
                     b.Property<string>("Description")
@@ -365,9 +368,7 @@ namespace UniversityEnvironment.Data.Migrations
                 {
                     b.HasOne("UniversityEnvironment.Data.Model.Tables.Course", "Course")
                         .WithMany("Tests")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CourseId");
 
                     b.Navigation("Course");
                 });
