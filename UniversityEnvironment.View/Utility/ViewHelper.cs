@@ -26,6 +26,7 @@ namespace UniversityEnvironment.View.Utility
     internal static class ViewHelper
     {
         internal delegate void UpdateRequestAfterClosing();
+        #region Form event operations
         internal static void ShowNextForm(MaterialForm current, MaterialForm next)
         {
             current.Hide();
@@ -39,6 +40,32 @@ namespace UniversityEnvironment.View.Utility
             next.FormClosed += (s, arg) => operation();
             next.Show();
         }
+        #endregion
+        #region AdminView methods
+        internal static void UpdateRequestsTable<T>(DataGridView table, IEnumerable<T> users) where T : User
+        {
+            ArgumentNullException.ThrowIfNull(users);
+            table.Rows.Clear();
+
+            foreach (var user in users)
+            {
+                if (!user.Confirmed) table.Rows.Add(user.Username, user.Role, "Confirm account");
+                else if (user.ForgetPassword) table.Rows.Add(user.Username, user.Role, "Forget password");
+            }
+        }
+
+        internal static void UpdateUsersTable<T>(DataGridView table, IEnumerable<T> users) where T : User
+        {
+            ArgumentNullException.ThrowIfNull(users);
+            table.Rows.Clear();
+
+            foreach (var user in users)
+            {
+                table.Rows.Add(user.Username, user.FirstName + " " + user.LastName, user.Role);
+            }
+        }
+        #endregion
+        #region Table operation methods
         internal static void AvailableCoursesTableAddRows(DataGridView table, IEnumerable<Course> courses)
         {
             ArgumentNullException.ThrowIfNull(courses);
@@ -57,51 +84,7 @@ namespace UniversityEnvironment.View.Utility
                 table.Rows.Add(course.Name, course.FacultyName);
             }
         }
-        #region ClickOnMethods
-        internal static void ClickOnCourse(UniversityEnvironmentContext context,MaterialForm form,DataGridView table, DataGridViewCellEventArgs e, User user)
-        {
-            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
-            {
-                List<Course> courses = RepositoryManager.GetRepo<Course>(context).FindAll().ToList();
-                DataGridViewRow selectedRow = table.Rows[e.RowIndex];
-                string? selectedCourse = selectedRow.Cells["ActualColumnCourse"].Value.ToString();
-                ArgumentNullException.ThrowIfNull(selectedCourse);
-                var course = courses.FirstOrDefault(c => c.Name == selectedCourse);
-                if (course != null)
-                {
-                    ShowNextForm(form, new View.Forms.BaseCourseForm(user, course));
-                }
-            }
-        }
-        internal static void ClickOnTest(UniversityEnvironmentContext context, MaterialForm form,DataGridView table, DataGridViewCellEventArgs e, User user, Course course)
-        {
-            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
-            {
-                DataGridViewRow selectedRow = table.Rows[e.RowIndex];
-                string? selectedTest = selectedRow.Cells["TestName"].Value.ToString();
-                var tests = context.Tests.Where(t => t.CourseId == course.Id);
-                foreach(var test in tests)
-                {
-                    if(test.Name == selectedTest) ShowNextForm(form, new View.Forms.BaseTestForm(user, course, test));
-                }
-            }
-        }
-        internal static void ClickOnQuestion(MaterialForm form, DataGridView table,DataGridViewCellEventArgs e, User user ,Test test)
-        {
-            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
-            {
-                DataGridViewRow selectedRow = table.Rows[e.RowIndex];
-                string? selectedQuestion = selectedRow.Cells["QuestionName"].Value.ToString();
-                TestQuestion? question = test.Questions.FirstOrDefault(q => q.Name == selectedQuestion);
-                ArgumentNullException.ThrowIfNull(question);
-                if (question != null)
-                {
-                    ShowNextForm(form, new BaseQuestionForm(test,user));
-                }
-            }
-        }
-        #endregion
-        internal static void UpdateTableWithActualCourses<T>(UniversityEnvironmentContext context,DataGridView table, User user) where T : CourseUser
+        internal static void UpdateTableWithActualCourses<T>(UniversityEnvironmentContext context, DataGridView table, User user) where T : CourseUser
         {
             table.Rows.Clear();
             var courseList = RepositoryManager.GetRepo<Course>(context).FindAll().ToList();
@@ -111,7 +94,7 @@ namespace UniversityEnvironment.View.Utility
             ActualCoursesTableAddRows(table, courseList);
         }
 
-        internal static void UserCourseOperation<T,Q>(UniversityEnvironmentContext context,DataGridView table, User user, CourseOperation @op) where T : CourseUser,new() where Q : User
+        internal static void UserCourseOperation<T, Q>(UniversityEnvironmentContext context, DataGridView table, User user, CourseOperation @op) where T : CourseUser, new() where Q : User
         {
             List<Course> courses = RepositoryManager.GetRepo<Course>(context).FindAll().ToList();
             var userCourses = new List<T>();
@@ -125,67 +108,83 @@ namespace UniversityEnvironment.View.Utility
                     userCourses.Add(new() { UserId = user.Id, CourseId = courses[i].Id });
                 }
             }
-            if(@op == 0) 
-            { 
+            if (@op == 0)
+            {
                 var count = RepositoryManager.GetRepo<T>(context).Create(userCourses);
                 if (count == 0) return;
                 MessageBox.Show("Successfully signed on courses!", "Environment", MessageBoxButtons.OK);
             }
-            else 
+            else
             {
                 var count = RepositoryManager.GetRepo<T>(context).Remove(userCourses);
                 if (count == 0) return;
                 MessageBox.Show("Successfully unsigned from courses!", "Environment", MessageBoxButtons.OK);
             }
-            
         }
-
-        internal static void UpdateRequestsTable<T>(DataGridView table, IEnumerable<T> users) where T : User
-        {
-            ArgumentNullException.ThrowIfNull(users);
-            table.Rows.Clear();
-
-            foreach (var user in users)
-            {
-                if (!user.Confirmed) table.Rows.Add(user.Username, user.Role, "Confirm account");
-                else if(user.ForgetPassword) table.Rows.Add(user.Username, user.Role, "Forget password");
-            }
-        }
-
-        internal static void UpdateUsersTable<T>(DataGridView table, IEnumerable<T> users) where T : User
-        {
-            ArgumentNullException.ThrowIfNull(users);
-            table.Rows.Clear();
-
-            foreach (var user in users)
-            {
-                table.Rows.Add(user.Username,user.FirstName + " " + user.LastName, user.Role);
-            }
-        }
-
-
-        internal static void UpdateTeacherTable(UniversityEnvironmentContext context,DataGridView table, Course course)
+        internal static void UpdateTeacherTable(UniversityEnvironmentContext context, DataGridView table, Course course)
         {
             List<Teacher> teachers = new List<Teacher>();
             List<Teacher> allTeachers = RepositoryManager.GetRepo<Teacher>(context).FindAll().ToList();
             List<CourseTeacher> coursesTeachers = RepositoryManager.GetRepo<CourseTeacher>(context).FindAll(ct => ct.CourseId == course.Id).ToList();
-            
+
             foreach (var courseTeacher in coursesTeachers)
             {
                 var teacher = allTeachers.FirstOrDefault(t => t.Id == courseTeacher.UserId);
-                if(teacher != null) teachers.Add(teacher);
+                if (teacher != null) teachers.Add(teacher);
             }
             teachers.ForEach(t => table.Rows.Add(t.FirstName + " " + t.LastName));
         }
-
         internal static void UpdateTestsTable(UniversityEnvironmentContext context, DataGridView table, Course course)
         {
             var tests = context.Tests.Where(t => t.CourseId == course.Id);
             if (tests == null) return;
             table.Rows.Clear();
-            foreach ( var test in tests) { table.Rows.Add(false,test.Name, test.Description); }
-            
+            foreach (var test in tests) { table.Rows.Add(false, test.Name, test.Description); }
+
         }
+        #endregion
+        #region ClickOnMethods
+        internal static void ClickOnCourse(UniversityEnvironmentContext context,MaterialForm form,DataGridView table, DataGridViewCellEventArgs e, User user)
+        {
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+            {
+                DataGridViewRow selectedRow = table.Rows[e.RowIndex];
+                string? selectedCourse = selectedRow.Cells["ActualColumnCourse"].Value.ToString();
+                if (selectedCourse == null) return;
+                var course = RepositoryManager.GetRepo<Course>(context).FindByFilter(c => c.Name == selectedCourse);
+                if (course == null) return;
+                ShowNextForm(form, new View.Forms.BaseCourseForm(user, course));
+            }
+        }
+        internal static void ClickOnTest(UniversityEnvironmentContext context, MaterialForm form,DataGridView table, DataGridViewCellEventArgs e, User user, Course course)
+        {
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+            {
+                DataGridViewRow selectedRow = table.Rows[e.RowIndex];
+                string? selectedTest = selectedRow.Cells["TestName"].Value.ToString();
+                var test = RepositoryManager.GetRepo<Test>(context).FindByFilter(t => t.CourseId == course.Id);
+                if (test == null) return;
+                ShowNextForm(form, new View.Forms.BaseTestForm(user, course, test));
+            }
+        }
+        internal static void ClickOnQuestion(UniversityEnvironmentContext context, MaterialForm form, DataGridView table,DataGridViewCellEventArgs e, User user ,Course course,Test test)
+        {
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+            {
+                DataGridViewRow selectedRow = table.Rows[e.RowIndex];
+                var selectedQuestion = selectedRow.Cells["IdColumn"].Value.ToString();
+                TestQuestion? question = null;
+                if(selectedQuestion != null && Guid.TryParse(selectedQuestion, out Guid result))
+                {
+                    question = RepositoryManager.GetRepo<TestQuestion>(context).FindByFilter(q => q.Id == result);
+                }
+                if (question == null) return;
+                ShowNextForm(form, new View.Forms.BaseTestForm(user, course, test));
+            }
+        }
+        #endregion
+        
+
         /*internal static void UpdateContentOfTableJournal(DataGridView table, List<Course> courses, Course course)
         {
             foreach (var test in course.Tests)

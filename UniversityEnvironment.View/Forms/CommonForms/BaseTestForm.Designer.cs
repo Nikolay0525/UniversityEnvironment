@@ -73,6 +73,7 @@
             // 
             IdColumn.HeaderText = "Id";
             IdColumn.Name = "IdColumn";
+            IdColumn.Visible = false;
             IdColumn.Width = 30;
             // 
             // QuestionColumn

@@ -31,8 +31,8 @@
             tabControl1 = new TabControl();
             tabPage1 = new TabPage();
             groupBox1 = new GroupBox();
-            TeacherCheck = new RadioButton();
-            AdminCheck = new RadioButton();
+            ByInitialsCheck = new RadioButton();
+            ByUsernameCheck = new RadioButton();
             FilterTextBox = new TextBox();
             UsersMessageBox = new Label();
             StudentUsers = new Button();
@@ -115,33 +115,33 @@
             // groupBox1
             // 
             groupBox1.BackColor = SystemColors.ControlLightLight;
-            groupBox1.Controls.Add(TeacherCheck);
-            groupBox1.Controls.Add(AdminCheck);
+            groupBox1.Controls.Add(ByInitialsCheck);
+            groupBox1.Controls.Add(ByUsernameCheck);
             groupBox1.Location = new Point(8, 26);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new Size(118, 60);
             groupBox1.TabIndex = 12;
             groupBox1.TabStop = false;
             // 
-            // TeacherCheck
+            // ByInitialsCheck
             // 
-            TeacherCheck.Location = new Point(0, 36);
-            TeacherCheck.Name = "TeacherCheck";
-            TeacherCheck.Size = new Size(120, 24);
-            TeacherCheck.TabIndex = 0;
-            TeacherCheck.TabStop = true;
-            TeacherCheck.Text = "By initials";
-            TeacherCheck.UseVisualStyleBackColor = true;
+            ByInitialsCheck.Location = new Point(0, 36);
+            ByInitialsCheck.Name = "ByInitialsCheck";
+            ByInitialsCheck.Size = new Size(120, 24);
+            ByInitialsCheck.TabIndex = 0;
+            ByInitialsCheck.TabStop = true;
+            ByInitialsCheck.Text = "By initials";
+            ByInitialsCheck.UseVisualStyleBackColor = true;
             // 
-            // AdminCheck
+            // ByUsernameCheck
             // 
-            AdminCheck.Location = new Point(0, 7);
-            AdminCheck.Name = "AdminCheck";
-            AdminCheck.Size = new Size(120, 28);
-            AdminCheck.TabIndex = 0;
-            AdminCheck.TabStop = true;
-            AdminCheck.Text = "By username";
-            AdminCheck.UseVisualStyleBackColor = true;
+            ByUsernameCheck.Location = new Point(0, 7);
+            ByUsernameCheck.Name = "ByUsernameCheck";
+            ByUsernameCheck.Size = new Size(120, 28);
+            ByUsernameCheck.TabIndex = 0;
+            ByUsernameCheck.TabStop = true;
+            ByUsernameCheck.Text = "By username";
+            ByUsernameCheck.UseVisualStyleBackColor = true;
             // 
             // FilterTextBox
             // 
@@ -202,6 +202,7 @@
             ApplyFilterButton.TabIndex = 4;
             ApplyFilterButton.Text = "Apply filter";
             ApplyFilterButton.UseVisualStyleBackColor = true;
+            ApplyFilterButton.Click += ApplyFilterButton_Click;
             // 
             // NextButton
             // 
@@ -246,7 +247,7 @@
             UsersTable.ReadOnly = true;
             UsersTable.Size = new Size(425, 227);
             UsersTable.TabIndex = 2;
-            UsersTable.CellContentClick += this.UsersTable_CellContentClick;
+            UsersTable.CellContentClick += UsersTable_CellContentClick;
             // 
             // UsernameColumn
             // 
@@ -527,8 +528,8 @@
         private Button PreviousButton;
         private Button ApplyFilterButton;
         private GroupBox groupBox1;
-        private RadioButton TeacherCheck;
-        private RadioButton AdminCheck;
+        private RadioButton ByInitialsCheck;
+        private RadioButton ByUsernameCheck;
         private TabPage tabPage3;
         private DataGridView RequestsTable;
         private DataGridViewTextBoxColumn UsernameColumn;

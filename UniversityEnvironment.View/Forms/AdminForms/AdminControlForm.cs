@@ -35,81 +35,11 @@ namespace UniversityEnvironment.View.Forms
             this.Text = "Welcome back " + user.FirstName + " " + user.LastName + "!";
         }
 
-        #region Users
-        private void AdminUsers_Click(object sender, EventArgs e)
-        {
-            _currentPage = 0;
-            UsersMessageBox.Text = "Searching in admins...";
-        }
+        #region Users requests
 
-        private void TeacherUsers_Click(object sender, EventArgs e)
+        internal List<Admin> AdminsRequest()
         {
-            _currentPage = 0;
-            UsersMessageBox.Text = "Searching in teachers...";
-        }
-
-        private void StudentUsers_Click(object sender, EventArgs e)
-        {
-            _currentPage = 0;
-            UsersMessageBox.Text = "Searching in students...";
-        }
-        private void UsersTable_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
-            {
-                DataGridViewRow selectedRow = RequestsTable.Rows[e.RowIndex];
-                string? selectedUsername = selectedRow.Cells["FromUsernameColumn"].Value.ToString();
-                User? user = new();
-                if (_roleFlag == Role.Admin)
-                {
-                    GenericClick<Admin>(this, new AdminUserForm(user), user, selectedUsername, AdminsRequestUpdate);
-                }
-                else if (_roleFlag == Role.Teacher)
-                {
-                    GenericClick<Teacher>(this, new AdminUserForm(user), user, selectedUsername, TeachersRequestUpdate);
-                }
-                else if (_roleFlag == Role.Student)
-                {
-                    GenericClick<Student>(this, new AdminUserForm(user), user, selectedUsername, StudentRequestUpdate);
-                }
-
-            }
-        }
-        #endregion
-        private void GenericClick<T>(MaterialForm thisForm,MaterialForm nextForm, User? user, string? username, UpdateRequestAfterClosing operation) where T : User
-        {
-            RepositoryManager.GetRepo<T>(_context).FindByFilter(a => a.Username == username);
-            user = SetUserRole<T>(_context, username);
-            ArgumentNullException.ThrowIfNull(user);
-            ShowNextForm(thisForm, nextForm, operation);
-        }
-        #region Requests
-        private void RequestsTable_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
-            {
-                DataGridViewRow selectedRow = RequestsTable.Rows[e.RowIndex];
-                string? selectedUsername = selectedRow.Cells["FromUsernameColumn"].Value.ToString();
-                User? user = new();
-                if (_roleFlag == Role.Admin)
-                {
-                    GenericClick<Admin>(this,new AdminRequestForm(user), user, selectedUsername, AdminsRequestUpdate);
-                }
-                else if (_roleFlag == Role.Teacher)
-                {
-                    GenericClick<Teacher>(this,new AdminRequestForm(user),user, selectedUsername, TeachersRequestUpdate);
-                }
-                else if (_roleFlag == Role.Student)
-                {
-                    GenericClick<Student>(this, new AdminRequestForm(user), user, selectedUsername, StudentRequestUpdate);
-                }
-
-            }
-        }
-        internal void AdminsRequestUpdate()
-        {
-            _roleFlag = Role.Admin;
-            var query = _context.Admins
+            return _context.Admins
                 .Where(admin => admin.ForgetPassword == true || admin.Confirmed == false)
                 .Skip(_currentPage * Constants.RowsPerPage)
                 .Take(Constants.RowsPerPage)
@@ -122,19 +52,10 @@ namespace UniversityEnvironment.View.Forms
                     Password = admin.Password,
                 })
                 .ToList();
-            UpdateRequestsTable<Admin>(RequestsTable, query);
         }
-
-        private void AdminsRequests_Click(object sender, EventArgs e)
+        internal List<Teacher> TeachersRequest()
         {
-            _currentPage = 0;
-            RequestMessageBox.Text = "Searching in admins...";
-            AdminsRequestUpdate();
-        }
-        internal void TeachersRequestUpdate()
-        {
-            _roleFlag = Role.Teacher;
-            var query = _context.Teachers
+            return _context.Teachers
                 .Where(teacher => teacher.ForgetPassword == true || teacher.Confirmed == false)
                 .Skip(_currentPage * Constants.RowsPerPage)
                 .Take(Constants.RowsPerPage)
@@ -146,9 +67,200 @@ namespace UniversityEnvironment.View.Forms
                     LastName = teacher.LastName,
                     Password = teacher.Password,
                     ScienceDegree = teacher.ScienceDegree,
-                    CoursesTeachers = teacher.CoursesTeachers
                 })
                 .ToList();
+        }
+        internal List<Student> StudentsRequest()
+        {
+            return _context.Students
+                .Where(student => student.ForgetPassword == true)
+                .Skip(_currentPage * Constants.RowsPerPage)
+                .Take(Constants.RowsPerPage)
+                .OrderBy(student => student.Username)
+                .Select(student => new Student
+                {
+                    Username = student.Username,
+                    FirstName = student.FirstName,
+                    LastName = student.LastName,
+                    Password = student.Password,
+                })
+                .ToList();
+        }
+        internal List<Admin> AdminsUsersRequest(bool? flag = null, string? text = null)
+        {
+            IQueryable<Admin> query = _context.Admins;
+
+            if (flag == true && text != null)
+            {
+                query = query.Where(t => EF.Functions.Like(t.Username, $"%{text}%"));
+            }
+            else if (flag == false && text != null)
+            {
+                query = query.Where(t => EF.Functions.Like(t.FirstName + t.LastName, $"%{text}%"));
+            }
+
+            return query
+                .OrderBy(teacher => teacher.Username)
+                .Skip(_currentPage * Constants.RowsPerPage)
+                .Take(Constants.RowsPerPage)
+                .Select(teacher => new Admin
+                {
+                    Username = teacher.Username,
+                    FirstName = teacher.FirstName,
+                    LastName = teacher.LastName,
+                    Password = teacher.Password,
+                })
+                .ToList();
+        }
+        internal List<Teacher> TeachersUsersRequest(bool? flag = null, string? text = null)
+        {
+            IQueryable<Teacher> query = _context.Teachers;
+
+            if (flag == true && text != null)
+            {
+                query = query.Where(t => EF.Functions.Like(t.Username, $"%{text}%"));
+            }
+            else if (flag == false && text != null)
+            {
+                query = query.Where(t => EF.Functions.Like(t.FirstName + t.LastName, $"%{text}%"));
+            }
+
+            return query
+                .OrderBy(teacher => teacher.Username)
+                .Skip(_currentPage * Constants.RowsPerPage)
+                .Take(Constants.RowsPerPage)
+                .Select(teacher => new Teacher
+                {
+                    Username = teacher.Username,
+                    FirstName = teacher.FirstName,
+                    LastName = teacher.LastName,
+                    Password = teacher.Password,
+                    ScienceDegree = teacher.ScienceDegree,
+                })
+                .ToList();
+        }
+        internal List<Student> StudentsUsersRequest(bool? flag = null, string? text = null)
+        {
+            IQueryable<Student> query = _context.Students;
+
+            if (flag == true && text != null)
+            {
+                query = query.Where(t => EF.Functions.Like(t.Username, $"%{text}%"));
+            }
+            else if (flag == false && text != null)
+            {
+                query = query.Where(t => EF.Functions.Like(t.FirstName + t.LastName, $"%{text}%"));
+            }
+
+            return query
+                .OrderBy(s => s.Username)
+                .Skip(_currentPage * Constants.RowsPerPage)
+                .Take(Constants.RowsPerPage)
+                .Select(student => new Student
+                {
+                    Username = student.Username,
+                    FirstName = student.FirstName,
+                    LastName = student.LastName,
+                    Password = student.Password,
+                })
+                .ToList();
+        }
+        #endregion
+
+        #region Users tab
+        private void AdminUsers_Click(object sender, EventArgs e)
+        {
+            _roleFlag = Role.Admin;
+            _currentPage = 0;
+            UsersMessageBox.Text = "Searching in admins...";
+            UpdateUsersTable<Admin>(UsersTable, AdminsRequest());
+        }
+
+        private void TeacherUsers_Click(object sender, EventArgs e)
+        {
+            _roleFlag = Role.Teacher;
+            _currentPage = 0;
+            UsersMessageBox.Text = "Searching in teachers...";
+            UpdateUsersTable<Teacher>(UsersTable, TeachersRequest());
+        }
+
+        private void StudentUsers_Click(object sender, EventArgs e)
+        {
+            _roleFlag = Role.Student;
+            _currentPage = 0;
+            UsersMessageBox.Text = "Searching in students...";
+            UpdateUsersTable<Student>(UsersTable, StudentsRequest());
+        }
+        private void UsersTable_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+            {
+                DataGridViewRow selectedRow = UsersTable.Rows[e.RowIndex];
+                string? selectedUsername = selectedRow.Cells["UsernameColumn"].Value.ToString();
+                User? user = new();
+                if (_roleFlag == Role.Admin)
+                {
+                    GenericClick<Admin>(user, selectedUsername, AdminsRequestUpdate, user => new AdminUserForm(user));
+                }
+                else if (_roleFlag == Role.Teacher)
+                {
+                    GenericClick<Teacher>(user, selectedUsername, TeachersRequestUpdate, user => new AdminUserForm(user));
+                }
+                else if (_roleFlag == Role.Student)
+                {
+                    GenericClick<Student>(user, selectedUsername, StudentRequestUpdate, user => new AdminUserForm(user));
+                }
+
+            }
+        }
+        #endregion
+        #region Requests tab
+        private void GenericClick<T>(User? user, string? username, UpdateRequestAfterClosing operation, Func<User, MaterialForm> createForm) where T : User
+        {
+            user = SetUserRole<T>(_context, username);
+            ArgumentNullException.ThrowIfNull(user);
+            ShowNextForm(this, createForm(user), operation);
+        }
+        private void RequestsTable_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+            {
+                DataGridViewRow selectedRow = RequestsTable.Rows[e.RowIndex];
+                string? selectedUsername = selectedRow.Cells["FromUsernameColumn"].Value.ToString();
+                User? user = new();
+                if (_roleFlag == Role.Admin)
+                {
+                    GenericClick<Admin>(user, selectedUsername, AdminsRequestUpdate, user => new AdminRequestForm(user));
+                }
+                else if (_roleFlag == Role.Teacher)
+                {
+                    GenericClick<Teacher>(user, selectedUsername, TeachersRequestUpdate, user => new AdminRequestForm(user));
+                }
+                else if (_roleFlag == Role.Student)
+                {
+                    GenericClick<Student>(user, selectedUsername, StudentRequestUpdate, user => new AdminRequestForm(user));
+                }
+
+            }
+        }
+        internal void AdminsRequestUpdate()
+        {
+            _roleFlag = Role.Admin;
+            var query = AdminsRequest();
+            UpdateRequestsTable<Admin>(RequestsTable, query);
+        }
+
+        private void AdminsRequests_Click(object sender, EventArgs e)
+        {
+            _currentPage = 0;
+            RequestMessageBox.Text = "Searching in admins...";
+            AdminsRequestUpdate();
+        }
+
+        internal void TeachersRequestUpdate()
+        {
+            _roleFlag = Role.Teacher;
+            var query = TeachersRequest();
             UpdateRequestsTable<Teacher>(RequestsTable, query);
         }
 
@@ -162,23 +274,7 @@ namespace UniversityEnvironment.View.Forms
         internal void StudentRequestUpdate()
         {
             _roleFlag = Role.Student;
-            var query = _context.Students
-                .Where(student => student.ForgetPassword == true)
-                .Skip(_currentPage * Constants.RowsPerPage)
-                .Take(Constants.RowsPerPage)
-                .OrderBy(student => student.Username)
-                .Select(student => new Student
-                {
-                    Username = student.Username,
-                    FirstName = student.FirstName,
-                    LastName = student.LastName,
-                    Password = student.Password,
-                    QuestionAnswersStudent = student.QuestionAnswersStudent,
-                    TestsStudents = student.TestsStudents,
-                    CoursesStudents = student.CoursesStudents
-                })
-                .ToList();
-
+            var query = StudentsRequest();
             UpdateRequestsTable<Student>(RequestsTable, query);
         }
 
@@ -194,7 +290,6 @@ namespace UniversityEnvironment.View.Forms
             _currentPage++;
             if (_roleFlag == Role.Admin)
             {
-                
                 AdminsRequestUpdate();
             }
             else if (_roleFlag == Role.Admin)
@@ -211,7 +306,7 @@ namespace UniversityEnvironment.View.Forms
             _currentPage = _currentPage > 0 ? _currentPage - 1 : _currentPage;
             if (_roleFlag == Role.Admin)
             {
-                
+
                 AdminsRequestUpdate();
             }
             else if (_roleFlag == Role.Admin)
@@ -224,10 +319,26 @@ namespace UniversityEnvironment.View.Forms
             }
         }
         #endregion
-
         private void CloseButton_Click(object sender, EventArgs e)
         {
             Close();
         }
+
+        private void ApplyFilterButton_Click(object sender, EventArgs e)
+        {
+            if (_roleFlag == Role.Admin)
+            {
+                AdminsUsersRequest(ByUsernameCheck.Checked, FilterTextBox.Text);
+            }
+            else if (_roleFlag == Role.Admin)
+            {
+                TeachersUsersRequest(ByUsernameCheck.Checked, FilterTextBox.Text);
+            }
+            else
+            {
+                StudentsUsersRequest(ByUsernameCheck.Checked, FilterTextBox.Text);
+            }
+        }
+
     }
 }

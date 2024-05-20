@@ -29,22 +29,32 @@
         private void InitializeComponent()
         {
             dataGridView1 = new DataGridView();
+            AnswerColumn = new DataGridViewTextBoxColumn();
             CloseButton = new Button();
             QuestionLabel = new Label();
-            AnswerColumn = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
             // dataGridView1
             // 
+            dataGridView1.AllowUserToAddRows = false;
+            dataGridView1.AllowUserToDeleteRows = false;
             dataGridView1.BackgroundColor = SystemColors.Control;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView1.Columns.AddRange(new DataGridViewColumn[] { AnswerColumn });
             dataGridView1.Location = new Point(12, 116);
-            dataGridView1.Margin = new Padding(4, 4, 4, 4);
+            dataGridView1.Margin = new Padding(4);
             dataGridView1.Name = "dataGridView1";
+            dataGridView1.ReadOnly = true;
             dataGridView1.Size = new Size(575, 228);
             dataGridView1.TabIndex = 0;
+            // 
+            // AnswerColumn
+            // 
+            AnswerColumn.HeaderText = "Answer";
+            AnswerColumn.Name = "AnswerColumn";
+            AnswerColumn.ReadOnly = true;
+            AnswerColumn.Width = 529;
             // 
             // CloseButton
             // 
@@ -66,13 +76,6 @@
             QuestionLabel.Size = new Size(0, 20);
             QuestionLabel.TabIndex = 2;
             // 
-            // AnswerColumn
-            // 
-            AnswerColumn.HeaderText = "Answer";
-            AnswerColumn.Name = "AnswerColumn";
-            AnswerColumn.ReadOnly = true;
-            AnswerColumn.Width = 529;
-            // 
             // BaseQuestionForm
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
@@ -82,7 +85,7 @@
             Controls.Add(CloseButton);
             Controls.Add(dataGridView1);
             Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
-            Margin = new Padding(4, 4, 4, 4);
+            Margin = new Padding(4);
             Name = "BaseQuestionForm";
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);

@@ -34,13 +34,7 @@ namespace UniversityEnvironment.View.Forms
         private void RegistrateAccountButton_Click(object sender, EventArgs e)
         {
             #region Validation
-            var result = Admin.Checked
-                ? ValidateUserExists<Admin>(_context,UsernameTextBox.Text)
-                : Teacher.Checked
-                    ? ValidateUserExists<Teacher>(_context,UsernameTextBox.Text)
-                    : ValidateUserExists<Student>(_context, UsernameTextBox.Text);
-
-            if (result)
+            if (ValidateUserExists(_context, UsernameTextBox.Text))
             {
                 MessageBox.Show("Account with such name exist...", "Registration", MessageBoxButtons.OK);
                 return;

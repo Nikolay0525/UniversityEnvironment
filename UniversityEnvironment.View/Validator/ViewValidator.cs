@@ -12,13 +12,18 @@ namespace UniversityEnvironment.View.Validator
 {
     internal static class ViewValidator
     {
-        internal static bool ValidateUserExists<T>(UniversityEnvironmentContext context, string userName) where T : User
+        internal static bool ValidateUserExists(UniversityEnvironmentContext context, string userName)
         {
-            var foundUser = RepositoryManager
-                .GetRepo<T>(context)
-                .FindByFilter(u => u.Username == userName);
+            bool UserExistsInRepo<T>(UniversityEnvironmentContext context, string name) where T : User
+            {
+                return RepositoryManager
+                    .GetRepo<T>(context)
+                    .FindByFilter(u => u.Username == name) != null;
+            }
 
-            return foundUser != null;
+            return UserExistsInRepo<Admin>(context, userName) ||
+                   UserExistsInRepo<Teacher>(context, userName) ||
+                   UserExistsInRepo<Student>(context, userName);
         }
     }
 }
