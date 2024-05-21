@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using System.Xml.Linq;
 using UniversityEnvironment.Data.Enums;
-using UniversityEnvironment.Data.Repositories;
+using UniversityEnvironment.Data.Repository;
 using UniversityEnvironment.Data.Model.Tables;
 using UniversityEnvironment.Data;
 

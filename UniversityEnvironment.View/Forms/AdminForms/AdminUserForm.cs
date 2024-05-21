@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using UniversityEnvironment.Data.Model.Tables;
-using UniversityEnvironment.Data.Repositories;
+using UniversityEnvironment.Data.Repository;
 using UniversityEnvironment.Data.Repository;
 
 namespace UniversityEnvironment.View.Forms.AdminForms

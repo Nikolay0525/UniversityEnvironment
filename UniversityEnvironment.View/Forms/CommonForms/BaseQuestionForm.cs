@@ -16,13 +16,11 @@ namespace UniversityEnvironment.View.Forms.CommonForms
 {
     public partial class BaseQuestionForm : MaterialForm
     {
-        private UniversityEnvironmentContext _context;
         private Test _test;
         private User _user;
 
         public BaseQuestionForm(Test test, User user)
         {
-            _context = new UniversityEnvironmentContext();
             _test = test;
             _user = user;
             InitializeComponent();

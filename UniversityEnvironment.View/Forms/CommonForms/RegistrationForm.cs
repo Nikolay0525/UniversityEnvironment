@@ -13,28 +13,27 @@ using MaterialSkin.Controls;
 using UniversityEnvironment.Data.Model.Tables;
 using UniversityEnvironment.Data.Model.MtoMTables;
 using static UniversityEnvironment.View.Utility.AuthorizationHelper;
-using UniversityEnvironment.Data.Repositories;
+using UniversityEnvironment.Data.Repository;
 using static UniversityEnvironment.View.Validator.ViewValidator;
 using UniversityEnvironment.Data.Enums;
 using System.CodeDom;
 using UniversityEnvironment.Data.Model;
 using UniversityEnvironment.Data;
+using static UniversityEnvironment.Data.Repository.MySQLService;
 
 namespace UniversityEnvironment.View.Forms
 {
     public partial class RegistrationForm : MaterialForm
     {
-        private UniversityEnvironmentContext _context;
         public RegistrationForm()
         {
-            _context = new UniversityEnvironmentContext();
             InitializeComponent();
         }
 
         private void RegistrateAccountButton_Click(object sender, EventArgs e)
         {
             #region Validation
-            if (ValidateUserExists(_context, UsernameTextBox.Text))
+            if (ValidateUserExists(UsernameTextBox.Text))
             {
                 MessageBox.Show("Account with such name exist...", "Registration", MessageBoxButtons.OK);
                 return;
@@ -45,15 +44,14 @@ namespace UniversityEnvironment.View.Forms
             {
                 User userToCreate = CreateUser<Admin>(UsernameTextBox.Text, FirstNameTextBox.Text, LastNameTextBox.Text, PasswordTextBox.Text);
                 var admin = userToCreate as Admin;
-                var adminRepo = RepositoryManager.GetRepo<Admin>(_context);
                 ArgumentNullException.ThrowIfNull(admin);
-                if (adminRepo.FindAll().Count() == 0) 
+                if (!FindAll<Admin>().Any()) 
                 {
                     admin.Confirmed = true;
                     MessageBox.Show("You are the first admin and the main, be fair!", "Registration", MessageBoxButtons.OK);
                 }
                 else MessageBox.Show("Request on creating sended", "Registration", MessageBoxButtons.OK);
-                adminRepo.Create(admin);
+                Create<Admin>(admin);
             }
             else if (Teacher.Checked)
             {
@@ -62,7 +60,7 @@ namespace UniversityEnvironment.View.Forms
                 ArgumentNullException.ThrowIfNull(teacher);
                 teacher.ScienceDegree = Microsoft.VisualBasic.Interaction.InputBox("Введіть вашу ступінь:", "Введення тексту", "");
                 teacher.CoursesTeachers = new();
-                RepositoryManager.GetRepo<Teacher>(_context).Create(teacher);
+                Create<Teacher>(teacher);
                 MessageBox.Show("Request on creating sended", "Registration", MessageBoxButtons.OK);
             }
             else
@@ -73,7 +71,7 @@ namespace UniversityEnvironment.View.Forms
                 student.TestsStudents = new();
                 student.CoursesStudents = new();
                 student.QuestionAnswersStudent = new();
-                RepositoryManager.GetRepo<Student>(_context).Create(student);
+                Create<Student>(student);
                 MessageBox.Show("Account successfully created", "Registration", MessageBoxButtons.OK);
             }
         }

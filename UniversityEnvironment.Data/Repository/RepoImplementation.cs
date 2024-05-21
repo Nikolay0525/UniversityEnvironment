@@ -14,25 +14,24 @@ using UniversityEnvironment.Data.Model.Tables;
 
 namespace UniversityEnvironment.Data.Repository
 {
-    public class RepoImplementation<TEntity> : IRepository<TEntity> where TEntity : class
+    public class RepoImplementation<T> : IRepository<T> where T : class
     {
         private UniversityEnvironmentContext _context;
-        //private static RepoImplementation<TEntity>? _instance;
-        private DbSet<TEntity> _objects;
+        private DbSet<T> _objects;
 
         private RepoImplementation(UniversityEnvironmentContext context)
         {
             _context = context;
-            _objects = context.Set<TEntity>();
+            _objects = context.Set<T>();
         }
 
-        public static RepoImplementation<TEntity> GetRepository(UniversityEnvironmentContext context)
+        public static RepoImplementation<T> GetRepository(UniversityEnvironmentContext context)
         {
-            return new RepoImplementation<TEntity>(context);
+            return new RepoImplementation<T>(context);
         }
-        public IEnumerable<TEntity> FindAll(Expression<Func<TEntity, bool>> filter = null)
+        public IEnumerable<T> FindAll(Expression<Func<T, bool>> filter = null)
         {
-            IQueryable<TEntity> query = _objects;
+            IQueryable<T> query = _objects;
 
             if (filter != null)
             {
@@ -41,23 +40,23 @@ namespace UniversityEnvironment.Data.Repository
 
             return [.. query]; 
         }
-        public TEntity? FindByFilter(Expression<Func<TEntity, bool>> filter)
+        public T? FindByFilter(Expression<Func<T, bool>> filter)
         {
             return _objects.FirstOrDefault(filter);
         }
 
-        public TEntity? FindById(Guid id)
+        public T? FindById(Guid id)
         {
             return _objects.Find(id);
         }
 
-        public void Create(TEntity obj)
+        public void Create(T obj)
         {
             if (!_objects.Any(o => o == obj)) _objects.Add(obj);
             _context.SaveChanges();
         }
 
-        public int Create(IEnumerable<TEntity> objects)
+        public int Create(IEnumerable<T> objects)
         {
             int count = 0;
             foreach (var obj in objects)
@@ -71,14 +70,14 @@ namespace UniversityEnvironment.Data.Repository
             return count;
         }
 
-        public TEntity? Update(TEntity obj)
+        public T? Update(T obj)
         {
             _objects.Entry(obj).State = EntityState.Modified;
             _context.SaveChanges();
             return obj;
         }
 
-        public void Remove(TEntity obj)
+        public void Remove(T obj)
         {
             if (_context.Entry(obj).State == EntityState.Detached)
             {
@@ -88,7 +87,7 @@ namespace UniversityEnvironment.Data.Repository
             if (_objects.Any(o => o == obj)) _objects.Remove(obj);
             _context.SaveChanges();
         }
-        public int Remove(IEnumerable<TEntity> objects)
+        public int Remove(IEnumerable<T> objects)
         {
             int count = 0;
             foreach (var obj in objects)

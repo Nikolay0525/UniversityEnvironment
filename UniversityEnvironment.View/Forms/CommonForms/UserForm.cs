@@ -11,7 +11,7 @@ using MaterialSkin;
 using MaterialSkin.Controls;
 using UniversityEnvironment.Data;
 using UniversityEnvironment.Data.Model.Tables;
-using UniversityEnvironment.Data.Repositories;
+using UniversityEnvironment.Data.Repository;
 
 namespace UniversityEnvironment.View.Forms
 {

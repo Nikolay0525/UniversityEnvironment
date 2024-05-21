@@ -1,7 +1,7 @@
 ﻿using UniversityEnvironment.Data.Model;
 using UniversityEnvironment.Data.Repository;
 
-namespace UniversityEnvironment.Data.Repositories
+namespace UniversityEnvironment.Data.Repository
 {
     public static class RepositoryManager
     {

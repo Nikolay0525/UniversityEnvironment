@@ -16,7 +16,6 @@ namespace UniversityEnvironment.View.Forms
 {
     public partial class BaseTestForm : MaterialForm
     {
-        private UniversityEnvironmentContext _context;
         private readonly User? _user;
         private readonly Course? _course;
         private readonly Test? _test;
@@ -26,7 +25,6 @@ namespace UniversityEnvironment.View.Forms
 
         public BaseTestForm(User user, Course course, Test test)
         {
-            _context = new UniversityEnvironmentContext();
             _user = user;
             _course = course;
             _test = test;

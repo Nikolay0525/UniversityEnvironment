@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using UniversityEnvironment.Data.Model.Tables;
-using UniversityEnvironment.Data.Repositories;
+using UniversityEnvironment.Data.Repository;
 using static UniversityEnvironment.View.Utility.ViewHelper;
 using static UniversityEnvironment.View.Utility.AuthorizationHelper;
 using Microsoft.EntityFrameworkCore;

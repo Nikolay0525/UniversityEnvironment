@@ -11,7 +11,7 @@ using MaterialSkin.Controls;
 using UniversityEnvironment.Data.Model.Tables;
 using MaterialSkin;
 using UniversityEnvironment.Data.Model;
-using UniversityEnvironment.Data.Repositories;
+using UniversityEnvironment.Data.Repository;
 using static UniversityEnvironment.View.Utility.AuthorizationHelper;
 using UniversityEnvironment.Data.Enums;
 using UniversityEnvironment.Data;

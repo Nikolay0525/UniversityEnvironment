@@ -9,7 +9,7 @@ using static UniversityEnvironment.View.Utility.Constants;
 using static System.Net.Mime.MediaTypeNames;
 using UniversityEnvironment.Data.Repository;
 using static System.Runtime.InteropServices.JavaScript.JSType;
-using UniversityEnvironment.Data.Repositories;
+using static UniversityEnvironment.Data.Repository.MySQLService;
 using UniversityEnvironment.Data;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.VisualBasic.Devices;
@@ -84,21 +84,21 @@ namespace UniversityEnvironment.View.Utility
                 table.Rows.Add(course.Name, course.FacultyName);
             }
         }
-        internal static void UpdateTableWithActualCourses<T>(UniversityEnvironmentContext context, DataGridView table, User user) where T : CourseUser
+        internal static void UpdateTableWithActualCourses<T>(DataGridView table, User user) where T : CourseUser
         {
             table.Rows.Clear();
-            var courseList = RepositoryManager.GetRepo<Course>(context).FindAll().ToList();
-            List<T> courseUser = RepositoryManager.GetRepo<T>(context).FindAll(u => u.UserId == user.Id).ToList();
+            var courseList = FindAll<Course>().ToList();
+            List<T> courseUser = FindAll<T>(u => u.UserId == user.Id).ToList();
             courseList.RemoveAll(course => !courseUser.Any(cu => cu.CourseId == course.Id));
             ArgumentNullException.ThrowIfNull(courseList);
             ActualCoursesTableAddRows(table, courseList);
         }
 
-        internal static void UserCourseOperation<T, Q>(UniversityEnvironmentContext context, DataGridView table, User user, CourseOperation @op) where T : CourseUser, new() where Q : User
+        internal static void UserCourseOperation<T, Q>(DataGridView table, User user, CourseOperation @op) where T : CourseUser, new() where Q : User
         {
-            List<Course> courses = RepositoryManager.GetRepo<Course>(context).FindAll().ToList();
+            List<Course> courses = FindAll<Course>().ToList();
             var userCourses = new List<T>();
-            var foundedUser = RepositoryManager.GetRepo<Q>(context).FindById(user.Id);
+            var foundedUser = FindById<Q>(user.Id);
             ArgumentNullException.ThrowIfNull(foundedUser);
             for (int i = 0; i < courses.Count; i++)
             {
@@ -110,22 +110,22 @@ namespace UniversityEnvironment.View.Utility
             }
             if (@op == 0)
             {
-                var count = RepositoryManager.GetRepo<T>(context).Create(userCourses);
+                var count = Create<T>(userCourses);
                 if (count == 0) return;
                 MessageBox.Show("Successfully signed on courses!", "Environment", MessageBoxButtons.OK);
             }
             else
             {
-                var count = RepositoryManager.GetRepo<T>(context).Remove(userCourses);
+                var count = Remove<T>(userCourses);
                 if (count == 0) return;
                 MessageBox.Show("Successfully unsigned from courses!", "Environment", MessageBoxButtons.OK);
             }
         }
-        internal static void UpdateTeacherTable(UniversityEnvironmentContext context, DataGridView table, Course course)
+        internal static void UpdateTeacherTable(DataGridView table, Course course)
         {
             List<Teacher> teachers = new List<Teacher>();
-            List<Teacher> allTeachers = RepositoryManager.GetRepo<Teacher>(context).FindAll().ToList();
-            List<CourseTeacher> coursesTeachers = RepositoryManager.GetRepo<CourseTeacher>(context).FindAll(ct => ct.CourseId == course.Id).ToList();
+            List<Teacher> allTeachers = FindAll<Teacher>().ToList();
+            List<CourseTeacher> coursesTeachers = FindAll<CourseTeacher>(ct => ct.CourseId == course.Id).ToList();
 
             foreach (var courseTeacher in coursesTeachers)
             {
@@ -134,9 +134,9 @@ namespace UniversityEnvironment.View.Utility
             }
             teachers.ForEach(t => table.Rows.Add(t.FirstName + " " + t.LastName));
         }
-        internal static void UpdateTestsTable(UniversityEnvironmentContext context, DataGridView table, Course course)
+        internal static void UpdateTestsTable(DataGridView table, Course course)
         {
-            var tests = context.Tests.Where(t => t.CourseId == course.Id);
+            var tests = FindAll<Test>(t => t.CourseId == course.Id);
             if (tests == null) return;
             table.Rows.Clear();
             foreach (var test in tests) { table.Rows.Add(false, test.Name, test.Description); }
@@ -144,30 +144,30 @@ namespace UniversityEnvironment.View.Utility
         }
         #endregion
         #region ClickOnMethods
-        internal static void ClickOnCourse(UniversityEnvironmentContext context,MaterialForm form,DataGridView table, DataGridViewCellEventArgs e, User user)
+        internal static void ClickOnCourse(MaterialForm form,DataGridView table, DataGridViewCellEventArgs e, User user)
         {
             if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
             {
                 DataGridViewRow selectedRow = table.Rows[e.RowIndex];
                 string? selectedCourse = selectedRow.Cells["ActualColumnCourse"].Value.ToString();
                 if (selectedCourse == null) return;
-                var course = RepositoryManager.GetRepo<Course>(context).FindByFilter(c => c.Name == selectedCourse);
+                var course = FindByFilter<Course>(c => c.Name == selectedCourse);
                 if (course == null) return;
                 ShowNextForm(form, new View.Forms.BaseCourseForm(user, course));
             }
         }
-        internal static void ClickOnTest(UniversityEnvironmentContext context, MaterialForm form,DataGridView table, DataGridViewCellEventArgs e, User user, Course course)
+        internal static void ClickOnTest(MaterialForm form,DataGridView table, DataGridViewCellEventArgs e, User user, Course course)
         {
             if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
             {
                 DataGridViewRow selectedRow = table.Rows[e.RowIndex];
                 string? selectedTest = selectedRow.Cells["TestName"].Value.ToString();
-                var test = RepositoryManager.GetRepo<Test>(context).FindByFilter(t => t.CourseId == course.Id);
+                var test = FindByFilter<Test>(t => t.CourseId == course.Id);
                 if (test == null) return;
                 ShowNextForm(form, new View.Forms.BaseTestForm(user, course, test));
             }
         }
-        internal static void ClickOnQuestion(UniversityEnvironmentContext context, MaterialForm form, DataGridView table,DataGridViewCellEventArgs e, User user ,Course course,Test test)
+        internal static void ClickOnQuestion(MaterialForm form, DataGridView table,DataGridViewCellEventArgs e, User user ,Course course,Test test)
         {
             if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
             {
@@ -176,7 +176,7 @@ namespace UniversityEnvironment.View.Utility
                 TestQuestion? question = null;
                 if(selectedQuestion != null && Guid.TryParse(selectedQuestion, out Guid result))
                 {
-                    question = RepositoryManager.GetRepo<TestQuestion>(context).FindByFilter(q => q.Id == result);
+                    question = FindByFilter<TestQuestion>(q => q.Id == result);
                 }
                 if (question == null) return;
                 ShowNextForm(form, new View.Forms.BaseTestForm(user, course, test));
