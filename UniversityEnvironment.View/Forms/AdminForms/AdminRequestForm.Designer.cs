@@ -31,12 +31,14 @@
             CloseButton = new Button();
             DeclineButton = new Button();
             AcceptButton = new Button();
-            label1 = new Label();
-            label2 = new Label();
-            UsernameText = new Label();
-            FullNameText = new Label();
-            RoleText = new Label();
-            label9 = new Label();
+            UsernameLabel = new Label();
+            FullNameLabel = new Label();
+            UsernameBox = new Label();
+            FullNameBox = new Label();
+            RoleBox = new Label();
+            RoleLabel = new Label();
+            ScienceDegreeBox = new Label();
+            ScienceDegreeLabel = new Label();
             SuspendLayout();
             // 
             // CloseButton
@@ -75,71 +77,91 @@
             AcceptButton.UseVisualStyleBackColor = false;
             AcceptButton.Click += AcceptButton_Click;
             // 
-            // label1
+            // UsernameLabel
             // 
-            label1.AutoSize = true;
-            label1.BackColor = SystemColors.ControlLightLight;
-            label1.Location = new Point(47, 95);
-            label1.Name = "label1";
-            label1.Size = new Size(80, 20);
-            label1.TabIndex = 1;
-            label1.Text = "Username";
+            UsernameLabel.AutoSize = true;
+            UsernameLabel.BackColor = SystemColors.ControlLightLight;
+            UsernameLabel.Location = new Point(47, 77);
+            UsernameLabel.Name = "UsernameLabel";
+            UsernameLabel.Size = new Size(80, 20);
+            UsernameLabel.TabIndex = 1;
+            UsernameLabel.Text = "Username";
             // 
-            // label2
+            // FullNameLabel
             // 
-            label2.AutoSize = true;
-            label2.BackColor = SystemColors.ControlLightLight;
-            label2.Location = new Point(114, 168);
-            label2.Name = "label2";
-            label2.Size = new Size(79, 20);
-            label2.TabIndex = 2;
-            label2.Text = "Full name";
+            FullNameLabel.AutoSize = true;
+            FullNameLabel.BackColor = SystemColors.ControlLightLight;
+            FullNameLabel.Location = new Point(114, 139);
+            FullNameLabel.Name = "FullNameLabel";
+            FullNameLabel.Size = new Size(79, 20);
+            FullNameLabel.TabIndex = 2;
+            FullNameLabel.Text = "Full name";
             // 
-            // UsernameText
+            // UsernameBox
             // 
-            UsernameText.BackColor = SystemColors.Control;
-            UsernameText.Location = new Point(29, 125);
-            UsernameText.Name = "UsernameText";
-            UsernameText.Size = new Size(116, 24);
-            UsernameText.TabIndex = 4;
+            UsernameBox.BackColor = SystemColors.Control;
+            UsernameBox.Location = new Point(29, 97);
+            UsernameBox.Name = "UsernameBox";
+            UsernameBox.Size = new Size(116, 24);
+            UsernameBox.TabIndex = 4;
             // 
-            // FullNameText
+            // FullNameBox
             // 
-            FullNameText.BackColor = SystemColors.Control;
-            FullNameText.Location = new Point(29, 199);
-            FullNameText.Name = "FullNameText";
-            FullNameText.Size = new Size(247, 24);
-            FullNameText.TabIndex = 4;
+            FullNameBox.BackColor = SystemColors.Control;
+            FullNameBox.Location = new Point(29, 159);
+            FullNameBox.Name = "FullNameBox";
+            FullNameBox.Size = new Size(247, 24);
+            FullNameBox.TabIndex = 4;
             // 
-            // RoleText
+            // RoleBox
             // 
-            RoleText.BackColor = SystemColors.Control;
-            RoleText.Location = new Point(163, 125);
-            RoleText.Name = "RoleText";
-            RoleText.Size = new Size(113, 24);
-            RoleText.TabIndex = 4;
+            RoleBox.BackColor = SystemColors.Control;
+            RoleBox.Location = new Point(163, 97);
+            RoleBox.Name = "RoleBox";
+            RoleBox.Size = new Size(113, 24);
+            RoleBox.TabIndex = 4;
             // 
-            // label9
+            // RoleLabel
             // 
-            label9.AutoSize = true;
-            label9.BackColor = SystemColors.ControlLightLight;
-            label9.Location = new Point(200, 95);
-            label9.Name = "label9";
-            label9.Size = new Size(40, 20);
-            label9.TabIndex = 1;
-            label9.Text = "Role";
+            RoleLabel.AutoSize = true;
+            RoleLabel.BackColor = SystemColors.ControlLightLight;
+            RoleLabel.Location = new Point(200, 77);
+            RoleLabel.Name = "RoleLabel";
+            RoleLabel.Size = new Size(40, 20);
+            RoleLabel.TabIndex = 1;
+            RoleLabel.Text = "Role";
+            // 
+            // ScienceDegreeBox
+            // 
+            ScienceDegreeBox.BackColor = SystemColors.Control;
+            ScienceDegreeBox.Location = new Point(29, 214);
+            ScienceDegreeBox.Name = "ScienceDegreeBox";
+            ScienceDegreeBox.Size = new Size(247, 24);
+            ScienceDegreeBox.TabIndex = 4;
+            // 
+            // ScienceDegreeLabel
+            // 
+            ScienceDegreeLabel.AutoSize = true;
+            ScienceDegreeLabel.BackColor = SystemColors.ControlLightLight;
+            ScienceDegreeLabel.Location = new Point(99, 194);
+            ScienceDegreeLabel.Name = "ScienceDegreeLabel";
+            ScienceDegreeLabel.Size = new Size(114, 20);
+            ScienceDegreeLabel.TabIndex = 2;
+            ScienceDegreeLabel.Text = "Science degree";
             // 
             // AdminRequestForm
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(304, 368);
-            Controls.Add(FullNameText);
-            Controls.Add(RoleText);
-            Controls.Add(UsernameText);
-            Controls.Add(label9);
-            Controls.Add(label2);
-            Controls.Add(label1);
+            Controls.Add(ScienceDegreeBox);
+            Controls.Add(FullNameBox);
+            Controls.Add(RoleBox);
+            Controls.Add(UsernameBox);
+            Controls.Add(RoleLabel);
+            Controls.Add(ScienceDegreeLabel);
+            Controls.Add(FullNameLabel);
+            Controls.Add(UsernameLabel);
             Controls.Add(AcceptButton);
             Controls.Add(DeclineButton);
             Controls.Add(CloseButton);
@@ -156,11 +178,13 @@
         private Button CloseButton;
         private Button DeclineButton;
         private new Button AcceptButton;
-        private Label label1;
-        private Label label2;
-        private Label UsernameText;
-        private Label FullNameText;
-        private Label RoleText;
-        private Label label9;
+        private Label UsernameLabel;
+        private Label FullNameLabel;
+        private Label UsernameBox;
+        private Label FullNameBox;
+        private Label RoleBox;
+        private Label RoleLabel;
+        private Label ScienceDegreeBox;
+        private Label ScienceDegreeLabel;
     }
 }

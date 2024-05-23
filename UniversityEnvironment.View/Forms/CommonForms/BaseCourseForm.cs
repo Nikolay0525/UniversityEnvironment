@@ -10,8 +10,10 @@ using System.Windows.Forms;
 using MaterialSkin;
 using MaterialSkin.Controls;
 using UniversityEnvironment.Data;
+using UniversityEnvironment.View.Forms.AdminForms;
 using UniversityEnvironment.Data.Model.Tables;
-using UniversityEnvironment.Data.Repository;
+using static UniversityEnvironment.View.Utility.AdminViewHelper;
+
 using static UniversityEnvironment.View.Utility.ViewHelper;
 
 namespace UniversityEnvironment.View.Forms
@@ -38,12 +40,22 @@ namespace UniversityEnvironment.View.Forms
         }
         private void TestsTable_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            ClickOnTest(this, TestsTable, e, _user, _course);
+            ClickOnTest(1, this, TestsTable, e, _user, _course);
         }
 
         private void CloseButton_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void CreateButton_Click(object sender, EventArgs e)
+        {
+            ShowNextFormUpdateTestTable(this, new TestCreatorForm(_course), TestsTable, _course); 
+        }
+
+        private void DeleteTestButton_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

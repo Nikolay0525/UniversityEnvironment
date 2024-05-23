@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using UniversityEnvironment.Data.Model.Tables;
 using UniversityEnvironment.Data.Model.MtoMTables;
-using UniversityEnvironment.Data.Repository;
 using UniversityEnvironment.Data;
+using static UniversityEnvironment.Data.Service.MySqlService;
 
 namespace UniversityEnvironment.View.Validator
 {
@@ -17,9 +17,7 @@ namespace UniversityEnvironment.View.Validator
             using UniversityEnvironmentContext context = new();
             bool UserExistsInRepo<T>(UniversityEnvironmentContext context, string name) where T : User
             {
-                return RepositoryManager
-                    .GetRepo<T>(context)
-                    .FindByFilter(u => u.Username == name) != null;
+                return FindByFilter<T>(u => u.Username == name) != null;
             }
 
             return UserExistsInRepo<Admin>(context, userName) ||

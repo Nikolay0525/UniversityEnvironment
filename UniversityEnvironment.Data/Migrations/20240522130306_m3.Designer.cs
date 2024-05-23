@@ -12,8 +12,8 @@ using UniversityEnvironment.Data;
 namespace UniversityEnvironment.Data.Migrations
 {
     [DbContext(typeof(UniversityEnvironmentContext))]
-    [Migration("20240519201901_m6")]
-    partial class m6
+    [Migration("20240522130306_m3")]
+    partial class m3
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -94,6 +94,9 @@ namespace UniversityEnvironment.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
+                    b.Property<bool>("CanChangePassword")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<bool>("Confirmed")
                         .HasColumnType("tinyint(1)");
 
@@ -162,6 +165,9 @@ namespace UniversityEnvironment.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
+                    b.Property<bool>("CanChangePassword")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<bool>("Confirmed")
                         .HasColumnType("tinyint(1)");
 
@@ -198,6 +204,9 @@ namespace UniversityEnvironment.Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
+
+                    b.Property<bool>("CanChangePassword")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("Confirmed")
                         .HasColumnType("tinyint(1)");

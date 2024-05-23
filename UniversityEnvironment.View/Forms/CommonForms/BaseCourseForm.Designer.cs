@@ -33,6 +33,8 @@
             CloseButton = new Button();
             JournalButton = new Button();
             TestsTable = new DataGridView();
+            DeleteTestButton = new Button();
+            CreateTestButton = new Button();
             CheckColumn = new DataGridViewCheckBoxColumn();
             TestName = new DataGridViewTextBoxColumn();
             TestDescription = new DataGridViewTextBoxColumn();
@@ -55,10 +57,10 @@
             // 
             // UserName
             // 
+            UserName.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             UserName.HeaderText = "Course teachers";
             UserName.Name = "UserName";
             UserName.ReadOnly = true;
-            UserName.Width = 150;
             // 
             // CloseButton
             // 
@@ -86,6 +88,8 @@
             // 
             // TestsTable
             // 
+            TestsTable.AllowUserToAddRows = false;
+            TestsTable.AllowUserToDeleteRows = false;
             TestsTable.BackgroundColor = SystemColors.Control;
             TestsTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             TestsTable.Columns.AddRange(new DataGridViewColumn[] { CheckColumn, TestName, TestDescription });
@@ -95,31 +99,56 @@
             TestsTable.TabIndex = 2;
             TestsTable.CellContentClick += TestsTable_CellContentClick;
             // 
+            // DeleteTestButton
+            // 
+            DeleteTestButton.BackColor = SystemColors.ControlLightLight;
+            DeleteTestButton.FlatStyle = FlatStyle.Flat;
+            DeleteTestButton.Location = new Point(316, 394);
+            DeleteTestButton.Name = "DeleteTestButton";
+            DeleteTestButton.Size = new Size(272, 35);
+            DeleteTestButton.TabIndex = 4;
+            DeleteTestButton.Text = "Delete test";
+            DeleteTestButton.UseVisualStyleBackColor = false;
+            DeleteTestButton.Click += DeleteTestButton_Click;
+            // 
+            // CreateTestButton
+            // 
+            CreateTestButton.BackColor = SystemColors.ControlLightLight;
+            CreateTestButton.FlatStyle = FlatStyle.Flat;
+            CreateTestButton.Location = new Point(11, 394);
+            CreateTestButton.Name = "CreateTestButton";
+            CreateTestButton.Size = new Size(299, 35);
+            CreateTestButton.TabIndex = 5;
+            CreateTestButton.Text = "Create test";
+            CreateTestButton.UseVisualStyleBackColor = false;
+            CreateTestButton.Click += CreateButton_Click;
+            // 
             // CheckColumn
             // 
+            CheckColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             CheckColumn.HeaderText = "";
+            CheckColumn.MinimumWidth = 21;
             CheckColumn.Name = "CheckColumn";
-            CheckColumn.ReadOnly = true;
-            CheckColumn.Width = 20;
+            CheckColumn.Width = 21;
             // 
             // TestName
             // 
             TestName.HeaderText = "Test";
             TestName.Name = "TestName";
-            TestName.Width = 103;
             // 
             // TestDescription
             // 
+            TestDescription.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             TestDescription.HeaderText = "Description";
             TestDescription.Name = "TestDescription";
-            TestDescription.ReadOnly = true;
-            TestDescription.Width = 210;
             // 
             // BaseCourseForm
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(600, 400);
+            ClientSize = new Size(600, 435);
+            Controls.Add(DeleteTestButton);
+            Controls.Add(CreateTestButton);
             Controls.Add(TestsTable);
             Controls.Add(JournalButton);
             Controls.Add(CloseButton);
@@ -137,8 +166,10 @@
         private DataGridView TeacherTable;
         private Button CloseButton;
         private Button JournalButton;
-        private DataGridViewTextBoxColumn UserName;
         private DataGridView TestsTable;
+        private Button DeleteTestButton;
+        private Button CreateTestButton;
+        private DataGridViewTextBoxColumn UserName;
         private DataGridViewCheckBoxColumn CheckColumn;
         private DataGridViewTextBoxColumn TestName;
         private DataGridViewTextBoxColumn TestDescription;

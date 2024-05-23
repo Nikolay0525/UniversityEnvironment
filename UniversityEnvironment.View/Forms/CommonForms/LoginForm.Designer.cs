@@ -162,6 +162,7 @@
             ForgetButton.TabIndex = 12;
             ForgetButton.Text = "Forget Password";
             ForgetButton.UseVisualStyleBackColor = false;
+            ForgetButton.Click += ForgetButton_Click;
             // 
             // LoginForm
             // 

@@ -9,7 +9,8 @@ namespace UniversityEnvironment.Data.Model.Tables
 {
     public class User : EnvironmentObject
     {
-        private bool _forgetpassword = false;
+        private bool _forgetPassword = false;
+        private bool _canChangePassword = false;
         public string? Username { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
@@ -18,8 +19,13 @@ namespace UniversityEnvironment.Data.Model.Tables
         public virtual bool Confirmed { get; set; } = true;
         public bool ForgetPassword
         {
-            get => _forgetpassword;
-            set { if (Confirmed == true) _forgetpassword = value; }
+            get => _forgetPassword;
+            set { if (Confirmed == true) _forgetPassword = value; }
+        }
+        public bool CanChangePassword
+        {
+            get => _canChangePassword;
+            set { if (_forgetPassword == true) _canChangePassword = value; }
         }
     }
 }

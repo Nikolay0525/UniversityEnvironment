@@ -5,27 +5,27 @@
 namespace UniversityEnvironment.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class m2 : Migration
+    public partial class m3 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<bool>(
-                name: "ForgetPassword",
+                name: "CanChangePassword",
                 table: "Teachers",
                 type: "tinyint(1)",
                 nullable: false,
                 defaultValue: false);
 
             migrationBuilder.AddColumn<bool>(
-                name: "ForgetPassword",
+                name: "CanChangePassword",
                 table: "Students",
                 type: "tinyint(1)",
                 nullable: false,
                 defaultValue: false);
 
             migrationBuilder.AddColumn<bool>(
-                name: "ForgetPassword",
+                name: "CanChangePassword",
                 table: "Admins",
                 type: "tinyint(1)",
                 nullable: false,
@@ -36,15 +36,15 @@ namespace UniversityEnvironment.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "ForgetPassword",
+                name: "CanChangePassword",
                 table: "Teachers");
 
             migrationBuilder.DropColumn(
-                name: "ForgetPassword",
+                name: "CanChangePassword",
                 table: "Students");
 
             migrationBuilder.DropColumn(
-                name: "ForgetPassword",
+                name: "CanChangePassword",
                 table: "Admins");
         }
     }

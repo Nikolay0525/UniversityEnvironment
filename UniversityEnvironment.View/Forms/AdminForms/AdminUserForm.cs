@@ -8,22 +8,27 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using UniversityEnvironment.Data.Model.Tables;
-using UniversityEnvironment.Data.Repository;
-using UniversityEnvironment.Data.Repository;
+
+using static UniversityEnvironment.Data.Service.MySqlService;
 
 namespace UniversityEnvironment.View.Forms.AdminForms
 {
     public partial class AdminUserForm : UserForm
     {
+        public AdminUserForm() : base()
+        {
+            InitializeComponent();
+        }
         public AdminUserForm(User user) : base(user)
         {
             InitializeComponent();
         }
         private void FindAndRemove<T>(Guid id) where T : User
         {
-            List<T> users = RepositoryManager.GetRepo<T>(_context).FindAll().ToList();
+            List<T> users = FindAll<T>().ToList();
             T? user = users.FirstOrDefault(a => a.Id == id);
-            if (user != null) users.Remove(user);
+            if (user != null) Remove<T>(user);
+            Close();
         }
         private void DeleteButton_Click(object sender, EventArgs e)
         {

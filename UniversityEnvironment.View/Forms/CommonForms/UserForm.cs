@@ -11,30 +11,40 @@ using MaterialSkin;
 using MaterialSkin.Controls;
 using UniversityEnvironment.Data;
 using UniversityEnvironment.Data.Model.Tables;
-using UniversityEnvironment.Data.Repository;
+using static UniversityEnvironment.Data.Service.MySqlService;
 
 namespace UniversityEnvironment.View.Forms
 {
     public partial class UserForm : MaterialForm
     {
-        protected UniversityEnvironmentContext _context;
         protected User _user;
+        public UserForm()
+        {
+
+        }
         public UserForm(User user)
         {
-            _context = new UniversityEnvironmentContext();
-            _user = user;
             InitializeComponent();
-            NameLabel.Text = user.FirstName;
-            SurnameLabel.Text = user.LastName;
-            RoleLabel.Text = user.Role.ToString();
+            _user = user;
+            NameBox.Text = user.FirstName;
+            SurnameBox.Text = user.LastName;
+            RoleBox.Text = user.Role.ToString();
             if (user.Role == Data.Enums.Role.Teacher)
             {
-                ScienceDegreeLabel.Show();
-                var teacher = RepositoryManager.GetRepo<Teacher>(_context).FindById(user.Id);
+                var teacher = FindByFilter<Teacher>(t => t.Id == user.Id);
                 ArgumentNullException.ThrowIfNull(teacher);
-                ScienceDegreeLabel.Text = teacher.ScienceDegree;
+                ScienceDegreeBox.Text = teacher.ScienceDegree;
             }
-            else { ScienceDegreeLabel.Hide(); }
+            else
+            {
+                ScienceDegreeBox.Hide();
+                ScienceDegreeLabel.Hide();
+            }
+        }
+
+        private void CloseButton_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }

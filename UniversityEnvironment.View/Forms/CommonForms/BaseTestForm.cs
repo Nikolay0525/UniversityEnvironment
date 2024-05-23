@@ -11,30 +11,41 @@ using MaterialSkin;
 using MaterialSkin.Controls;
 using UniversityEnvironment.Data;
 using UniversityEnvironment.Data.Model.Tables;
+using UniversityEnvironment.View.Forms.AdminForms;
+using static UniversityEnvironment.View.Utility.AdminViewHelper;
+using static UniversityEnvironment.View.Utility.ViewHelper;
 
 namespace UniversityEnvironment.View.Forms
 {
     public partial class BaseTestForm : MaterialForm
     {
-        private readonly User? _user;
-        private readonly Course? _course;
-        private readonly Test? _test;
-        private readonly List<QuestionAnswer>? _answers;
-        private readonly List<TestQuestion>? _questions;
-        private List<List<bool>>? _questionsAnswers;
+        private readonly User _user;
+        private readonly Course _course;
+        private readonly Test _test;
 
         public BaseTestForm(User user, Course course, Test test)
         {
+            Text = course.Name;
             _user = user;
             _course = course;
             _test = test;
             InitializeComponent();
-            Text = course.Name;
+            UpdateQuestionTable(QuestionTable,_test);
         }
 
         private void CloseButton_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void CreateQuestionButton_Click(object sender, EventArgs e)
+        {
+            CreateQuestion(_test, UpdateQuestionTable, QuestionTable, _test);
+        }
+
+        private void QuestionTable_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            ClickOnQuestion(1, this, QuestionTable, e, _user, _course, _test);
         }
     }
 }

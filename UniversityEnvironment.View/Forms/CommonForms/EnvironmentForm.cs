@@ -6,8 +6,8 @@ using System.Xml.Linq;
 using UniversityEnvironment.View.Utility;
 using System.Collections.Generic;
 using static UniversityEnvironment.View.Validator.ViewValidator;
-using UniversityEnvironment.Data.Repository;
-using static UniversityEnvironment.Data.Repository.MySQLService;
+
+using static UniversityEnvironment.Data.Service.MySqlService;
 using static UniversityEnvironment.View.Utility.ViewHelper;
 using UniversityEnvironment.View.Enums;
 using UniversityEnvironment.Data.Enums;
@@ -29,7 +29,7 @@ namespace UniversityEnvironment.View.Forms
             InitializeComponent();
             PersonName.Text = user.FirstName + " " + user.LastName;
             PersonRole.Text = user.Role.ToString();
-            AvailableCoursesTableAddRows(AvailableCoursesTable, FindAll<Course>().ToList());
+            AvailableCoursesTableUpdate(AvailableCoursesTable, FindAll<Course>().ToList());
             if(_user.Role == Role.Teacher) UpdateTableWithActualCourses<CourseTeacher>(ActualCoursesTable, user);
             else UpdateTableWithActualCourses<CourseStudent>(ActualCoursesTable, user);
         }
@@ -68,7 +68,7 @@ namespace UniversityEnvironment.View.Forms
 
         private void ActualCoursesTable_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            ClickOnCourse(this,ActualCoursesTable,e,_user);
+            ClickOnCourse(0, this, ActualCoursesTable,e,_user);
         }
 
         private void CloseButton_Click(object sender, EventArgs e)

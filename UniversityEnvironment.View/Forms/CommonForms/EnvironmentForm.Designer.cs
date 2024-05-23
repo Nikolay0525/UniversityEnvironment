@@ -30,12 +30,15 @@
         {
             tabControl1 = new TabControl();
             tabPage1 = new TabPage();
+            button2 = new Button();
+            button1 = new Button();
+            label3 = new Label();
             CloseButton = new Button();
             PersonRole = new Label();
             PersonName = new Label();
             ActualCoursesTable = new DataGridView();
-            ActualColumnCourse = new DataGridViewTextBoxColumn();
-            ActualColumnFaculty = new DataGridViewTextBoxColumn();
+            CourseColumn = new DataGridViewTextBoxColumn();
+            FacultyColumn = new DataGridViewTextBoxColumn();
             label2 = new Label();
             label1 = new Label();
             pictureBox1 = new PictureBox();
@@ -45,14 +48,15 @@
             SignButton = new Button();
             AvailableCoursesTable = new DataGridView();
             RowCheck = new DataGridViewCheckBoxColumn();
-            CourseColumn = new DataGridViewTextBoxColumn();
-            FacultyColumn = new DataGridViewTextBoxColumn();
+            AvailableCourseColumn = new DataGridViewTextBoxColumn();
+            AvailableFacultyColumn = new DataGridViewTextBoxColumn();
             tabPage3 = new TabPage();
             dataGridView1 = new DataGridView();
             InitialsColumn = new DataGridViewTextBoxColumn();
             FromCourseColumn = new DataGridViewTextBoxColumn();
             MessageColumn = new DataGridViewTextBoxColumn();
-            label3 = new Label();
+            button3 = new Button();
+            button4 = new Button();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)ActualCoursesTable).BeginInit();
@@ -79,6 +83,8 @@
             // 
             // tabPage1
             // 
+            tabPage1.Controls.Add(button2);
+            tabPage1.Controls.Add(button1);
             tabPage1.Controls.Add(label3);
             tabPage1.Controls.Add(CloseButton);
             tabPage1.Controls.Add(PersonRole);
@@ -95,12 +101,41 @@
             tabPage1.Text = "Profile";
             tabPage1.UseVisualStyleBackColor = true;
             // 
+            // button2
+            // 
+            button2.FlatStyle = FlatStyle.Flat;
+            button2.Location = new Point(486, 263);
+            button2.Name = "button2";
+            button2.Size = new Size(99, 35);
+            button2.TabIndex = 7;
+            button2.Text = "=>";
+            button2.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            button1.FlatStyle = FlatStyle.Flat;
+            button1.Location = new Point(171, 261);
+            button1.Name = "button1";
+            button1.Size = new Size(116, 37);
+            button1.TabIndex = 6;
+            button1.Text = "<=";
+            button1.UseVisualStyleBackColor = true;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(315, 3);
+            label3.Name = "label3";
+            label3.Size = new Size(101, 20);
+            label3.TabIndex = 5;
+            label3.Text = "Your courses";
+            // 
             // CloseButton
             // 
             CloseButton.FlatStyle = FlatStyle.Flat;
-            CloseButton.Location = new Point(171, 265);
+            CloseButton.Location = new Point(293, 261);
             CloseButton.Name = "CloseButton";
-            CloseButton.Size = new Size(415, 35);
+            CloseButton.Size = new Size(187, 37);
             CloseButton.TabIndex = 4;
             CloseButton.Text = "Sign out";
             CloseButton.UseVisualStyleBackColor = true;
@@ -128,7 +163,7 @@
             ActualCoursesTable.AllowUserToDeleteRows = false;
             ActualCoursesTable.BackgroundColor = SystemColors.Control;
             ActualCoursesTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            ActualCoursesTable.Columns.AddRange(new DataGridViewColumn[] { ActualColumnCourse, ActualColumnFaculty });
+            ActualCoursesTable.Columns.AddRange(new DataGridViewColumn[] { CourseColumn, FacultyColumn });
             ActualCoursesTable.Location = new Point(171, 26);
             ActualCoursesTable.Name = "ActualCoursesTable";
             ActualCoursesTable.ReadOnly = true;
@@ -136,19 +171,19 @@
             ActualCoursesTable.TabIndex = 2;
             ActualCoursesTable.CellContentClick += ActualCoursesTable_CellContentClick;
             // 
-            // ActualColumnCourse
+            // CourseColumn
             // 
-            ActualColumnCourse.HeaderText = "Course";
-            ActualColumnCourse.Name = "ActualColumnCourse";
-            ActualColumnCourse.ReadOnly = true;
-            ActualColumnCourse.Width = 150;
+            CourseColumn.HeaderText = "Course";
+            CourseColumn.Name = "CourseColumn";
+            CourseColumn.ReadOnly = true;
+            CourseColumn.Width = 150;
             // 
-            // ActualColumnFaculty
+            // FacultyColumn
             // 
-            ActualColumnFaculty.HeaderText = "Faculty";
-            ActualColumnFaculty.Name = "ActualColumnFaculty";
-            ActualColumnFaculty.ReadOnly = true;
-            ActualColumnFaculty.Width = 220;
+            FacultyColumn.HeaderText = "Faculty";
+            FacultyColumn.Name = "FacultyColumn";
+            FacultyColumn.ReadOnly = true;
+            FacultyColumn.Width = 220;
             // 
             // label2
             // 
@@ -162,11 +197,11 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(59, 182);
+            label1.Location = new Point(50, 182);
             label1.Name = "label1";
-            label1.Size = new Size(51, 20);
+            label1.Size = new Size(79, 20);
             label1.TabIndex = 1;
-            label1.Text = "Name";
+            label1.Text = "Full name";
             // 
             // pictureBox1
             // 
@@ -183,6 +218,8 @@
             // 
             // tabPage2
             // 
+            tabPage2.Controls.Add(button4);
+            tabPage2.Controls.Add(button3);
             tabPage2.Controls.Add(label4);
             tabPage2.Controls.Add(UnsignButton);
             tabPage2.Controls.Add(SignButton);
@@ -208,7 +245,7 @@
             // 
             UnsignButton.BackColor = SystemColors.ControlLightLight;
             UnsignButton.FlatStyle = FlatStyle.Flat;
-            UnsignButton.Location = new Point(8, 190);
+            UnsignButton.Location = new Point(8, 132);
             UnsignButton.Name = "UnsignButton";
             UnsignButton.Size = new Size(158, 106);
             UnsignButton.TabIndex = 4;
@@ -222,7 +259,7 @@
             SignButton.FlatStyle = FlatStyle.Flat;
             SignButton.Location = new Point(8, 28);
             SignButton.Name = "SignButton";
-            SignButton.Size = new Size(158, 156);
+            SignButton.Size = new Size(158, 98);
             SignButton.TabIndex = 4;
             SignButton.Text = "Sign on courses";
             SignButton.UseVisualStyleBackColor = false;
@@ -234,7 +271,7 @@
             AvailableCoursesTable.AllowUserToDeleteRows = false;
             AvailableCoursesTable.BackgroundColor = SystemColors.Control;
             AvailableCoursesTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            AvailableCoursesTable.Columns.AddRange(new DataGridViewColumn[] { RowCheck, CourseColumn, FacultyColumn });
+            AvailableCoursesTable.Columns.AddRange(new DataGridViewColumn[] { RowCheck, AvailableCourseColumn, AvailableFacultyColumn });
             AvailableCoursesTable.Location = new Point(172, 28);
             AvailableCoursesTable.Name = "AvailableCoursesTable";
             AvailableCoursesTable.Size = new Size(414, 268);
@@ -248,17 +285,17 @@
             RowCheck.SortMode = DataGridViewColumnSortMode.Automatic;
             RowCheck.Width = 20;
             // 
-            // CourseColumn
+            // AvailableCourseColumn
             // 
-            CourseColumn.HeaderText = "Course";
-            CourseColumn.Name = "CourseColumn";
-            CourseColumn.Width = 150;
+            AvailableCourseColumn.HeaderText = "Course";
+            AvailableCourseColumn.Name = "AvailableCourseColumn";
+            AvailableCourseColumn.Width = 150;
             // 
-            // FacultyColumn
+            // AvailableFacultyColumn
             // 
-            FacultyColumn.HeaderText = "Faculty";
-            FacultyColumn.Name = "FacultyColumn";
-            FacultyColumn.Width = 200;
+            AvailableFacultyColumn.HeaderText = "Faculty";
+            AvailableFacultyColumn.Name = "AvailableFacultyColumn";
+            AvailableFacultyColumn.Width = 200;
             // 
             // tabPage3
             // 
@@ -301,14 +338,25 @@
             MessageColumn.Name = "MessageColumn";
             MessageColumn.Width = 200;
             // 
-            // label3
+            // button3
             // 
-            label3.AutoSize = true;
-            label3.Location = new Point(315, 3);
-            label3.Name = "label3";
-            label3.Size = new Size(101, 20);
-            label3.TabIndex = 5;
-            label3.Text = "Your courses";
+            button3.FlatStyle = FlatStyle.Flat;
+            button3.Location = new Point(8, 244);
+            button3.Name = "button3";
+            button3.Size = new Size(76, 49);
+            button3.TabIndex = 7;
+            button3.Text = "<=";
+            button3.UseVisualStyleBackColor = true;
+            // 
+            // button4
+            // 
+            button4.FlatStyle = FlatStyle.Flat;
+            button4.Location = new Point(90, 244);
+            button4.Name = "button4";
+            button4.Size = new Size(76, 50);
+            button4.TabIndex = 8;
+            button4.Text = "=>";
+            button4.UseVisualStyleBackColor = true;
             // 
             // EnvironmentForm
             // 
@@ -350,15 +398,19 @@
         private Label label4;
         private Button UnsignButton;
         private TabPage tabPage3;
-        private DataGridViewTextBoxColumn ActualColumnCourse;
-        private DataGridViewTextBoxColumn ActualColumnFaculty;
-        private DataGridViewCheckBoxColumn RowCheck;
-        private DataGridViewTextBoxColumn CourseColumn;
-        private DataGridViewTextBoxColumn FacultyColumn;
         private DataGridView dataGridView1;
         private DataGridViewTextBoxColumn InitialsColumn;
         private DataGridViewTextBoxColumn FromCourseColumn;
         private DataGridViewTextBoxColumn MessageColumn;
         private Label label3;
+        private DataGridViewTextBoxColumn CourseColumn;
+        private DataGridViewTextBoxColumn FacultyColumn;
+        private DataGridViewCheckBoxColumn RowCheck;
+        private DataGridViewTextBoxColumn AvailableCourseColumn;
+        private DataGridViewTextBoxColumn AvailableFacultyColumn;
+        private Button button2;
+        private Button button1;
+        private Button button4;
+        private Button button3;
     }
 }

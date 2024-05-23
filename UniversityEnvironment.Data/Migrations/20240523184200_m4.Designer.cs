@@ -12,7 +12,7 @@ using UniversityEnvironment.Data;
 namespace UniversityEnvironment.Data.Migrations
 {
     [DbContext(typeof(UniversityEnvironmentContext))]
-    [Migration("20240517185155_m4")]
+    [Migration("20240523184200_m4")]
     partial class m4
     {
         /// <inheritdoc />
@@ -78,6 +78,9 @@ namespace UniversityEnvironment.Data.Migrations
                     b.Property<Guid>("TestId")
                         .HasColumnType("char(36)");
 
+                    b.Property<int>("Mark")
+                        .HasColumnType("int");
+
                     b.HasKey("StudentId", "TestId");
 
                     b.HasIndex("TestId");
@@ -90,6 +93,9 @@ namespace UniversityEnvironment.Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
+
+                    b.Property<bool>("CanChangePassword")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("Confirmed")
                         .HasColumnType("tinyint(1)");
@@ -143,12 +149,12 @@ namespace UniversityEnvironment.Data.Migrations
                     b.Property<string>("AnswerText")
                         .HasColumnType("longtext");
 
-                    b.Property<Guid?>("QuestionId")
+                    b.Property<Guid>("TestQuestionId")
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("QuestionId");
+                    b.HasIndex("TestQuestionId");
 
                     b.ToTable("QuestionAnswers");
                 });
@@ -158,6 +164,9 @@ namespace UniversityEnvironment.Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
+
+                    b.Property<bool>("CanChangePassword")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("Confirmed")
                         .HasColumnType("tinyint(1)");
@@ -174,9 +183,6 @@ namespace UniversityEnvironment.Data.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("longtext");
 
-                    b.Property<Guid?>("QuestionAnswerId")
-                        .HasColumnType("char(36)");
-
                     b.Property<int>("Role")
                         .HasColumnType("int");
 
@@ -184,8 +190,6 @@ namespace UniversityEnvironment.Data.Migrations
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("QuestionAnswerId");
 
                     b.ToTable("Students");
                 });
@@ -195,6 +199,9 @@ namespace UniversityEnvironment.Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
+
+                    b.Property<bool>("CanChangePassword")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("Confirmed")
                         .HasColumnType("tinyint(1)");
@@ -231,7 +238,7 @@ namespace UniversityEnvironment.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid?>("CourseId")
+                    b.Property<Guid>("CourseId")
                         .HasColumnType("char(36)");
 
                     b.Property<string>("Description")
@@ -247,38 +254,13 @@ namespace UniversityEnvironment.Data.Migrations
                     b.ToTable("Tests");
                 });
 
-            modelBuilder.Entity("UniversityEnvironment.Data.Model.Tables.TestMark", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<int>("Mark")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("StudentId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid?>("TestId")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TestId");
-
-                    b.ToTable("TestMarks");
-                });
-
             modelBuilder.Entity("UniversityEnvironment.Data.Model.Tables.TestQuestion", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Name")
+                    b.Property<string>("QuestionText")
                         .HasColumnType("longtext");
 
                     b.Property<Guid?>("TestId")
@@ -371,34 +353,22 @@ namespace UniversityEnvironment.Data.Migrations
                 {
                     b.HasOne("UniversityEnvironment.Data.Model.Tables.TestQuestion", "Question")
                         .WithMany("Answers")
-                        .HasForeignKey("QuestionId");
+                        .HasForeignKey("TestQuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Question");
-                });
-
-            modelBuilder.Entity("UniversityEnvironment.Data.Model.Tables.Student", b =>
-                {
-                    b.HasOne("UniversityEnvironment.Data.Model.Tables.QuestionAnswer", null)
-                        .WithMany("Students")
-                        .HasForeignKey("QuestionAnswerId");
                 });
 
             modelBuilder.Entity("UniversityEnvironment.Data.Model.Tables.Test", b =>
                 {
                     b.HasOne("UniversityEnvironment.Data.Model.Tables.Course", "Course")
                         .WithMany("Tests")
-                        .HasForeignKey("CourseId");
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Course");
-                });
-
-            modelBuilder.Entity("UniversityEnvironment.Data.Model.Tables.TestMark", b =>
-                {
-                    b.HasOne("UniversityEnvironment.Data.Model.Tables.Test", "Test")
-                        .WithMany("Marks")
-                        .HasForeignKey("TestId");
-
-                    b.Navigation("Test");
                 });
 
             modelBuilder.Entity("UniversityEnvironment.Data.Model.Tables.TestQuestion", b =>
@@ -422,8 +392,6 @@ namespace UniversityEnvironment.Data.Migrations
             modelBuilder.Entity("UniversityEnvironment.Data.Model.Tables.QuestionAnswer", b =>
                 {
                     b.Navigation("QuestionAnswersStudents");
-
-                    b.Navigation("Students");
                 });
 
             modelBuilder.Entity("UniversityEnvironment.Data.Model.Tables.Student", b =>
@@ -442,8 +410,6 @@ namespace UniversityEnvironment.Data.Migrations
 
             modelBuilder.Entity("UniversityEnvironment.Data.Model.Tables.Test", b =>
                 {
-                    b.Navigation("Marks");
-
                     b.Navigation("Questions");
 
                     b.Navigation("TestsStudents");

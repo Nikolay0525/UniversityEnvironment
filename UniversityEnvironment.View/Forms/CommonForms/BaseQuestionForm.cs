@@ -11,19 +11,43 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using UniversityEnvironment.Data.Model.Tables;
 using UniversityEnvironment.Data;
+using UniversityEnvironment.View.Forms.AdminForms;
+using static UniversityEnvironment.View.Utility.AdminViewHelper;
+using static UniversityEnvironment.View.Utility.ViewHelper;
 
-namespace UniversityEnvironment.View.Forms.CommonForms
+namespace UniversityEnvironment.View.Forms
 {
     public partial class BaseQuestionForm : MaterialForm
     {
-        private Test _test;
         private User _user;
+        private Course _course;
+        private Test _test;
+        private TestQuestion _testQuestion;
 
-        public BaseQuestionForm(Test test, User user)
+        public BaseQuestionForm(User user, Course course, Test test, TestQuestion testQuestion)
         {
-            _test = test;
             _user = user;
+            _course = course;
+            _test = test;
+            _testQuestion = testQuestion;
             InitializeComponent();
+            QuestionLabel.Text = testQuestion.QuestionText;
+            UpdateAnswerTable(AnswerTable, _testQuestion);
+        }
+
+        private void CreateAnswerButton_Click(object sender, EventArgs e)
+        {
+            CreateAnswer(_testQuestion, UpdateAnswerTable, AnswerTable, _testQuestion); // operation need to be added
+        }
+
+        private void AnswerTable_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void CloseButton_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }

@@ -13,13 +13,13 @@ using MaterialSkin.Controls;
 using UniversityEnvironment.Data.Model.Tables;
 using UniversityEnvironment.Data.Model.MtoMTables;
 using static UniversityEnvironment.View.Utility.AuthorizationHelper;
-using UniversityEnvironment.Data.Repository;
+
 using static UniversityEnvironment.View.Validator.ViewValidator;
 using UniversityEnvironment.Data.Enums;
 using System.CodeDom;
 using UniversityEnvironment.Data.Model;
 using UniversityEnvironment.Data;
-using static UniversityEnvironment.Data.Repository.MySQLService;
+using static UniversityEnvironment.Data.Service.MySqlService;
 
 namespace UniversityEnvironment.View.Forms
 {
@@ -58,7 +58,7 @@ namespace UniversityEnvironment.View.Forms
                 User userToCreate = CreateUser<Teacher>(UsernameTextBox.Text, FirstNameTextBox.Text, LastNameTextBox.Text, PasswordTextBox.Text);
                 var teacher = userToCreate as Teacher;
                 ArgumentNullException.ThrowIfNull(teacher);
-                teacher.ScienceDegree = Microsoft.VisualBasic.Interaction.InputBox("Введіть вашу ступінь:", "Введення тексту", "");
+                teacher.ScienceDegree = Microsoft.VisualBasic.Interaction.InputBox("Enter you're science degree:", "Entering text", "");
                 teacher.CoursesTeachers = new();
                 Create<Teacher>(teacher);
                 MessageBox.Show("Request on creating sended", "Registration", MessageBoxButtons.OK);

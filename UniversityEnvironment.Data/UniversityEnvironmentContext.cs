@@ -27,7 +27,6 @@ namespace UniversityEnvironment.Data
         public DbSet<Test> Tests { get; set; }
         public DbSet<TestQuestion> TestQuestions { get; set; }
         public DbSet<QuestionAnswer> QuestionAnswers { get; set; }
-
         public UniversityEnvironmentContext() { }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

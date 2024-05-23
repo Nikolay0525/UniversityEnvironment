@@ -1,6 +1,6 @@
-﻿namespace UniversityEnvironment.View.Forms
+﻿namespace UniversityEnvironment.View.Forms.AdminForms
 {
-    partial class BaseTestForm
+    partial class CreatorForm
     {
         /// <summary>
         /// Required designer variable.
@@ -29,35 +29,50 @@
         private void InitializeComponent()
         {
             CloseButton = new Button();
+            CreateButton = new Button();
             SuspendLayout();
             // 
             // CloseButton
             // 
             CloseButton.BackColor = SystemColors.ControlLightLight;
             CloseButton.FlatStyle = FlatStyle.Flat;
-            CloseButton.Location = new Point(12, 638);
+            CloseButton.Location = new Point(12, 307);
             CloseButton.Name = "CloseButton";
-            CloseButton.Size = new Size(476, 50);
-            CloseButton.TabIndex = 0;
-            CloseButton.Text = "Go back (Results will not save)";
+            CloseButton.Size = new Size(280, 49);
+            CloseButton.TabIndex = 3;
+            CloseButton.Text = "Go back";
             CloseButton.UseVisualStyleBackColor = false;
             CloseButton.Click += CloseButton_Click;
             // 
-            // BaseTestForm
+            // CreateButton
+            // 
+            CreateButton.BackColor = SystemColors.ControlLightLight;
+            CreateButton.FlatStyle = FlatStyle.Flat;
+            CreateButton.Location = new Point(12, 253);
+            CreateButton.Name = "CreateButton";
+            CreateButton.Size = new Size(280, 48);
+            CreateButton.TabIndex = 2;
+            CreateButton.Text = "Create";
+            CreateButton.UseVisualStyleBackColor = false;
+            CreateButton.Click += CreateButton_Click;
+            // 
+            // CreatorForm
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(500, 700);
+            ClientSize = new Size(304, 368);
             Controls.Add(CloseButton);
+            Controls.Add(CreateButton);
             Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
             Margin = new Padding(4);
-            Name = "BaseTestForm";
-            Text = "BaseTestForm";
+            Name = "CreatorForm";
+            Text = "CreatorForm";
             ResumeLayout(false);
         }
 
         #endregion
 
         private Button CloseButton;
+        private Button CreateButton;
     }
 }

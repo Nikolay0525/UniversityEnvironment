@@ -91,6 +91,9 @@ namespace UniversityEnvironment.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
+                    b.Property<bool>("CanChangePassword")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<bool>("Confirmed")
                         .HasColumnType("tinyint(1)");
 
@@ -143,12 +146,12 @@ namespace UniversityEnvironment.Data.Migrations
                     b.Property<string>("AnswerText")
                         .HasColumnType("longtext");
 
-                    b.Property<Guid?>("QuestionId")
+                    b.Property<Guid>("TestQuestionId")
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("QuestionId");
+                    b.HasIndex("TestQuestionId");
 
                     b.ToTable("QuestionAnswers");
                 });
@@ -158,6 +161,9 @@ namespace UniversityEnvironment.Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
+
+                    b.Property<bool>("CanChangePassword")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("Confirmed")
                         .HasColumnType("tinyint(1)");
@@ -174,9 +180,6 @@ namespace UniversityEnvironment.Data.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("longtext");
 
-                    b.Property<Guid?>("QuestionAnswerId")
-                        .HasColumnType("char(36)");
-
                     b.Property<int>("Role")
                         .HasColumnType("int");
 
@@ -184,8 +187,6 @@ namespace UniversityEnvironment.Data.Migrations
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("QuestionAnswerId");
 
                     b.ToTable("Students");
                 });
@@ -195,6 +196,9 @@ namespace UniversityEnvironment.Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
+
+                    b.Property<bool>("CanChangePassword")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("Confirmed")
                         .HasColumnType("tinyint(1)");
@@ -253,10 +257,7 @@ namespace UniversityEnvironment.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Name")
+                    b.Property<string>("QuestionText")
                         .HasColumnType("longtext");
 
                     b.Property<Guid?>("TestId")
@@ -349,16 +350,11 @@ namespace UniversityEnvironment.Data.Migrations
                 {
                     b.HasOne("UniversityEnvironment.Data.Model.Tables.TestQuestion", "Question")
                         .WithMany("Answers")
-                        .HasForeignKey("QuestionId");
+                        .HasForeignKey("TestQuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Question");
-                });
-
-            modelBuilder.Entity("UniversityEnvironment.Data.Model.Tables.Student", b =>
-                {
-                    b.HasOne("UniversityEnvironment.Data.Model.Tables.QuestionAnswer", null)
-                        .WithMany("Students")
-                        .HasForeignKey("QuestionAnswerId");
                 });
 
             modelBuilder.Entity("UniversityEnvironment.Data.Model.Tables.Test", b =>
@@ -393,8 +389,6 @@ namespace UniversityEnvironment.Data.Migrations
             modelBuilder.Entity("UniversityEnvironment.Data.Model.Tables.QuestionAnswer", b =>
                 {
                     b.Navigation("QuestionAnswersStudents");
-
-                    b.Navigation("Students");
                 });
 
             modelBuilder.Entity("UniversityEnvironment.Data.Model.Tables.Student", b =>

@@ -10,9 +10,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using UniversityEnvironment.Data.Model.Tables;
-using UniversityEnvironment.Data.Repository;
 using static UniversityEnvironment.View.Utility.ViewHelper;
+using static UniversityEnvironment.View.Utility.AdminViewHelper;
 using static UniversityEnvironment.View.Utility.AuthorizationHelper;
+using static UniversityEnvironment.Data.Service.MySqlService;
 using Microsoft.EntityFrameworkCore;
 using UniversityEnvironment.Data;
 using UniversityEnvironment.Data.Enums;
@@ -29,167 +30,83 @@ namespace UniversityEnvironment.View.Forms
         private int _currentPage = 0;
         public AdminControlForm(User user)
         {
+            InitializeComponent();
             _user = user;
             _context = new UniversityEnvironmentContext();
-            InitializeComponent();
-            this.Text = "Welcome back " + user.FirstName + " " + user.LastName + "!";
+            AvailableCoursesTableUpdate(AvailableCoursesTable, FindAll<Course>().ToList());
+            Text = "Welcome back " + user.FirstName + " " + user.LastName + "!";
         }
 
-        #region Users requests
-
-        internal List<Admin> AdminsRequest()
+        private void NextPage(Role role,
+            VoidOperation? adminOperation = null, VoidOperation? teacherOperation = null, VoidOperation? studentOperation = null)
         {
-            return _context.Admins
-                .Where(admin => admin.ForgetPassword == true || admin.Confirmed == false)
-                .Skip(_currentPage * Constants.RowsPerPage)
-                .Take(Constants.RowsPerPage)
-                .OrderBy(admin => admin.Username)
-                .Select(admin => new Admin
-                {
-                    Username = admin.Username,
-                    FirstName = admin.FirstName,
-                    LastName = admin.LastName,
-                    Password = admin.Password,
-                })
-                .ToList();
+            _currentPage++;
+            if (role == Role.Admin)
+            {
+                adminOperation?.Invoke();
+            }
+            else if (role == Role.Admin)
+            {
+                teacherOperation?.Invoke();
+            }
+            else if (role == Role.Student)
+            {
+                studentOperation?.Invoke();
+            }
         }
-        internal List<Teacher> TeachersRequest()
+        private void PreviousPage(Role role,
+            VoidOperation? adminOperation = null, VoidOperation? teacherOperation = null, VoidOperation? studentOperation = null)
         {
-            return _context.Teachers
-                .Where(teacher => teacher.ForgetPassword == true || teacher.Confirmed == false)
-                .Skip(_currentPage * Constants.RowsPerPage)
-                .Take(Constants.RowsPerPage)
-                .OrderBy(teacher => teacher.Username)
-                .Select(teacher => new Teacher
-                {
-                    Username = teacher.Username,
-                    FirstName = teacher.FirstName,
-                    LastName = teacher.LastName,
-                    Password = teacher.Password,
-                    ScienceDegree = teacher.ScienceDegree,
-                })
-                .ToList();
+            _currentPage = _currentPage > 0 ? _currentPage - 1 : _currentPage;
+            if (role == Role.Admin)
+            {
+                adminOperation?.Invoke();
+            }
+            else if (role == Role.Admin)
+            {
+                teacherOperation?.Invoke();
+            }
+            else if (role == Role.Student)
+            {
+                studentOperation?.Invoke();
+            }
         }
-        internal List<Student> StudentsRequest()
-        {
-            return _context.Students
-                .Where(student => student.ForgetPassword == true)
-                .Skip(_currentPage * Constants.RowsPerPage)
-                .Take(Constants.RowsPerPage)
-                .OrderBy(student => student.Username)
-                .Select(student => new Student
-                {
-                    Username = student.Username,
-                    FirstName = student.FirstName,
-                    LastName = student.LastName,
-                    Password = student.Password,
-                })
-                .ToList();
-        }
-        internal List<Admin> AdminsUsersRequest(bool? flag = null, string? text = null)
-        {
-            IQueryable<Admin> query = _context.Admins;
-
-            if (flag == true && text != null)
-            {
-                query = query.Where(t => EF.Functions.Like(t.Username, $"%{text}%"));
-            }
-            else if (flag == false && text != null)
-            {
-                query = query.Where(t => EF.Functions.Like(t.FirstName + t.LastName, $"%{text}%"));
-            }
-
-            return query
-                .OrderBy(teacher => teacher.Username)
-                .Skip(_currentPage * Constants.RowsPerPage)
-                .Take(Constants.RowsPerPage)
-                .Select(teacher => new Admin
-                {
-                    Username = teacher.Username,
-                    FirstName = teacher.FirstName,
-                    LastName = teacher.LastName,
-                    Password = teacher.Password,
-                })
-                .ToList();
-        }
-        internal List<Teacher> TeachersUsersRequest(bool? flag = null, string? text = null)
-        {
-            IQueryable<Teacher> query = _context.Teachers;
-
-            if (flag == true && text != null)
-            {
-                query = query.Where(t => EF.Functions.Like(t.Username, $"%{text}%"));
-            }
-            else if (flag == false && text != null)
-            {
-                query = query.Where(t => EF.Functions.Like(t.FirstName + t.LastName, $"%{text}%"));
-            }
-
-            return query
-                .OrderBy(teacher => teacher.Username)
-                .Skip(_currentPage * Constants.RowsPerPage)
-                .Take(Constants.RowsPerPage)
-                .Select(teacher => new Teacher
-                {
-                    Username = teacher.Username,
-                    FirstName = teacher.FirstName,
-                    LastName = teacher.LastName,
-                    Password = teacher.Password,
-                    ScienceDegree = teacher.ScienceDegree,
-                })
-                .ToList();
-        }
-        internal List<Student> StudentsUsersRequest(bool? flag = null, string? text = null)
-        {
-            IQueryable<Student> query = _context.Students;
-
-            if (flag == true && text != null)
-            {
-                query = query.Where(t => EF.Functions.Like(t.Username, $"%{text}%"));
-            }
-            else if (flag == false && text != null)
-            {
-                query = query.Where(t => EF.Functions.Like(t.FirstName + t.LastName, $"%{text}%"));
-            }
-
-            return query
-                .OrderBy(s => s.Username)
-                .Skip(_currentPage * Constants.RowsPerPage)
-                .Take(Constants.RowsPerPage)
-                .Select(student => new Student
-                {
-                    Username = student.Username,
-                    FirstName = student.FirstName,
-                    LastName = student.LastName,
-                    Password = student.Password,
-                })
-                .ToList();
-        }
-        #endregion
-
         #region Users tab
-        private void AdminUsers_Click(object sender, EventArgs e)
+
+        private void AdminsUsersUpdate()
         {
             _roleFlag = Role.Admin;
+            UpdateUsersTable<Admin>(UsersTable, AdminsUsersRequest(_currentPage, _context));
+        }
+        private void AdminUsers_Click(object sender, EventArgs e)
+        {
             _currentPage = 0;
             UsersMessageBox.Text = "Searching in admins...";
-            UpdateUsersTable<Admin>(UsersTable, AdminsRequest());
+            AdminsUsersUpdate();
         }
 
-        private void TeacherUsers_Click(object sender, EventArgs e)
+        private void TeachersUsersUpdate()
         {
             _roleFlag = Role.Teacher;
+            UpdateUsersTable<Teacher>(UsersTable, TeachersUsersRequest(_currentPage, _context));
+        }
+        private void TeacherUsers_Click(object sender, EventArgs e)
+        {
             _currentPage = 0;
             UsersMessageBox.Text = "Searching in teachers...";
-            UpdateUsersTable<Teacher>(UsersTable, TeachersRequest());
+            TeachersUsersUpdate();
         }
 
-        private void StudentUsers_Click(object sender, EventArgs e)
+        private void StudentsUsersUpdate()
         {
             _roleFlag = Role.Student;
+            UpdateUsersTable<Student>(UsersTable, StudentsUsersRequest(_currentPage, _context));
+        }
+        private void StudentUsers_Click(object sender, EventArgs e)
+        {
             _currentPage = 0;
             UsersMessageBox.Text = "Searching in students...";
-            UpdateUsersTable<Student>(UsersTable, StudentsRequest());
+            StudentsUsersUpdate();
         }
         private void UsersTable_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -200,55 +117,62 @@ namespace UniversityEnvironment.View.Forms
                 User? user = new();
                 if (_roleFlag == Role.Admin)
                 {
-                    GenericClick<Admin>(user, selectedUsername, AdminsRequestUpdate, user => new AdminUserForm(user));
+                    GenericClickOnUsers<Admin>(user, selectedUsername, AdminsUsersUpdate, this, user => new AdminUserForm(user));
                 }
                 else if (_roleFlag == Role.Teacher)
                 {
-                    GenericClick<Teacher>(user, selectedUsername, TeachersRequestUpdate, user => new AdminUserForm(user));
+                    GenericClickOnUsers<Teacher>(user, selectedUsername, TeachersUsersUpdate, this, user => new AdminUserForm(user));
                 }
                 else if (_roleFlag == Role.Student)
                 {
-                    GenericClick<Student>(user, selectedUsername, StudentRequestUpdate, user => new AdminUserForm(user));
+                    GenericClickOnUsers<Student>(user, selectedUsername, StudentsUsersUpdate, this, user => new AdminUserForm(user));
                 }
 
             }
         }
         #endregion
         #region Requests tab
-        private void GenericClick<T>(User? user, string? username, UpdateRequestAfterClosing operation, Func<User, MaterialForm> createForm) where T : User
-        {
-            user = SetUserRole<T>(_context, username);
-            ArgumentNullException.ThrowIfNull(user);
-            ShowNextForm(this, createForm(user), operation);
-        }
+
         private void RequestsTable_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
             {
                 DataGridViewRow selectedRow = RequestsTable.Rows[e.RowIndex];
                 string? selectedUsername = selectedRow.Cells["FromUsernameColumn"].Value.ToString();
+                string? selectedRequest = selectedRow.Cells["TypeColumn"].Value.ToString();
                 User? user = new();
                 if (_roleFlag == Role.Admin)
                 {
-                    GenericClick<Admin>(user, selectedUsername, AdminsRequestUpdate, user => new AdminRequestForm(user));
+                    GenericClickOnUsers<Admin>(user, selectedUsername, AdminsRequestUpdate, this, user => new AdminRequestForm(user, selectedRequest));
                 }
                 else if (_roleFlag == Role.Teacher)
                 {
-                    GenericClick<Teacher>(user, selectedUsername, TeachersRequestUpdate, user => new AdminRequestForm(user));
+                    GenericClickOnUsers<Teacher>(user, selectedUsername, TeachersRequestUpdate, this, user => new AdminRequestForm(user, selectedRequest));
                 }
                 else if (_roleFlag == Role.Student)
                 {
-                    GenericClick<Student>(user, selectedUsername, StudentRequestUpdate, user => new AdminRequestForm(user));
+                    GenericClickOnUsers<Student>(user, selectedUsername, StudentRequestUpdate, this, user => new AdminRequestForm(user, selectedRequest));
                 }
 
             }
         }
+
         internal void AdminsRequestUpdate()
         {
             _roleFlag = Role.Admin;
-            var query = AdminsRequest();
-            UpdateRequestsTable<Admin>(RequestsTable, query);
+            UpdateRequestsTable<Admin>(RequestsTable, AdminsRequest(_currentPage, _context));
         }
+        internal void TeachersRequestUpdate()
+        {
+            _roleFlag = Role.Teacher;
+            UpdateRequestsTable<Teacher>(RequestsTable, TeachersRequest(_currentPage, _context));
+        }
+        internal void StudentRequestUpdate()
+        {
+            _roleFlag = Role.Student;
+            UpdateRequestsTable<Student>(RequestsTable, StudentsRequest(_currentPage, _context));
+        }
+
 
         private void AdminsRequests_Click(object sender, EventArgs e)
         {
@@ -257,25 +181,12 @@ namespace UniversityEnvironment.View.Forms
             AdminsRequestUpdate();
         }
 
-        internal void TeachersRequestUpdate()
-        {
-            _roleFlag = Role.Teacher;
-            var query = TeachersRequest();
-            UpdateRequestsTable<Teacher>(RequestsTable, query);
-        }
 
         private void TeachersRequests_Click(object sender, EventArgs e)
         {
             _currentPage = 0;
             RequestMessageBox.Text = "Searching in teachers...";
             TeachersRequestUpdate();
-        }
-
-        internal void StudentRequestUpdate()
-        {
-            _roleFlag = Role.Student;
-            var query = StudentsRequest();
-            UpdateRequestsTable<Student>(RequestsTable, query);
         }
 
         private void StudentsRequests_Click(object sender, EventArgs e)
@@ -287,36 +198,11 @@ namespace UniversityEnvironment.View.Forms
 
         private void NextPageRequests_Click(object sender, EventArgs e)
         {
-            _currentPage++;
-            if (_roleFlag == Role.Admin)
-            {
-                AdminsRequestUpdate();
-            }
-            else if (_roleFlag == Role.Admin)
-            {
-                TeachersRequestUpdate();
-            }
-            else
-            {
-                StudentRequestUpdate();
-            }
+            NextPage(_roleFlag, AdminsRequestUpdate, TeachersRequestUpdate, StudentRequestUpdate);
         }
         private void PreviousPageRequests_Click(object sender, EventArgs e)
         {
-            _currentPage = _currentPage > 0 ? _currentPage - 1 : _currentPage;
-            if (_roleFlag == Role.Admin)
-            {
-
-                AdminsRequestUpdate();
-            }
-            else if (_roleFlag == Role.Admin)
-            {
-                TeachersRequestUpdate();
-            }
-            else
-            {
-                StudentRequestUpdate();
-            }
+            PreviousPage(_roleFlag, AdminsRequestUpdate, TeachersRequestUpdate, StudentRequestUpdate);
         }
         #endregion
         private void CloseButton_Click(object sender, EventArgs e)
@@ -328,17 +214,42 @@ namespace UniversityEnvironment.View.Forms
         {
             if (_roleFlag == Role.Admin)
             {
-                AdminsUsersRequest(ByUsernameCheck.Checked, FilterTextBox.Text);
+                AdminsUsersRequest(_currentPage, _context, ByUsernameCheck.Checked, FilterTextBox.Text);
             }
             else if (_roleFlag == Role.Admin)
             {
-                TeachersUsersRequest(ByUsernameCheck.Checked, FilterTextBox.Text);
+                TeachersUsersRequest(_currentPage, _context, ByUsernameCheck.Checked, FilterTextBox.Text);
             }
             else
             {
-                StudentsUsersRequest(ByUsernameCheck.Checked, FilterTextBox.Text);
+                UpdateUsersTable(UsersTable, StudentsUsersRequest(_currentPage, _context, ByUsernameCheck.Checked, FilterTextBox.Text));
             }
         }
+        #region Courses tab
+        private void AvailableCoursesTable_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            ClickOnCourse(1, this, AvailableCoursesTable, e, _user);
+        }
+        #endregion
 
+        private void NextUsersButton_Click(object sender, EventArgs e)
+        {
+            NextPage(_roleFlag, AdminsUsersUpdate, TeachersUsersUpdate, StudentsUsersUpdate);
+        }
+
+        private void PreviousUsersButton_Click(object sender, EventArgs e)
+        {
+            PreviousPage(_roleFlag, AdminsUsersUpdate, TeachersUsersUpdate, StudentsUsersUpdate);
+        }
+
+        private void CreateButton_Click(object sender, EventArgs e)
+        {
+            ShowNextFormUpdateCourseTable(this, new CourseCreatorForm(), AvailableCoursesTable);
+        }
+
+        private void UnsignButton_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

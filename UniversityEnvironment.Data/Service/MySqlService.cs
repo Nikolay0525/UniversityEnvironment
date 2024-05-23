@@ -5,11 +5,12 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using UniversityEnvironment.Data.Model.Tables;
 
 
-namespace UniversityEnvironment.Data.Repository
+namespace UniversityEnvironment.Data.Service
 {
-    public static class MySQLService
+    public static class MySqlService
     {
         public static IEnumerable<T> FindAll<T>(Expression<Func<T, bool>> filter = null) where T : class
         {
@@ -27,12 +28,6 @@ namespace UniversityEnvironment.Data.Repository
         {
             using UniversityEnvironmentContext context = new();
             return context.Set<T>().AsNoTracking().FirstOrDefault(filter);
-        }
-
-        public static T? FindById<T>(Guid id) where T : class
-        {
-            using UniversityEnvironmentContext context = new();
-            return context.Set<T>().Find(id);
         }
 
         public static void Create<T>(T obj) where T : class

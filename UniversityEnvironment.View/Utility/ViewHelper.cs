@@ -7,9 +7,9 @@ using System.Windows.Forms;
 using System.Xml.Linq;
 using static UniversityEnvironment.View.Utility.Constants;
 using static System.Net.Mime.MediaTypeNames;
-using UniversityEnvironment.Data.Repository;
+
 using static System.Runtime.InteropServices.JavaScript.JSType;
-using static UniversityEnvironment.Data.Repository.MySQLService;
+using static UniversityEnvironment.Data.Service.MySqlService;
 using UniversityEnvironment.Data;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.VisualBasic.Devices;
@@ -18,14 +18,15 @@ using UniversityEnvironment.View.Enums;
 using UniversityEnvironment.Data.Enums;
 using UniversityEnvironment.Data.Model.Tables;
 using UniversityEnvironment.Data.Model.MtoMTables;
-using UniversityEnvironment.View.Forms.CommonForms;
 //using Microsoft.VisualBasic.ApplicationServices;
 
 namespace UniversityEnvironment.View.Utility
 {
     internal static class ViewHelper
     {
-        internal delegate void UpdateRequestAfterClosing();
+        internal delegate void VoidOperation();
+        internal delegate T? GenericOperationWithUserObj<T>(T obj) where T : User;
+        internal delegate void GenericOperationWithTable<T>(DataGridView table, T obj);
         #region Form event operations
         internal static void ShowNextForm(MaterialForm current, MaterialForm next)
         {
@@ -33,7 +34,7 @@ namespace UniversityEnvironment.View.Utility
             next.FormClosed += (s, arg) => current.Show();
             next.Show();
         }
-        internal static void ShowNextForm(MaterialForm current, MaterialForm next, UpdateRequestAfterClosing operation)
+        internal static void ShowNextForm(MaterialForm current, MaterialForm next, VoidOperation operation)
         {
             current.Hide();
             next.FormClosed += (s, arg) => current.Show();
@@ -41,34 +42,12 @@ namespace UniversityEnvironment.View.Utility
             next.Show();
         }
         #endregion
-        #region AdminView methods
-        internal static void UpdateRequestsTable<T>(DataGridView table, IEnumerable<T> users) where T : User
-        {
-            ArgumentNullException.ThrowIfNull(users);
-            table.Rows.Clear();
-
-            foreach (var user in users)
-            {
-                if (!user.Confirmed) table.Rows.Add(user.Username, user.Role, "Confirm account");
-                else if (user.ForgetPassword) table.Rows.Add(user.Username, user.Role, "Forget password");
-            }
-        }
-
-        internal static void UpdateUsersTable<T>(DataGridView table, IEnumerable<T> users) where T : User
-        {
-            ArgumentNullException.ThrowIfNull(users);
-            table.Rows.Clear();
-
-            foreach (var user in users)
-            {
-                table.Rows.Add(user.Username, user.FirstName + " " + user.LastName, user.Role);
-            }
-        }
-        #endregion
+        
         #region Table operation methods
-        internal static void AvailableCoursesTableAddRows(DataGridView table, IEnumerable<Course> courses)
+        internal static void AvailableCoursesTableUpdate(DataGridView table, IEnumerable<Course> courses)
         {
             ArgumentNullException.ThrowIfNull(courses);
+            table.Rows.Clear();
 
             foreach (var course in courses)
             {
@@ -98,7 +77,7 @@ namespace UniversityEnvironment.View.Utility
         {
             List<Course> courses = FindAll<Course>().ToList();
             var userCourses = new List<T>();
-            var foundedUser = FindById<Q>(user.Id);
+            var foundedUser = FindByFilter<Q>(u => u.Id == user.Id);
             ArgumentNullException.ThrowIfNull(foundedUser);
             for (int i = 0; i < courses.Count; i++)
             {
@@ -142,23 +121,41 @@ namespace UniversityEnvironment.View.Utility
             foreach (var test in tests) { table.Rows.Add(false, test.Name, test.Description); }
 
         }
+        internal static void UpdateQuestionTable(DataGridView table, Test test)
+        {
+            var questions = FindAll<TestQuestion>(q => q.TestId == test.Id);
+            if (questions == null) return;
+            table.Rows.Clear();
+            foreach (var question in questions) { table.Rows.Add(question.Id,false, question.QuestionText); }
+
+        }
+        internal static void UpdateAnswerTable(DataGridView table, TestQuestion testQuestion)
+        {
+            var answers = FindAll<QuestionAnswer>(a => a.TestQuestionId == testQuestion.Id);
+            if (answers == null) return;
+            table.Rows.Clear();
+            foreach (var answer in answers) { table.Rows.Add(answer.Id,false, answer.AnswerText); }
+
+        }
         #endregion
         #region ClickOnMethods
-        internal static void ClickOnCourse(MaterialForm form,DataGridView table, DataGridViewCellEventArgs e, User user)
+        internal static void ClickOnCourse
+            (int columnIndex,MaterialForm form,DataGridView table, DataGridViewCellEventArgs e, User user)
         {
-            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+            if (e.RowIndex >= 0 && e.ColumnIndex >= columnIndex)
             {
                 DataGridViewRow selectedRow = table.Rows[e.RowIndex];
-                string? selectedCourse = selectedRow.Cells["ActualColumnCourse"].Value.ToString();
+                string? selectedCourse = selectedRow.Cells["CourseColumn"].Value.ToString();
                 if (selectedCourse == null) return;
                 var course = FindByFilter<Course>(c => c.Name == selectedCourse);
                 if (course == null) return;
                 ShowNextForm(form, new View.Forms.BaseCourseForm(user, course));
             }
         }
-        internal static void ClickOnTest(MaterialForm form,DataGridView table, DataGridViewCellEventArgs e, User user, Course course)
+        internal static void ClickOnTest
+            (int columnIndex,MaterialForm form,DataGridView table, DataGridViewCellEventArgs e, User user, Course course)
         {
-            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+            if (e.RowIndex >= 0 && e.ColumnIndex >= columnIndex)
             {
                 DataGridViewRow selectedRow = table.Rows[e.RowIndex];
                 string? selectedTest = selectedRow.Cells["TestName"].Value.ToString();
@@ -167,9 +164,10 @@ namespace UniversityEnvironment.View.Utility
                 ShowNextForm(form, new View.Forms.BaseTestForm(user, course, test));
             }
         }
-        internal static void ClickOnQuestion(MaterialForm form, DataGridView table,DataGridViewCellEventArgs e, User user ,Course course,Test test)
+        internal static void ClickOnQuestion
+            (int columnIndex,MaterialForm form, DataGridView table,DataGridViewCellEventArgs e, User user ,Course course,Test test)
         {
-            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+            if (e.RowIndex >= 0 && e.ColumnIndex >= columnIndex)
             {
                 DataGridViewRow selectedRow = table.Rows[e.RowIndex];
                 var selectedQuestion = selectedRow.Cells["IdColumn"].Value.ToString();
@@ -179,7 +177,7 @@ namespace UniversityEnvironment.View.Utility
                     question = FindByFilter<TestQuestion>(q => q.Id == result);
                 }
                 if (question == null) return;
-                ShowNextForm(form, new View.Forms.BaseTestForm(user, course, test));
+                ShowNextForm(form, new View.Forms.BaseQuestionForm(user, course, test, question));
             }
         }
         #endregion

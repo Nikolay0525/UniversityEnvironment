@@ -39,8 +39,8 @@
             TeacherUsers = new Button();
             AdminUsers = new Button();
             ApplyFilterButton = new Button();
-            NextButton = new Button();
-            PreviousButton = new Button();
+            NextUsersButton = new Button();
+            PreviousUsersButton = new Button();
             CloseButton = new Button();
             UsersTable = new DataGridView();
             UsernameColumn = new DataGridViewTextBoxColumn();
@@ -61,8 +61,8 @@
             NextPageCourses = new Button();
             PreviousPageCourses = new Button();
             label4 = new Label();
-            UnsignButton = new Button();
-            CreateButton = new Button();
+            DeleteCourseButton = new Button();
+            CreateCourseButton = new Button();
             AvailableCoursesTable = new DataGridView();
             RowCheck = new DataGridViewCheckBoxColumn();
             CourseColumn = new DataGridViewTextBoxColumn();
@@ -100,8 +100,8 @@
             tabPage1.Controls.Add(TeacherUsers);
             tabPage1.Controls.Add(AdminUsers);
             tabPage1.Controls.Add(ApplyFilterButton);
-            tabPage1.Controls.Add(NextButton);
-            tabPage1.Controls.Add(PreviousButton);
+            tabPage1.Controls.Add(NextUsersButton);
+            tabPage1.Controls.Add(PreviousUsersButton);
             tabPage1.Controls.Add(CloseButton);
             tabPage1.Controls.Add(UsersTable);
             tabPage1.Location = new Point(4, 29);
@@ -204,25 +204,27 @@
             ApplyFilterButton.UseVisualStyleBackColor = true;
             ApplyFilterButton.Click += ApplyFilterButton_Click;
             // 
-            // NextButton
+            // NextUsersButton
             // 
-            NextButton.FlatStyle = FlatStyle.Flat;
-            NextButton.Location = new Point(8, 171);
-            NextButton.Name = "NextButton";
-            NextButton.Size = new Size(146, 40);
-            NextButton.TabIndex = 4;
-            NextButton.Text = "Next page =>";
-            NextButton.UseVisualStyleBackColor = true;
+            NextUsersButton.FlatStyle = FlatStyle.Flat;
+            NextUsersButton.Location = new Point(8, 171);
+            NextUsersButton.Name = "NextUsersButton";
+            NextUsersButton.Size = new Size(146, 40);
+            NextUsersButton.TabIndex = 4;
+            NextUsersButton.Text = "Next page =>";
+            NextUsersButton.UseVisualStyleBackColor = true;
+            NextUsersButton.Click += NextUsersButton_Click;
             // 
-            // PreviousButton
+            // PreviousUsersButton
             // 
-            PreviousButton.FlatStyle = FlatStyle.Flat;
-            PreviousButton.Location = new Point(8, 217);
-            PreviousButton.Name = "PreviousButton";
-            PreviousButton.Size = new Size(146, 40);
-            PreviousButton.TabIndex = 4;
-            PreviousButton.Text = "<= Previous page";
-            PreviousButton.UseVisualStyleBackColor = true;
+            PreviousUsersButton.FlatStyle = FlatStyle.Flat;
+            PreviousUsersButton.Location = new Point(8, 217);
+            PreviousUsersButton.Name = "PreviousUsersButton";
+            PreviousUsersButton.Size = new Size(146, 40);
+            PreviousUsersButton.TabIndex = 4;
+            PreviousUsersButton.Text = "<= Previous page";
+            PreviousUsersButton.UseVisualStyleBackColor = true;
+            PreviousUsersButton.Click += PreviousUsersButton_Click;
             // 
             // CloseButton
             // 
@@ -388,8 +390,8 @@
             tabPage2.Controls.Add(NextPageCourses);
             tabPage2.Controls.Add(PreviousPageCourses);
             tabPage2.Controls.Add(label4);
-            tabPage2.Controls.Add(UnsignButton);
-            tabPage2.Controls.Add(CreateButton);
+            tabPage2.Controls.Add(DeleteCourseButton);
+            tabPage2.Controls.Add(CreateCourseButton);
             tabPage2.Controls.Add(AvailableCoursesTable);
             tabPage2.Location = new Point(4, 29);
             tabPage2.Name = "tabPage2";
@@ -428,27 +430,29 @@
             label4.TabIndex = 10;
             label4.Text = "Available courses";
             // 
-            // UnsignButton
+            // DeleteCourseButton
             // 
-            UnsignButton.BackColor = SystemColors.ControlLightLight;
-            UnsignButton.FlatStyle = FlatStyle.Flat;
-            UnsignButton.Location = new Point(8, 119);
-            UnsignButton.Name = "UnsignButton";
-            UnsignButton.Size = new Size(158, 85);
-            UnsignButton.TabIndex = 8;
-            UnsignButton.Text = "Remove selected course";
-            UnsignButton.UseVisualStyleBackColor = false;
+            DeleteCourseButton.BackColor = SystemColors.ControlLightLight;
+            DeleteCourseButton.FlatStyle = FlatStyle.Flat;
+            DeleteCourseButton.Location = new Point(8, 119);
+            DeleteCourseButton.Name = "DeleteCourseButton";
+            DeleteCourseButton.Size = new Size(158, 85);
+            DeleteCourseButton.TabIndex = 8;
+            DeleteCourseButton.Text = "Remove selected course";
+            DeleteCourseButton.UseVisualStyleBackColor = false;
+            DeleteCourseButton.Click += UnsignButton_Click;
             // 
-            // CreateButton
+            // CreateCourseButton
             // 
-            CreateButton.BackColor = SystemColors.ControlLightLight;
-            CreateButton.FlatStyle = FlatStyle.Flat;
-            CreateButton.Location = new Point(8, 28);
-            CreateButton.Name = "CreateButton";
-            CreateButton.Size = new Size(158, 85);
-            CreateButton.TabIndex = 9;
-            CreateButton.Text = "Create new course";
-            CreateButton.UseVisualStyleBackColor = false;
+            CreateCourseButton.BackColor = SystemColors.ControlLightLight;
+            CreateCourseButton.FlatStyle = FlatStyle.Flat;
+            CreateCourseButton.Location = new Point(8, 28);
+            CreateCourseButton.Name = "CreateCourseButton";
+            CreateCourseButton.Size = new Size(158, 85);
+            CreateCourseButton.TabIndex = 9;
+            CreateCourseButton.Text = "Create new course";
+            CreateCourseButton.UseVisualStyleBackColor = false;
+            CreateCourseButton.Click += CreateButton_Click;
             // 
             // AvailableCoursesTable
             // 
@@ -461,6 +465,7 @@
             AvailableCoursesTable.Name = "AvailableCoursesTable";
             AvailableCoursesTable.Size = new Size(414, 268);
             AvailableCoursesTable.TabIndex = 7;
+            AvailableCoursesTable.CellContentClick += AvailableCoursesTable_CellContentClick;
             // 
             // RowCheck
             // 
@@ -517,15 +522,15 @@
         private Button TeacherUsers;
         private Button AdminUsers;
         private Label label4;
-        private Button UnsignButton;
-        private Button CreateButton;
+        private Button DeleteCourseButton;
+        private Button CreateCourseButton;
         private DataGridView AvailableCoursesTable;
         private DataGridViewCheckBoxColumn RowCheck;
         private DataGridViewTextBoxColumn CourseColumn;
         private DataGridViewTextBoxColumn FacultyColumn;
         private TextBox FilterTextBox;
-        private Button NextButton;
-        private Button PreviousButton;
+        private Button NextUsersButton;
+        private Button PreviousUsersButton;
         private Button ApplyFilterButton;
         private GroupBox groupBox1;
         private RadioButton ByInitialsCheck;
