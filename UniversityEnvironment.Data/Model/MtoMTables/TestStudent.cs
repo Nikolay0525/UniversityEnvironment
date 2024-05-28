@@ -17,9 +17,9 @@ namespace UniversityEnvironment.Data.Model.MtoMTables
             set
             {
 
-                if (value < 2 && value != 0 || value > 5 && value != 0)
+                if (value != 0 && (value < 2 || value > 5))
                 {
-                    throw new ArgumentException("Неприпустима оцінка. Оцінка повинна бути 2, 3, 4 або 5.");
+                    throw new ArgumentException("Bad mark. Mark must be: 0 ,2, 3, 4 or 5.");
                 }
                 _mark = value;
             }
