@@ -58,8 +58,6 @@
             MessageColumn = new DataGridViewTextBoxColumn();
             TypeColumn = new DataGridViewTextBoxColumn();
             tabPage2 = new TabPage();
-            NextPageCourses = new Button();
-            PreviousPageCourses = new Button();
             label4 = new Label();
             DeleteCourseButton = new Button();
             CreateCourseButton = new Button();
@@ -387,8 +385,6 @@
             // 
             // tabPage2
             // 
-            tabPage2.Controls.Add(NextPageCourses);
-            tabPage2.Controls.Add(PreviousPageCourses);
             tabPage2.Controls.Add(label4);
             tabPage2.Controls.Add(DeleteCourseButton);
             tabPage2.Controls.Add(CreateCourseButton);
@@ -400,26 +396,6 @@
             tabPage2.TabIndex = 1;
             tabPage2.Text = "Courses";
             tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // NextPageCourses
-            // 
-            NextPageCourses.FlatStyle = FlatStyle.Flat;
-            NextPageCourses.Location = new Point(8, 210);
-            NextPageCourses.Name = "NextPageCourses";
-            NextPageCourses.Size = new Size(158, 40);
-            NextPageCourses.TabIndex = 11;
-            NextPageCourses.Text = "Next page =>";
-            NextPageCourses.UseVisualStyleBackColor = true;
-            // 
-            // PreviousPageCourses
-            // 
-            PreviousPageCourses.FlatStyle = FlatStyle.Flat;
-            PreviousPageCourses.Location = new Point(8, 256);
-            PreviousPageCourses.Name = "PreviousPageCourses";
-            PreviousPageCourses.Size = new Size(158, 40);
-            PreviousPageCourses.TabIndex = 12;
-            PreviousPageCourses.Text = "<= Previous page";
-            PreviousPageCourses.UseVisualStyleBackColor = true;
             // 
             // label4
             // 
@@ -434,13 +410,13 @@
             // 
             DeleteCourseButton.BackColor = SystemColors.ControlLightLight;
             DeleteCourseButton.FlatStyle = FlatStyle.Flat;
-            DeleteCourseButton.Location = new Point(8, 119);
+            DeleteCourseButton.Location = new Point(8, 171);
             DeleteCourseButton.Name = "DeleteCourseButton";
-            DeleteCourseButton.Size = new Size(158, 85);
+            DeleteCourseButton.Size = new Size(158, 125);
             DeleteCourseButton.TabIndex = 8;
             DeleteCourseButton.Text = "Remove selected course";
             DeleteCourseButton.UseVisualStyleBackColor = false;
-            DeleteCourseButton.Click += UnsignButton_Click;
+            DeleteCourseButton.Click += DeleteCourseButton_Click;
             // 
             // CreateCourseButton
             // 
@@ -448,7 +424,7 @@
             CreateCourseButton.FlatStyle = FlatStyle.Flat;
             CreateCourseButton.Location = new Point(8, 28);
             CreateCourseButton.Name = "CreateCourseButton";
-            CreateCourseButton.Size = new Size(158, 85);
+            CreateCourseButton.Size = new Size(158, 137);
             CreateCourseButton.TabIndex = 9;
             CreateCourseButton.Text = "Create new course";
             CreateCourseButton.UseVisualStyleBackColor = false;
@@ -543,8 +519,6 @@
         private Button StudentsRequests;
         private Button TeachersRequests;
         private Button AdminsRequests;
-        private Button NextPageCourses;
-        private Button PreviousPageCourses;
         private Label UsersMessageBox;
         private Label RequestMessageBox;
         private Button PreviousPageRequests;

@@ -17,14 +17,14 @@ using static UniversityEnvironment.View.Utility.ViewHelper;
 
 namespace UniversityEnvironment.View.Forms
 {
-    public partial class BaseQuestionForm : MaterialForm
+    public partial class QuestionForm : MaterialForm
     {
         private User _user;
         private Course _course;
         private Test _test;
         private TestQuestion _testQuestion;
 
-        public BaseQuestionForm(User user, Course course, Test test, TestQuestion testQuestion)
+        public QuestionForm(User user, Course course, Test test, TestQuestion testQuestion)
         {
             _user = user;
             _course = course;
@@ -37,14 +37,16 @@ namespace UniversityEnvironment.View.Forms
 
         private void CreateAnswerButton_Click(object sender, EventArgs e)
         {
-            CreateAnswer(_testQuestion, UpdateAnswerTable, AnswerTable, _testQuestion); // operation need to be added
+            CreateAnswer(_testQuestion, UpdateAnswerTable, AnswerTable, _testQuestion);
         }
+        private void DeleteAnswerButton_Click(object sender, EventArgs e)
+        {
 
+        }
         private void AnswerTable_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }
-
         private void CloseButton_Click(object sender, EventArgs e)
         {
             Close();

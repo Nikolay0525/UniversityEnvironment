@@ -15,6 +15,7 @@ using UniversityEnvironment.View.Forms;
 using UniversityEnvironment.View.Forms.AdminForms;
 using UniversityEnvironment.Data.Model.MtoMTables;
 using UniversityEnvironment.View.Enums;
+using Newtonsoft.Json.Linq;
 
 namespace UniversityEnvironment.View.Utility
 {
@@ -223,24 +224,6 @@ namespace UniversityEnvironment.View.Utility
                 })
                 .ToList();
         }
-        internal static void DeleteOperation<T, Q>(DataGridView table, User user, CourseOperation @op) where T : CourseUser, new() where Q : User
-        {
-           /* List<Course> courses = FindAll<Course>().ToList();
-            var userCourses = new List<T>();
-            var foundedUser = FindByFilter<Q>(u => u.Id == user.Id);
-            ArgumentNullException.ThrowIfNull(foundedUser);
-            for (int i = 0; i < courses.Count; i++)
-            {
-                var value = table.Rows[i].Cells[0].Value;
-                if (value != null && bool.TryParse(value.ToString(), out bool parsed) && parsed)
-                {
-                    userCourses.Add(new() { UserId = user.Id, CourseId = courses[i].Id });
-                }
-            }
-            var count = Remove<T>(userCourses);
-            if (count == 0) return;
-            MessageBox.Show("Successfully deleted courses!", "Environment", MessageBoxButtons.OK);*/
-        }
         internal static void CreateQuestion<T>
             (Test test, GenericOperationWithTable<T> operation, DataGridView table, T obj)
         {
@@ -266,6 +249,73 @@ namespace UniversityEnvironment.View.Utility
             };
             Create<QuestionAnswer>(questionAnswer);
             operation(table, obj);
+        }
+        internal static void DeleteCourseOperation<T, Q>(DataGridView table, User user, CourseOperation @op) where T : CourseUser, new() where Q : User
+        {
+            /*List<Course> allCourses = FindAll<Course>().ToList();
+            List<Course> courses = new();
+            for (int i = 0; i < courses.Count; i++)
+            {
+                var value = table.Rows[i].Cells[0].Value;
+                if (value != null && bool.TryParse(value.ToString(), out bool parsed) && parsed)
+                {
+                    courses.Add(new() { UserId = user.Id, CourseId = courses[i].Id });
+                }
+            }
+            var count = Remove<T>(userCourses);
+            if (count == 0) return;
+            MessageBox.Show("Successfully deleted courses!", "Environment", MessageBoxButtons.OK);*/
+        }
+        internal static void DeleteAnswer(DataGridView answerTable, Guid testQuestionId, bool deleteAll = false)
+        {
+            List<QuestionAnswer> answers = new();
+            if (deleteAll)
+            {
+                List<QuestionAnswer> allAnswers = FindAll<QuestionAnswer>().ToList();
+                answers.AddRange(allAnswers.Where(answer => answer.TestQuestionId == testQuestionId));
+                Remove<QuestionAnswer>(answers);
+                return;
+            }
+            for (int i = 0; i < answerTable.RowCount; i++)
+            {
+                var id = answerTable.Rows[i].Cells[0].Value;
+                var check = answerTable.Rows[i].Cells[1].Value;
+                var Description = answerTable.Rows[i].Cells[2].Value;
+                if (id != null && Guid.TryParse(id.ToString(), out Guid parsedId) &&
+                    check != null && bool.TryParse(check.ToString(), out bool checkParsed) && checkParsed)
+                {
+                    answers.Add(new() { Id = parsedId, AnswerText = Description.ToString(), TestQuestionId = testQuestionId });
+                }
+            }
+            var count = Remove<QuestionAnswer>(answers);
+            if (count == 0) return;
+            MessageBox.Show("Successfully deleted answers!", "Test", MessageBoxButtons.OK);
+        }
+        internal static void DeleteQuestions(DataGridView questionTable, Guid testId, bool deleteAll = false)
+        {
+            List<TestQuestion> questions = new();
+            if (deleteAll)
+            {
+                List<TestQuestion> allQuestions = FindAll<TestQuestion>().ToList();
+                questions.AddRange(allQuestions.Where(question => question.TestId == testId));
+                Remove<TestQuestion>(questions);
+                return;
+            }
+            for (int i = 0; i < questionTable.RowCount; i++)
+            {
+                var id = questionTable.Rows[i].Cells[0].Value;
+                var check = questionTable.Rows[i].Cells[1].Value;
+                var Text = questionTable.Rows[i].Cells[2].Value;
+                if (id != null && Guid.TryParse(id.ToString(), out Guid parsedId) &&
+                    check != null && bool.TryParse(check.ToString(), out bool checkParsed) && checkParsed)
+                {
+                    questions.Add(new() { Id = parsedId, QuestionText = Text.ToString(), TestId = testId });
+                    DeleteAnswer(questionTable, parsedId, deleteAll = true);
+                }
+            }
+            var count = Remove<TestQuestion>(questions);
+            if (count == 0) return;
+            MessageBox.Show("Successfully deleted questions!", "Test", MessageBoxButtons.OK);
         }
     }
 }

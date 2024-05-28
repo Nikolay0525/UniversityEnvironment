@@ -1,6 +1,6 @@
 ﻿namespace UniversityEnvironment.View.Forms
 {
-    partial class BaseCourseForm
+    partial class CourseForm
     {
         /// <summary>
         /// Required designer variable.
@@ -35,6 +35,7 @@
             TestsTable = new DataGridView();
             DeleteTestButton = new Button();
             CreateTestButton = new Button();
+            IdColumn = new DataGridViewTextBoxColumn();
             CheckColumn = new DataGridViewCheckBoxColumn();
             TestName = new DataGridViewTextBoxColumn();
             TestDescription = new DataGridViewTextBoxColumn();
@@ -92,7 +93,7 @@
             TestsTable.AllowUserToDeleteRows = false;
             TestsTable.BackgroundColor = SystemColors.Control;
             TestsTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            TestsTable.Columns.AddRange(new DataGridViewColumn[] { CheckColumn, TestName, TestDescription });
+            TestsTable.Columns.AddRange(new DataGridViewColumn[] { IdColumn, CheckColumn, TestName, TestDescription });
             TestsTable.Location = new Point(12, 70);
             TestsTable.Name = "TestsTable";
             TestsTable.Size = new Size(377, 318);
@@ -123,6 +124,12 @@
             CreateTestButton.UseVisualStyleBackColor = false;
             CreateTestButton.Click += CreateButton_Click;
             // 
+            // IdColumn
+            // 
+            IdColumn.HeaderText = "ID";
+            IdColumn.Name = "IdColumn";
+            IdColumn.Visible = false;
+            // 
             // CheckColumn
             // 
             CheckColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
@@ -142,7 +149,7 @@
             TestDescription.HeaderText = "Description";
             TestDescription.Name = "TestDescription";
             // 
-            // BaseCourseForm
+            // CourseForm
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -155,7 +162,7 @@
             Controls.Add(TeacherTable);
             Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
             Margin = new Padding(4);
-            Name = "BaseCourseForm";
+            Name = "CourseForm";
             ((System.ComponentModel.ISupportInitialize)TeacherTable).EndInit();
             ((System.ComponentModel.ISupportInitialize)TestsTable).EndInit();
             ResumeLayout(false);
@@ -170,6 +177,7 @@
         private Button DeleteTestButton;
         private Button CreateTestButton;
         private DataGridViewTextBoxColumn UserName;
+        private DataGridViewTextBoxColumn IdColumn;
         private DataGridViewCheckBoxColumn CheckColumn;
         private DataGridViewTextBoxColumn TestName;
         private DataGridViewTextBoxColumn TestDescription;

@@ -30,25 +30,29 @@ namespace UniversityEnvironment.View.Forms
             PersonName.Text = user.FirstName + " " + user.LastName;
             PersonRole.Text = user.Role.ToString();
             AvailableCoursesTableUpdate(AvailableCoursesTable, FindAll<Course>().ToList());
-            if(_user.Role == Role.Teacher) UpdateTableWithActualCourses<CourseTeacher>(ActualCoursesTable, user);
+            if (_user.Role == Role.Teacher) 
+            {
+                UpdateTableWithActualCourses<CourseTeacher>(ActualCoursesTable, user);
+                TabControl.TabPages.RemoveAt(2);
+            } 
             else UpdateTableWithActualCourses<CourseStudent>(ActualCoursesTable, user);
         }
 
         private void SignButton_Click(object sender, EventArgs e)
         {
-            
+
             if (_user.Role == Role.Teacher)
             {
                 UserCourseOperation<CourseTeacher, Teacher>(AvailableCoursesTable, _user, CourseOperation.Create);
                 UpdateTableWithActualCourses<CourseTeacher>(ActualCoursesTable, _user);
             }
-                
+
             else
             {
                 UserCourseOperation<CourseStudent, Student>(AvailableCoursesTable, _user, CourseOperation.Create);
                 UpdateTableWithActualCourses<CourseStudent>(ActualCoursesTable, _user);
             }
-                
+
         }
 
         private void UnsignButton_Click(object sender, EventArgs e)
@@ -68,7 +72,7 @@ namespace UniversityEnvironment.View.Forms
 
         private void ActualCoursesTable_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            ClickOnCourse(0, this, ActualCoursesTable,e,_user);
+            ClickOnCourse(0, this, ActualCoursesTable, e, _user);
         }
 
         private void CloseButton_Click(object sender, EventArgs e)

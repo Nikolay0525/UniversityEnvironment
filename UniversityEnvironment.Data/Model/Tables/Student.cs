@@ -10,6 +10,7 @@ namespace UniversityEnvironment.Data.Model.Tables
 {
     public sealed class Student : User
     {
+        public List<StudentMessage>? studentMessages { get; set; }
         public List<TestStudent>? TestsStudents { get; set; }
         public List<CourseStudent>? CoursesStudents { get; set; }
         public List<QuestionAnswerStudent>? QuestionAnswersStudent { get; set; }

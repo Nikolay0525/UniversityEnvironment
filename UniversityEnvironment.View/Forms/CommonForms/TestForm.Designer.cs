@@ -1,6 +1,6 @@
 ﻿namespace UniversityEnvironment.View.Forms
 {
-    partial class BaseTestForm
+    partial class TestForm
     {
         /// <summary>
         /// Required designer variable.
@@ -30,12 +30,12 @@
         {
             CloseButton = new Button();
             QuestionTable = new DataGridView();
-            SendAnswersButton = new Button();
-            CreateQuestionButton = new Button();
-            DeleteQuestionButton = new Button();
             IdColumn = new DataGridViewTextBoxColumn();
             RowCheck = new DataGridViewCheckBoxColumn();
             QuestionColumn = new DataGridViewTextBoxColumn();
+            SendAnswersButton = new Button();
+            CreateQuestionButton = new Button();
+            DeleteQuestionButton = new Button();
             ((System.ComponentModel.ISupportInitialize)QuestionTable).BeginInit();
             SuspendLayout();
             // 
@@ -60,10 +60,30 @@
             QuestionTable.Columns.AddRange(new DataGridViewColumn[] { IdColumn, RowCheck, QuestionColumn });
             QuestionTable.Location = new Point(12, 75);
             QuestionTable.Name = "QuestionTable";
-            QuestionTable.ReadOnly = true;
             QuestionTable.Size = new Size(280, 246);
             QuestionTable.TabIndex = 1;
             QuestionTable.CellContentClick += QuestionTable_CellContentClick;
+            // 
+            // IdColumn
+            // 
+            IdColumn.HeaderText = "ID";
+            IdColumn.Name = "IdColumn";
+            IdColumn.Visible = false;
+            IdColumn.Width = 30;
+            // 
+            // RowCheck
+            // 
+            RowCheck.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            RowCheck.HeaderText = "";
+            RowCheck.MinimumWidth = 21;
+            RowCheck.Name = "RowCheck";
+            RowCheck.Width = 21;
+            // 
+            // QuestionColumn
+            // 
+            QuestionColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            QuestionColumn.HeaderText = "Question";
+            QuestionColumn.Name = "QuestionColumn";
             // 
             // SendAnswersButton
             // 
@@ -98,32 +118,9 @@
             DeleteQuestionButton.TabIndex = 3;
             DeleteQuestionButton.Text = "Delete";
             DeleteQuestionButton.UseVisualStyleBackColor = false;
+            DeleteQuestionButton.Click += DeleteQuestionButton_Click;
             // 
-            // IdColumn
-            // 
-            IdColumn.HeaderText = "Id";
-            IdColumn.Name = "IdColumn";
-            IdColumn.ReadOnly = true;
-            IdColumn.Visible = false;
-            IdColumn.Width = 30;
-            // 
-            // RowCheck
-            // 
-            RowCheck.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            RowCheck.HeaderText = "";
-            RowCheck.MinimumWidth = 21;
-            RowCheck.Name = "RowCheck";
-            RowCheck.ReadOnly = true;
-            RowCheck.Width = 21;
-            // 
-            // QuestionColumn
-            // 
-            QuestionColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            QuestionColumn.HeaderText = "Question";
-            QuestionColumn.Name = "QuestionColumn";
-            QuestionColumn.ReadOnly = true;
-            // 
-            // BaseTestForm
+            // TestForm
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -135,7 +132,7 @@
             Controls.Add(CloseButton);
             Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
             Margin = new Padding(4);
-            Name = "BaseTestForm";
+            Name = "TestForm";
             Text = "BaseTestForm";
             ((System.ComponentModel.ISupportInitialize)QuestionTable).EndInit();
             ResumeLayout(false);

@@ -18,12 +18,12 @@ using static UniversityEnvironment.View.Utility.ViewHelper;
 
 namespace UniversityEnvironment.View.Forms
 {
-    public partial class BaseCourseForm : MaterialForm
+    public partial class CourseForm : MaterialForm
     {
         private readonly User _user;
         private Course _course;
 
-        public BaseCourseForm(User user, Course course)
+        public CourseForm(User user, Course course)
         {
             _user = user;
             _course = course;

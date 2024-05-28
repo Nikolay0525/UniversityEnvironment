@@ -118,7 +118,7 @@ namespace UniversityEnvironment.View.Utility
             var tests = FindAll<Test>(t => t.CourseId == course.Id);
             if (tests == null) return;
             table.Rows.Clear();
-            foreach (var test in tests) { table.Rows.Add(false, test.Name, test.Description); }
+            foreach (var test in tests) { table.Rows.Add(test.Id,false, test.Name, test.Description); }
 
         }
         internal static void UpdateQuestionTable(DataGridView table, Test test)
@@ -142,32 +142,32 @@ namespace UniversityEnvironment.View.Utility
         internal static void ClickOnCourse
             (int columnIndex,MaterialForm form,DataGridView table, DataGridViewCellEventArgs e, User user)
         {
-            if (e.RowIndex >= 0 && e.ColumnIndex >= columnIndex)
+            if (e.RowIndex >= 0 && e.ColumnIndex > columnIndex)
             {
                 DataGridViewRow selectedRow = table.Rows[e.RowIndex];
                 string? selectedCourse = selectedRow.Cells["CourseColumn"].Value.ToString();
                 if (selectedCourse == null) return;
                 var course = FindByFilter<Course>(c => c.Name == selectedCourse);
                 if (course == null) return;
-                ShowNextForm(form, new View.Forms.BaseCourseForm(user, course));
+                ShowNextForm(form, new View.Forms.CourseForm(user, course));
             }
         }
         internal static void ClickOnTest
             (int columnIndex,MaterialForm form,DataGridView table, DataGridViewCellEventArgs e, User user, Course course)
         {
-            if (e.RowIndex >= 0 && e.ColumnIndex >= columnIndex)
+            if (e.RowIndex >= 0 && e.ColumnIndex > columnIndex)
             {
                 DataGridViewRow selectedRow = table.Rows[e.RowIndex];
                 string? selectedTest = selectedRow.Cells["TestName"].Value.ToString();
                 var test = FindByFilter<Test>(t => t.CourseId == course.Id);
                 if (test == null) return;
-                ShowNextForm(form, new View.Forms.BaseTestForm(user, course, test));
+                ShowNextForm(form, new View.Forms.TestForm(user, course, test));
             }
         }
         internal static void ClickOnQuestion
             (int columnIndex,MaterialForm form, DataGridView table,DataGridViewCellEventArgs e, User user ,Course course,Test test)
         {
-            if (e.RowIndex >= 0 && e.ColumnIndex >= columnIndex)
+            if (e.RowIndex >= 0 && e.ColumnIndex > columnIndex)
             {
                 DataGridViewRow selectedRow = table.Rows[e.RowIndex];
                 var selectedQuestion = selectedRow.Cells["IdColumn"].Value.ToString();
@@ -177,7 +177,7 @@ namespace UniversityEnvironment.View.Utility
                     question = FindByFilter<TestQuestion>(q => q.Id == result);
                 }
                 if (question == null) return;
-                ShowNextForm(form, new View.Forms.BaseQuestionForm(user, course, test, question));
+                ShowNextForm(form, new View.Forms.QuestionForm(user, course, test, question));
             }
         }
         #endregion

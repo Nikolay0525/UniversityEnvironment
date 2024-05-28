@@ -247,7 +247,7 @@ namespace UniversityEnvironment.View.Forms
             ShowNextFormUpdateCourseTable(this, new CourseCreatorForm(), AvailableCoursesTable);
         }
 
-        private void UnsignButton_Click(object sender, EventArgs e)
+        private void DeleteCourseButton_Click(object sender, EventArgs e)
         {
 
         }
