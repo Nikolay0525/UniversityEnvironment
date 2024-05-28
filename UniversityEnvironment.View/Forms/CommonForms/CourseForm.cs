@@ -55,7 +55,7 @@ namespace UniversityEnvironment.View.Forms
 
         private void DeleteTestButton_Click(object sender, EventArgs e)
         {
-
+            DeleteTest(_course.Id, TestsTable, false);
         }
     }
 }

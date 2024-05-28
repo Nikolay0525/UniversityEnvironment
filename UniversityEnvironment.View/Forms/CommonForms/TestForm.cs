@@ -50,7 +50,7 @@ namespace UniversityEnvironment.View.Forms
 
         private void DeleteQuestionButton_Click(object sender, EventArgs e)
         {
-            DeleteQuestions(QuestionTable, _test.Id);
+            DeleteQuestion(_test.Id, QuestionTable, false);
         }
     }
 }

@@ -62,6 +62,7 @@
             DeleteCourseButton = new Button();
             CreateCourseButton = new Button();
             AvailableCoursesTable = new DataGridView();
+            IdColumn = new DataGridViewTextBoxColumn();
             RowCheck = new DataGridViewCheckBoxColumn();
             CourseColumn = new DataGridViewTextBoxColumn();
             FacultyColumn = new DataGridViewTextBoxColumn();
@@ -436,12 +437,18 @@
             AvailableCoursesTable.AllowUserToDeleteRows = false;
             AvailableCoursesTable.BackgroundColor = SystemColors.Control;
             AvailableCoursesTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            AvailableCoursesTable.Columns.AddRange(new DataGridViewColumn[] { RowCheck, CourseColumn, FacultyColumn });
+            AvailableCoursesTable.Columns.AddRange(new DataGridViewColumn[] { IdColumn, RowCheck, CourseColumn, FacultyColumn });
             AvailableCoursesTable.Location = new Point(172, 28);
             AvailableCoursesTable.Name = "AvailableCoursesTable";
             AvailableCoursesTable.Size = new Size(414, 268);
             AvailableCoursesTable.TabIndex = 7;
             AvailableCoursesTable.CellContentClick += AvailableCoursesTable_CellContentClick;
+            // 
+            // IdColumn
+            // 
+            IdColumn.HeaderText = "ID";
+            IdColumn.Name = "IdColumn";
+            IdColumn.Visible = false;
             // 
             // RowCheck
             // 
@@ -501,9 +508,6 @@
         private Button DeleteCourseButton;
         private Button CreateCourseButton;
         private DataGridView AvailableCoursesTable;
-        private DataGridViewCheckBoxColumn RowCheck;
-        private DataGridViewTextBoxColumn CourseColumn;
-        private DataGridViewTextBoxColumn FacultyColumn;
         private TextBox FilterTextBox;
         private Button NextUsersButton;
         private Button PreviousUsersButton;
@@ -526,5 +530,9 @@
         private DataGridViewTextBoxColumn FromUsernameColumn;
         private DataGridViewTextBoxColumn MessageColumn;
         private DataGridViewTextBoxColumn TypeColumn;
+        private DataGridViewTextBoxColumn IdColumn;
+        private DataGridViewCheckBoxColumn RowCheck;
+        private DataGridViewTextBoxColumn CourseColumn;
+        private DataGridViewTextBoxColumn FacultyColumn;
     }
 }

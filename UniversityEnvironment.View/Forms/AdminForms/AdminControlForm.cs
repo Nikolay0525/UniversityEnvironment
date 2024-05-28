@@ -249,7 +249,7 @@ namespace UniversityEnvironment.View.Forms
 
         private void DeleteCourseButton_Click(object sender, EventArgs e)
         {
-
+            DeleteCourse(AvailableCoursesTable);
         }
     }
 }

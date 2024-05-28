@@ -250,23 +250,8 @@ namespace UniversityEnvironment.View.Utility
             Create<QuestionAnswer>(questionAnswer);
             operation(table, obj);
         }
-        internal static void DeleteCourseOperation<T, Q>(DataGridView table, User user, CourseOperation @op) where T : CourseUser, new() where Q : User
-        {
-            /*List<Course> allCourses = FindAll<Course>().ToList();
-            List<Course> courses = new();
-            for (int i = 0; i < courses.Count; i++)
-            {
-                var value = table.Rows[i].Cells[0].Value;
-                if (value != null && bool.TryParse(value.ToString(), out bool parsed) && parsed)
-                {
-                    courses.Add(new() { UserId = user.Id, CourseId = courses[i].Id });
-                }
-            }
-            var count = Remove<T>(userCourses);
-            if (count == 0) return;
-            MessageBox.Show("Successfully deleted courses!", "Environment", MessageBoxButtons.OK);*/
-        }
-        internal static void DeleteAnswer(DataGridView answerTable, Guid testQuestionId, bool deleteAll = false)
+
+        internal static void DeleteAnswer(Guid testQuestionId, DataGridView? answerTable, bool deleteAll = false)
         {
             List<QuestionAnswer> answers = new();
             if (deleteAll)
@@ -276,46 +261,115 @@ namespace UniversityEnvironment.View.Utility
                 Remove<QuestionAnswer>(answers);
                 return;
             }
+            if (answerTable == null) return;
             for (int i = 0; i < answerTable.RowCount; i++)
             {
                 var id = answerTable.Rows[i].Cells[0].Value;
                 var check = answerTable.Rows[i].Cells[1].Value;
-                var Description = answerTable.Rows[i].Cells[2].Value;
+                var description = answerTable.Rows[i].Cells[2].Value;
                 if (id != null && Guid.TryParse(id.ToString(), out Guid parsedId) &&
                     check != null && bool.TryParse(check.ToString(), out bool checkParsed) && checkParsed)
                 {
-                    answers.Add(new() { Id = parsedId, AnswerText = Description.ToString(), TestQuestionId = testQuestionId });
+                    answers.Add(new() { Id = parsedId, AnswerText = description.ToString(), TestQuestionId = testQuestionId });
                 }
             }
             var count = Remove<QuestionAnswer>(answers);
             if (count == 0) return;
             MessageBox.Show("Successfully deleted answers!", "Test", MessageBoxButtons.OK);
         }
-        internal static void DeleteQuestions(DataGridView questionTable, Guid testId, bool deleteAll = false)
+        internal static void DeleteQuestion(Guid testId, DataGridView? questionTable,  bool deleteAll = false)
         {
             List<TestQuestion> questions = new();
             if (deleteAll)
             {
                 List<TestQuestion> allQuestions = FindAll<TestQuestion>().ToList();
                 questions.AddRange(allQuestions.Where(question => question.TestId == testId));
+                foreach(var question in questions)
+                {
+                    DeleteAnswer(question.Id, null, true);
+                }
                 Remove<TestQuestion>(questions);
                 return;
             }
+            if (questionTable == null) return;
             for (int i = 0; i < questionTable.RowCount; i++)
             {
                 var id = questionTable.Rows[i].Cells[0].Value;
                 var check = questionTable.Rows[i].Cells[1].Value;
-                var Text = questionTable.Rows[i].Cells[2].Value;
+                var text = questionTable.Rows[i].Cells[2].Value;
                 if (id != null && Guid.TryParse(id.ToString(), out Guid parsedId) &&
                     check != null && bool.TryParse(check.ToString(), out bool checkParsed) && checkParsed)
                 {
-                    questions.Add(new() { Id = parsedId, QuestionText = Text.ToString(), TestId = testId });
-                    DeleteAnswer(questionTable, parsedId, deleteAll = true);
+                    questions.Add(new() { Id = parsedId, QuestionText = text.ToString(), TestId = testId });
+                    DeleteAnswer(parsedId, questionTable, deleteAll = true);
                 }
             }
             var count = Remove<TestQuestion>(questions);
             if (count == 0) return;
             MessageBox.Show("Successfully deleted questions!", "Test", MessageBoxButtons.OK);
+        }
+        internal static void DeleteTest(Guid courseId, DataGridView? testTable,  bool deleteAll = false)
+        {
+            List<Test> tests = new();
+            if (deleteAll)
+            {
+                List<Test> allTests = FindAll<Test>().ToList();
+                tests.AddRange(allTests.Where(test => test.CourseId == courseId));
+                foreach (var test in tests)
+                {
+                    DeleteQuestion(test.Id, null, true);
+                }
+                Remove<Test>(tests);
+                return;
+            }
+            if (testTable == null) return; 
+            for (int i = 0; i < testTable.RowCount; i++)
+            {
+                var id = testTable.Rows[i].Cells[0].Value;
+                var check = testTable.Rows[i].Cells[1].Value;
+                var name = testTable.Rows[i].Cells[2].Value;
+                var description = testTable.Rows[i].Cells[3].Value;
+                if (id != null && Guid.TryParse(id.ToString(), out Guid parsedId) &&
+                    check != null && bool.TryParse(check.ToString(), out bool checkParsed) && checkParsed)
+                {
+                    tests.Add(new()
+                    {
+                        Id = parsedId,
+                        Name = name.ToString(),
+                        Description = description.ToString(),
+                        CourseId = courseId
+                    });
+                    DeleteQuestion(parsedId, null, true);
+                }
+            }
+            var count = Remove<Test>(tests);
+            if (count == 0) return;
+            MessageBox.Show("Successfully deleted tests!", "Course", MessageBoxButtons.OK);
+        }
+        internal static void DeleteCourse(DataGridView courseTable)
+        {
+            List<Course> courses = new();
+            for (int i = 0; i < courseTable.RowCount; i++)
+            {
+                var id = courseTable.Rows[i].Cells[0].Value;
+                var check = courseTable.Rows[i].Cells[1].Value;
+                var name = courseTable.Rows[i].Cells[2].Value;
+                var faculty = courseTable.Rows[i].Cells[3].Value;
+                if (id != null && Guid.TryParse(id.ToString(), out Guid parsedId) &&
+                    check != null && bool.TryParse(check.ToString(), out bool checkParsed) && checkParsed)
+                {
+                    courses.Add(new()
+                    {
+                        Id = parsedId,
+                        Name = name.ToString(),
+                        FacultyName = faculty.ToString(),
+                    });
+                    DeleteTest(parsedId, null ,true);
+                }
+            }
+            var count = Remove<Course>(courses);
+            if (count == 0) return;
+            MessageBox.Show("Successfully deleted courses!", "Admin Panel", MessageBoxButtons.OK);
         }
     }
 }
