@@ -1,24 +1,11 @@
 ﻿using MaterialSkin.Controls;
-using MaterialSkin;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using UniversityEnvironment.Data.Model.Tables;
-using static UniversityEnvironment.View.Utility.ViewHelper;
-using static UniversityEnvironment.View.Utility.AdminViewHelper;
-using static UniversityEnvironment.View.Utility.AuthorizationHelper;
-using static UniversityEnvironment.Data.Service.MySqlService;
-using Microsoft.EntityFrameworkCore;
 using UniversityEnvironment.Data;
 using UniversityEnvironment.Data.Enums;
-using UniversityEnvironment.View.Utility;
+using UniversityEnvironment.Data.Model.Tables;
 using UniversityEnvironment.View.Forms.AdminForms;
+using static UniversityEnvironment.Data.Service.MySqlService;
+using static UniversityEnvironment.View.Utility.AdminViewHelper;
+using static UniversityEnvironment.View.Utility.ViewHelper;
 
 namespace UniversityEnvironment.View.Forms
 {
@@ -37,40 +24,6 @@ namespace UniversityEnvironment.View.Forms
             Text = "Welcome back " + user.FirstName + " " + user.LastName + "!";
         }
 
-        private void NextPage(Role role,
-            VoidOperation? adminOperation = null, VoidOperation? teacherOperation = null, VoidOperation? studentOperation = null)
-        {
-            _currentPage++;
-            if (role == Role.Admin)
-            {
-                adminOperation?.Invoke();
-            }
-            else if (role == Role.Admin)
-            {
-                teacherOperation?.Invoke();
-            }
-            else if (role == Role.Student)
-            {
-                studentOperation?.Invoke();
-            }
-        }
-        private void PreviousPage(Role role,
-            VoidOperation? adminOperation = null, VoidOperation? teacherOperation = null, VoidOperation? studentOperation = null)
-        {
-            _currentPage = _currentPage > 0 ? _currentPage - 1 : _currentPage;
-            if (role == Role.Admin)
-            {
-                adminOperation?.Invoke();
-            }
-            else if (role == Role.Admin)
-            {
-                teacherOperation?.Invoke();
-            }
-            else if (role == Role.Student)
-            {
-                studentOperation?.Invoke();
-            }
-        }
         #region Users tab
 
         private void AdminsUsersUpdate()
@@ -127,7 +80,6 @@ namespace UniversityEnvironment.View.Forms
                 {
                     GenericClickOnUsers<Student>(user, selectedUsername, StudentsUsersUpdate, this, user => new AdminUserForm(user));
                 }
-
             }
         }
         #endregion
@@ -157,17 +109,17 @@ namespace UniversityEnvironment.View.Forms
             }
         }
 
-        internal void AdminsRequestUpdate()
+        private void AdminsRequestUpdate()
         {
             _roleFlag = Role.Admin;
             UpdateRequestsTable<Admin>(RequestsTable, AdminsRequest(_currentPage, _context));
         }
-        internal void TeachersRequestUpdate()
+        private void TeachersRequestUpdate()
         {
             _roleFlag = Role.Teacher;
             UpdateRequestsTable<Teacher>(RequestsTable, TeachersRequest(_currentPage, _context));
         }
-        internal void StudentRequestUpdate()
+        private void StudentRequestUpdate()
         {
             _roleFlag = Role.Student;
             UpdateRequestsTable<Student>(RequestsTable, StudentsRequest(_currentPage, _context));
@@ -198,11 +150,11 @@ namespace UniversityEnvironment.View.Forms
 
         private void NextPageRequests_Click(object sender, EventArgs e)
         {
-            NextPage(_roleFlag, AdminsRequestUpdate, TeachersRequestUpdate, StudentRequestUpdate);
+            NextPage(_roleFlag, ref _currentPage, AdminsRequestUpdate, TeachersRequestUpdate, StudentRequestUpdate);
         }
         private void PreviousPageRequests_Click(object sender, EventArgs e)
         {
-            PreviousPage(_roleFlag, AdminsRequestUpdate, TeachersRequestUpdate, StudentRequestUpdate);
+            PreviousPage(_roleFlag, ref _currentPage, AdminsRequestUpdate, TeachersRequestUpdate, StudentRequestUpdate);
         }
         #endregion
         private void CloseButton_Click(object sender, EventArgs e)
@@ -214,13 +166,13 @@ namespace UniversityEnvironment.View.Forms
         {
             if (_roleFlag == Role.Admin)
             {
-                AdminsUsersRequest(_currentPage, _context, ByUsernameCheck.Checked, FilterTextBox.Text);
+                UpdateUsersTable(UsersTable, AdminsUsersRequest(_currentPage, _context, ByUsernameCheck.Checked, FilterTextBox.Text));
             }
-            else if (_roleFlag == Role.Admin)
+            else if (_roleFlag == Role.Teacher)
             {
-                TeachersUsersRequest(_currentPage, _context, ByUsernameCheck.Checked, FilterTextBox.Text);
+                UpdateUsersTable(UsersTable, TeachersUsersRequest(_currentPage, _context, ByUsernameCheck.Checked, FilterTextBox.Text));
             }
-            else
+            else if (_roleFlag == Role.Student)
             {
                 UpdateUsersTable(UsersTable, StudentsUsersRequest(_currentPage, _context, ByUsernameCheck.Checked, FilterTextBox.Text));
             }
@@ -234,12 +186,12 @@ namespace UniversityEnvironment.View.Forms
 
         private void NextUsersButton_Click(object sender, EventArgs e)
         {
-            NextPage(_roleFlag, AdminsUsersUpdate, TeachersUsersUpdate, StudentsUsersUpdate);
+            NextPage(_roleFlag, ref _currentPage, AdminsUsersUpdate, TeachersUsersUpdate, StudentsUsersUpdate);
         }
 
         private void PreviousUsersButton_Click(object sender, EventArgs e)
         {
-            PreviousPage(_roleFlag, AdminsUsersUpdate, TeachersUsersUpdate, StudentsUsersUpdate);
+            PreviousPage(_roleFlag, ref _currentPage, AdminsUsersUpdate, TeachersUsersUpdate, StudentsUsersUpdate);
         }
 
         private void CreateButton_Click(object sender, EventArgs e)

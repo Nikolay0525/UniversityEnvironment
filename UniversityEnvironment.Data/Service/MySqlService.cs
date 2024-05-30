@@ -1,12 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using UniversityEnvironment.Data.Model.Tables;
-
+using UniversityEnvironment.Data.Model.MtoMTables;
 
 namespace UniversityEnvironment.Data.Service
 {
@@ -30,55 +24,65 @@ namespace UniversityEnvironment.Data.Service
             return context.Set<T>().AsNoTracking().FirstOrDefault(filter);
         }
 
-        public static void Create<T>(T obj) where T : class
-        {
-            using UniversityEnvironmentContext context = new();
-            if (context.Set<T>().Any(o => o == obj)) return;
-            context.Add(obj);
-            context.SaveChanges();
-        }
-
-        public static int Create<T>(IEnumerable<T> objects) where T : class
+        public static int Create<T>(T? obj = null,IEnumerable<T>? objects = null) where T : class
         {
             using UniversityEnvironmentContext context = new();
             int count = 0;
-            foreach (var obj in objects)
+            if (obj != null)
             {
-                if (context.Set<T>().Any(o => o == obj)) { continue; }
+                if (context.Set<T>().Any(o => o == obj)) return count;
                 context.Add(obj);
                 count++;
             }
+            else if (objects != null)
+            {
 
+                foreach (var objj in objects)
+                {
+                    if (context.Set<T>().Any(o => o == objj)) { continue; }
+                    context.Add(objj);
+                    count++;
+                }
+            }
             context.SaveChanges();
             return count;
         }
 
-        public static T? Update<T>(T obj) where T : class
+        public static T? Update<T>(T? obj = null, IEnumerable<T>? objects = null) where T : class
         {
             using UniversityEnvironmentContext context = new();
-            context.Entry(obj).State = EntityState.Modified;
+            if(obj != null)
+            {
+                context.Entry(obj).State = EntityState.Modified;
+                return obj;
+            }
+            else if(objects != null)
+            {
+                foreach (var objj in objects) { context.Entry(objj).State = EntityState.Modified; }
+            }
             context.SaveChanges();
-            return obj;
+            return null;
         }
 
-        public static void Remove<T>(T obj) where T : class
-        {
-            using UniversityEnvironmentContext context = new();
-            if (!context.Set<T>().Any(o => o == obj)) { return; }
-            context.Remove(obj);
-            context.SaveChanges();
-        }
-        public static int Remove<T>(IEnumerable<T> objects) where T : class
+        public static int Remove<T>(T? obj = null,IEnumerable<T>? objects = null) where T : class
         {
             using UniversityEnvironmentContext context = new();
             int count = 0;
-            foreach (var obj in objects)
+            if (obj != null)
             {
-                if (!context.Set<T>().Any(o => o == obj)) { continue; }
+                if (!context.Set<T>().Any(o => o == obj)) return count;
                 context.Remove(obj);
                 count++;
             }
-
+            else if(objects != null)
+            {
+                foreach (var objj in objects)
+                {
+                    if (!context.Set<T>().Any(o => o == objj)) { continue; }
+                    context.Remove(objj);
+                    count++;
+                }
+            }
             context.SaveChanges();
             return count;
         }

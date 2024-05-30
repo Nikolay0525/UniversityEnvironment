@@ -1,25 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using MaterialSkin.Controls;
-using MaterialSkin;
-using UniversityEnvironment.Data.Model.Tables;
+﻿using UniversityEnvironment.Data.Model.Tables;
 using static UniversityEnvironment.Data.Service.MySqlService;
 
 namespace UniversityEnvironment.View.Forms.AdminForms
 {
     public partial class TestCreatorForm : CreatorForm
     {
-        private Guid CourseId;
+        private Guid _courseId;
         public TestCreatorForm(Course course) : base()
         {
-            CourseId = course.Id;
+            _courseId = course.Id;
             InitializeComponent();
         }
 
@@ -29,7 +18,7 @@ namespace UniversityEnvironment.View.Forms.AdminForms
             {
                 Name = TestNameBox.Text,
                 Description = DescriptionBox.Text,
-                CourseId = CourseId
+                CourseId = _courseId
             };
             Create<Test>(test);
             Close();

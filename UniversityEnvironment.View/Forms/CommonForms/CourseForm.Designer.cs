@@ -1,4 +1,4 @@
-﻿namespace UniversityEnvironment.View.Forms
+﻿namespace UniversityEnvironment.View.Forms.CommonForms
 {
     partial class CourseForm
     {
@@ -55,13 +55,14 @@
             TeacherTable.ReadOnly = true;
             TeacherTable.Size = new Size(193, 236);
             TeacherTable.TabIndex = 0;
+            TeacherTable.CellContentClick += TeacherTable_CellContentClick;
             // 
             // UserName
             // 
-            UserName.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             UserName.HeaderText = "Course teachers";
             UserName.Name = "UserName";
             UserName.ReadOnly = true;
+            UserName.Width = 150;
             // 
             // CloseButton
             // 
@@ -128,6 +129,8 @@
             // 
             IdColumn.HeaderText = "ID";
             IdColumn.Name = "IdColumn";
+            IdColumn.ReadOnly = true;
+            IdColumn.Resizable = DataGridViewTriState.False;
             IdColumn.Visible = false;
             // 
             // CheckColumn
@@ -136,18 +139,23 @@
             CheckColumn.HeaderText = "";
             CheckColumn.MinimumWidth = 21;
             CheckColumn.Name = "CheckColumn";
+            CheckColumn.Resizable = DataGridViewTriState.False;
             CheckColumn.Width = 21;
             // 
             // TestName
             // 
             TestName.HeaderText = "Test";
             TestName.Name = "TestName";
+            TestName.ReadOnly = true;
+            TestName.Resizable = DataGridViewTriState.False;
             // 
             // TestDescription
             // 
-            TestDescription.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             TestDescription.HeaderText = "Description";
             TestDescription.Name = "TestDescription";
+            TestDescription.ReadOnly = true;
+            TestDescription.Resizable = DataGridViewTriState.False;
+            TestDescription.Width = 213;
             // 
             // CourseForm
             // 
@@ -163,6 +171,7 @@
             Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
             Margin = new Padding(4);
             Name = "CourseForm";
+            Sizable = false;
             ((System.ComponentModel.ISupportInitialize)TeacherTable).EndInit();
             ((System.ComponentModel.ISupportInitialize)TestsTable).EndInit();
             ResumeLayout(false);

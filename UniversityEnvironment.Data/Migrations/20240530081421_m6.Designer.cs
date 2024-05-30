@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UniversityEnvironment.Data;
 
@@ -11,9 +12,11 @@ using UniversityEnvironment.Data;
 namespace UniversityEnvironment.Data.Migrations
 {
     [DbContext(typeof(UniversityEnvironmentContext))]
-    partial class UniversityEnvironmentContextModelSnapshot : ModelSnapshot
+    [Migration("20240530081421_m6")]
+    partial class m6
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -197,12 +200,6 @@ namespace UniversityEnvironment.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<string>("CourseName")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Initials")
-                        .HasColumnType("longtext");
-
                     b.Property<string>("MessageText")
                         .HasColumnType("longtext");
 
@@ -213,7 +210,7 @@ namespace UniversityEnvironment.Data.Migrations
 
                     b.HasIndex("StudentId");
 
-                    b.ToTable("StudentMessages");
+                    b.ToTable("StudentMessage");
                 });
 
             modelBuilder.Entity("UniversityEnvironment.Data.Model.Tables.Teacher", b =>
@@ -387,13 +384,13 @@ namespace UniversityEnvironment.Data.Migrations
 
             modelBuilder.Entity("UniversityEnvironment.Data.Model.Tables.StudentMessage", b =>
                 {
-                    b.HasOne("UniversityEnvironment.Data.Model.Tables.Student", "Student")
+                    b.HasOne("UniversityEnvironment.Data.Model.Tables.Student", "student")
                         .WithMany("studentMessages")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Student");
+                    b.Navigation("student");
                 });
 
             modelBuilder.Entity("UniversityEnvironment.Data.Model.Tables.Test", b =>

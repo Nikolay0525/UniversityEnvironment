@@ -1,36 +1,35 @@
 ﻿using MaterialSkin.Controls;
-using MaterialSkin;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using UniversityEnvironment.Data.Enums;
 using UniversityEnvironment.Data.Model.Tables;
-using UniversityEnvironment.Data;
-using UniversityEnvironment.View.Forms.AdminForms;
 using static UniversityEnvironment.View.Utility.AdminViewHelper;
 using static UniversityEnvironment.View.Utility.ViewHelper;
 
-namespace UniversityEnvironment.View.Forms
+namespace UniversityEnvironment.View.Forms.CommonForms
 {
     public partial class QuestionForm : MaterialForm
     {
-        private User _user;
-        private Course _course;
-        private Test _test;
-        private TestQuestion _testQuestion;
+        private readonly TestForm _currentTestForm;
+        private readonly User _user;
+        private readonly TestQuestion _testQuestion;
 
-        public QuestionForm(User user, Course course, Test test, TestQuestion testQuestion)
+        public QuestionForm(TestForm currentTestForm, User user, TestQuestion testQuestion)
         {
+            _currentTestForm = currentTestForm;
             _user = user;
-            _course = course;
-            _test = test;
             _testQuestion = testQuestion;
             InitializeComponent();
+            if (user.Role != Role.Admin)
+            {
+                Height = 398;
+                CreateAnswerButton.Visible = false;
+                DeleteAnswerButton.Visible = false;
+            }
+            if (!_testQuestion.ManyAnswers)
+            {
+                CloseButton.Width = 280;
+                AnswerTable.Columns["CheckColumn"].Visible = false;
+                SendAnswersButton.Visible = false;
+            }
             QuestionLabel.Text = testQuestion.QuestionText;
             UpdateAnswerTable(AnswerTable, _testQuestion);
         }
@@ -41,11 +40,16 @@ namespace UniversityEnvironment.View.Forms
         }
         private void DeleteAnswerButton_Click(object sender, EventArgs e)
         {
-
+            DeleteAnswer(_testQuestion.Id, AnswerTable);
         }
         private void AnswerTable_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-
+            if (_testQuestion.ManyAnswers) return;
+            AnswerOnQuestion(_currentTestForm,this, _testQuestion.ManyAnswers, AnswerTable, _testQuestion.Id, _user, e);
+        }
+        private void SendAnswersButton_Click(object sender, EventArgs e)
+        {
+            AnswerOnQuestion(_currentTestForm,this, _testQuestion.ManyAnswers, AnswerTable, _testQuestion.Id, _user);
         }
         private void CloseButton_Click(object sender, EventArgs e)
         {

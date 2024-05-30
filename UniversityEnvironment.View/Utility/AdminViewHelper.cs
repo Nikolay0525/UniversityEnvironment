@@ -1,32 +1,57 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static UniversityEnvironment.Data.Service.MySqlService;
-using static UniversityEnvironment.View.Utility.ViewHelper;
-using static UniversityEnvironment.View.Utility.AuthorizationHelper;
-using UniversityEnvironment.Data.Model.Tables;
+﻿using MaterialSkin.Controls;
+using Microsoft.EntityFrameworkCore;
 using UniversityEnvironment.Data;
 using UniversityEnvironment.Data.Enums;
-using MaterialSkin.Controls;
+using UniversityEnvironment.Data.Model.Tables;
 using UniversityEnvironment.View.Forms;
-using UniversityEnvironment.View.Forms.AdminForms;
-using UniversityEnvironment.Data.Model.MtoMTables;
-using UniversityEnvironment.View.Enums;
-using Newtonsoft.Json.Linq;
+using static UniversityEnvironment.Data.Service.MySqlService;
+using static UniversityEnvironment.View.Utility.AuthorizationHelper;
+using static UniversityEnvironment.View.Utility.ViewHelper;
 
 namespace UniversityEnvironment.View.Utility
 {
     internal class AdminViewHelper
     {
-        internal static void ShowNextFormUpdateTestTable
-            (MaterialForm current, MaterialForm next, DataGridView table, Course course)
+
+        internal static readonly int RowsPerPage = 10;
+
+        public static void NextPage(Role role, ref int currentPage,
+        VoidOperation? adminOperation = null, Action? teacherOperation = null, VoidOperation? studentOperation = null)
+        {
+            currentPage++;
+            ExecuteRoleOperation(role, adminOperation, teacherOperation, studentOperation);
+        }
+
+        public static void PreviousPage(Role role, ref int currentPage,
+            VoidOperation? adminOperation = null, Action? teacherOperation = null, VoidOperation? studentOperation = null)
+        {
+            currentPage = currentPage > 0 ? currentPage - 1 : currentPage;
+            ExecuteRoleOperation(role, adminOperation, teacherOperation, studentOperation);
+        }
+
+        private static void ExecuteRoleOperation(Role role,
+            VoidOperation? adminOperation = null, Action? teacherOperation = null, VoidOperation? studentOperation = null)
+        {
+            switch (role)
+            {
+                case Role.Admin:
+                    adminOperation?.Invoke();
+                    break;
+                case Role.Teacher:
+                    teacherOperation?.Invoke();
+                    break;
+                case Role.Student:
+                    studentOperation?.Invoke();
+                    break;
+            }
+        }
+
+        internal static void ShowNextFormUpdateTable<T>
+            (MaterialForm current, MaterialForm next, DataGridView table, T obj, Action<DataGridView, T> updateAction)
         {
             current.Hide();
             next.FormClosed += (s, arg) => current.Show();
-            next.FormClosed += (s, arg) => UpdateTestsTable(table, course);
+            next.FormClosed += (s, arg) => updateAction(table, obj);
             next.Show();
         }
         internal static void ShowNextFormUpdateCourseTable(MaterialForm current, MaterialForm next, DataGridView table)
@@ -45,7 +70,6 @@ namespace UniversityEnvironment.View.Utility
             ArgumentNullException.ThrowIfNull(user);
             ShowNextForm(thisForm, createForm(user), operation);
         }
-
 
         internal static void UpdateRequestsTable<T>(DataGridView table, IEnumerable<T> users) where T : User
         {
@@ -69,13 +93,15 @@ namespace UniversityEnvironment.View.Utility
                 if (user.Confirmed) table.Rows.Add(user.Username, user.FirstName + " " + user.LastName, user.Role);
             }
         }
-        internal static List<Admin> AdminsRequest(int currentPage,UniversityEnvironmentContext context)
+        internal static List<Admin> AdminsRequest(int currentPage,UniversityEnvironmentContext context) // make one request with
+            // expression in params to change cond. dynamicly, then i don't need Sciencedegree at all so it make sense to 
+            // make request where selected only fields of User model
         {
             return context.Admins
                 .AsNoTracking()
                 .Where(admin => admin.ForgetPassword == true || admin.Confirmed == false)
-                .Skip(currentPage * Constants.RowsPerPage)
-                .Take(Constants.RowsPerPage)
+                .Skip(currentPage * RowsPerPage)
+                .Take(RowsPerPage)
                 .OrderBy(admin => admin.Username)
                 .Select(admin => new Admin
                 {
@@ -94,8 +120,8 @@ namespace UniversityEnvironment.View.Utility
             return context.Teachers
                 .AsNoTracking()
                 .Where(teacher => teacher.ForgetPassword == true || teacher.Confirmed == false)
-                .Skip(currentPage * Constants.RowsPerPage)
-                .Take(Constants.RowsPerPage)
+                .Skip(currentPage * RowsPerPage)
+                .Take(RowsPerPage)
                 .OrderBy(teacher => teacher.Username)
                 .Select(teacher => new Teacher
                 {
@@ -115,8 +141,8 @@ namespace UniversityEnvironment.View.Utility
             return context.Students
                 .AsNoTracking()
                 .Where(student => student.ForgetPassword == true)
-                .Skip(currentPage * Constants.RowsPerPage)
-                .Take(Constants.RowsPerPage)
+                .Skip(currentPage * RowsPerPage)
+                .Take(RowsPerPage)
                 .OrderBy(student => student.Username)
                 .Select(student => new Student
                 {
@@ -147,8 +173,8 @@ namespace UniversityEnvironment.View.Utility
             return query
                 .AsNoTracking()
                 .OrderBy(admin => admin.Username)
-                .Skip(currentPage * Constants.RowsPerPage)
-                .Take(Constants.RowsPerPage)
+                .Skip(currentPage * RowsPerPage)
+                .Take(RowsPerPage)
                 .Select(admin => new Admin
                 {
                     Username = admin.Username,
@@ -178,8 +204,8 @@ namespace UniversityEnvironment.View.Utility
             return query
                 .AsNoTracking()
                 .OrderBy(teacher => teacher.Username)
-                .Skip(currentPage * Constants.RowsPerPage)
-                .Take(Constants.RowsPerPage)
+                .Skip(currentPage * RowsPerPage)
+                .Take(RowsPerPage)
                 .Select(teacher => new Teacher
                 {
                     Username = teacher.Username,
@@ -210,8 +236,8 @@ namespace UniversityEnvironment.View.Utility
             return query
                 .AsNoTracking()
                 .OrderBy(s => s.Username)
-                .Skip(currentPage * Constants.RowsPerPage)
-                .Take(Constants.RowsPerPage)
+                .Skip(currentPage * RowsPerPage)
+                .Take(RowsPerPage)
                 .Select(student => new Student
                 {
                     Username = student.Username,
@@ -224,19 +250,8 @@ namespace UniversityEnvironment.View.Utility
                 })
                 .ToList();
         }
-        internal static void CreateQuestion<T>
-            (Test test, GenericOperationWithTable<T> operation, DataGridView table, T obj)
-        {
-            string? question = Microsoft.VisualBasic.Interaction.InputBox("Enter question:", "Entering text", "");
-            if (question == null || question == "") return;
-            TestQuestion testQuestion = new()
-            {
-                QuestionText = question,
-                TestId = test.Id
-            };
-            Create<TestQuestion>(testQuestion);
-            operation(table,obj);
-        }
+
+        #region Creation,Removing
         internal static void CreateAnswer<T>
             (TestQuestion testQuestion, GenericOperationWithTable<T> operation, DataGridView table, T obj)
         {
@@ -258,7 +273,7 @@ namespace UniversityEnvironment.View.Utility
             {
                 List<QuestionAnswer> allAnswers = FindAll<QuestionAnswer>().ToList();
                 answers.AddRange(allAnswers.Where(answer => answer.TestQuestionId == testQuestionId));
-                Remove<QuestionAnswer>(answers);
+                Remove<QuestionAnswer>(null,answers);
                 return;
             }
             if (answerTable == null) return;
@@ -273,7 +288,7 @@ namespace UniversityEnvironment.View.Utility
                     answers.Add(new() { Id = parsedId, AnswerText = description.ToString(), TestQuestionId = testQuestionId });
                 }
             }
-            var count = Remove<QuestionAnswer>(answers);
+            var count = Remove<QuestionAnswer>(null,answers);
             if (count == 0) return;
             MessageBox.Show("Successfully deleted answers!", "Test", MessageBoxButtons.OK);
         }
@@ -288,23 +303,25 @@ namespace UniversityEnvironment.View.Utility
                 {
                     DeleteAnswer(question.Id, null, true);
                 }
-                Remove<TestQuestion>(questions);
+                Remove<TestQuestion>(null, questions);
                 return;
             }
             if (questionTable == null) return;
             for (int i = 0; i < questionTable.RowCount; i++)
             {
                 var id = questionTable.Rows[i].Cells[0].Value;
-                var check = questionTable.Rows[i].Cells[1].Value;
-                var text = questionTable.Rows[i].Cells[2].Value;
+                var manyQuestion = questionTable.Rows[i].Cells[1].Value;
+                var check = questionTable.Rows[i].Cells[2].Value;
+                var text = questionTable.Rows[i].Cells[3].Value;
                 if (id != null && Guid.TryParse(id.ToString(), out Guid parsedId) &&
-                    check != null && bool.TryParse(check.ToString(), out bool checkParsed) && checkParsed)
+                    check != null && bool.TryParse(check.ToString(), out bool checkParsed) && checkParsed &&
+                    manyQuestion != null && bool.TryParse(manyQuestion.ToString(), out bool manyQuestionParsed))
                 {
-                    questions.Add(new() { Id = parsedId, QuestionText = text.ToString(), TestId = testId });
+                    questions.Add(new() { Id = parsedId, ManyAnswers = manyQuestionParsed, QuestionText = text.ToString(), TestId = testId });
                     DeleteAnswer(parsedId, questionTable, deleteAll = true);
                 }
             }
-            var count = Remove<TestQuestion>(questions);
+            var count = Remove<TestQuestion>(null, questions);
             if (count == 0) return;
             MessageBox.Show("Successfully deleted questions!", "Test", MessageBoxButtons.OK);
         }
@@ -319,7 +336,7 @@ namespace UniversityEnvironment.View.Utility
                 {
                     DeleteQuestion(test.Id, null, true);
                 }
-                Remove<Test>(tests);
+                Remove<Test>(null, tests);
                 return;
             }
             if (testTable == null) return; 
@@ -342,7 +359,7 @@ namespace UniversityEnvironment.View.Utility
                     DeleteQuestion(parsedId, null, true);
                 }
             }
-            var count = Remove<Test>(tests);
+            var count = Remove<Test>(null, tests);
             if (count == 0) return;
             MessageBox.Show("Successfully deleted tests!", "Course", MessageBoxButtons.OK);
         }
@@ -367,9 +384,17 @@ namespace UniversityEnvironment.View.Utility
                     DeleteTest(parsedId, null ,true);
                 }
             }
-            var count = Remove<Course>(courses);
+            var count = Remove<Course>(null, courses);
             if (count == 0) return;
             MessageBox.Show("Successfully deleted courses!", "Admin Panel", MessageBoxButtons.OK);
         }
+        internal static void FindAndRemove<T>(MaterialForm currentForm, Guid id) where T : User
+        {
+            List<T> users = FindAll<T>().ToList();
+            T? user = users.FirstOrDefault(a => a.Id == id);
+            if (user != null) Remove<T>(user);
+            currentForm.Close();
+        }
+        #endregion
     }
 }

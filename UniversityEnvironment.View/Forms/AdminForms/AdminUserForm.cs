@@ -1,15 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using UniversityEnvironment.Data.Model.Tables;
-
-using static UniversityEnvironment.Data.Service.MySqlService;
+﻿using UniversityEnvironment.Data.Model.Tables;
+using UniversityEnvironment.View.Forms.CommonForms;
+using static UniversityEnvironment.View.Utility.AdminViewHelper;
 
 namespace UniversityEnvironment.View.Forms.AdminForms
 {
@@ -19,30 +10,27 @@ namespace UniversityEnvironment.View.Forms.AdminForms
         {
             InitializeComponent();
         }
-        public AdminUserForm(User user) : base(user)
+        public AdminUserForm(User profileUser) : base(profileUser)
         {
             InitializeComponent();
+            DeductButton.Visible = false;
+            CloseButton.Height = 96;
+            CloseButton.Top = 260;
         }
-        private void FindAndRemove<T>(Guid id) where T : User
-        {
-            List<T> users = FindAll<T>().ToList();
-            T? user = users.FirstOrDefault(a => a.Id == id);
-            if (user != null) Remove<T>(user);
-            Close();
-        }
+        
         private void DeleteButton_Click(object sender, EventArgs e)
         {
-            if (_user.Role == Data.Enums.Role.Admin) 
+            if (_profileUser.Role == Data.Enums.Role.Admin) 
             {
-                FindAndRemove<Admin>(_user.Id);
+                FindAndRemove<Admin>(this, _profileUser.Id);
             } 
-            else if (_user.Role == Data.Enums.Role.Teacher)
+            else if (_profileUser.Role == Data.Enums.Role.Teacher)
             {
-                FindAndRemove<Teacher>(_user.Id);
+                FindAndRemove<Teacher>(this, _profileUser.Id);
             }
             else
             {
-                FindAndRemove<Student>(_user.Id);
+                FindAndRemove<Student>(this, _profileUser.Id);
             }
         }
         private void CloseButton_Click(object sender, EventArgs e)

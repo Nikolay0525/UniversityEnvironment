@@ -1,21 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using MaterialSkin.Controls;
+﻿using MaterialSkin.Controls;
+using System;
+using UniversityEnvironment.Data.Enums;
 using UniversityEnvironment.Data.Model.Tables;
-using MaterialSkin;
-using UniversityEnvironment.Data.Model;
 using static UniversityEnvironment.Data.Service.MySqlService;
 using static UniversityEnvironment.View.Utility.ViewHelper;
-using UniversityEnvironment.Data.Enums;
-using UniversityEnvironment.Data;
-using Microsoft.EntityFrameworkCore;
 
 namespace UniversityEnvironment.View.Forms
 {
@@ -51,12 +39,15 @@ namespace UniversityEnvironment.View.Forms
             Update<T>(foundedUser);
             Close();
         }
-        private void GenericDecline<T>(Action<T>? action = null, GenericOperationWithUserObj<T>? op = null) where T : User
+        private void GenericDecline<T>
+            (Func<T?,IEnumerable<T>?, int>? func = null, Action<T> ? action = null, Func<T?,IEnumerable<T>?, T?>? op = null) 
+            where T : User
         {
             var foundedUser = FindByFilter<T>(a => _user.Username == a.Username);
             ArgumentNullException.ThrowIfNull(foundedUser);
+            func?.Invoke(foundedUser, null);
             action?.Invoke(foundedUser);
-            op?.Invoke(foundedUser);
+            op?.Invoke(foundedUser, null);
             Close();
         }
         private void AcceptButton_Click(object sender, EventArgs e)
@@ -102,15 +93,15 @@ namespace UniversityEnvironment.View.Forms
             #region Regret reseting password
             if (_user.Role == Role.Admin && _user.ForgetPassword)
             {
-                GenericDecline<Admin>(a => a.ForgetPassword = false, Data.Service.MySqlService.Update);
+                GenericDecline<Admin>(null, a => a.ForgetPassword = false, Data.Service.MySqlService.Update);
             }
             else if (_user.Role == Role.Teacher && _user.ForgetPassword)
             {
-                GenericDecline<Teacher>(t => t.ForgetPassword = false, Data.Service.MySqlService.Update);
+                GenericDecline<Teacher>(null,t => t.ForgetPassword = false, Data.Service.MySqlService.Update);
             }
             else if (_user.Role == Role.Student && _user.ForgetPassword)
             {
-                GenericDecline<Student>(s => s.ForgetPassword = false, Data.Service.MySqlService.Update);
+                GenericDecline<Student>(null, s => s.ForgetPassword = false, Data.Service.MySqlService.Update);
             }
             #endregion
         }

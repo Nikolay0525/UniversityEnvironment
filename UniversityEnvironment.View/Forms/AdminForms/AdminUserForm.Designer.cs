@@ -51,6 +51,7 @@
             Controls.Add(DeleteButton);
             Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
             Name = "AdminUserForm";
+            Sizable = false;
             Text = "Profile";
             ResumeLayout(false);
         }

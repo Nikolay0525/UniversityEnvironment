@@ -1,36 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using MaterialSkin;
-using MaterialSkin.Controls;
-using UniversityEnvironment.Data;
+﻿using MaterialSkin.Controls;
+using UniversityEnvironment.Data.Enums;
+using UniversityEnvironment.Data.Model.MtoMTables;
 using UniversityEnvironment.Data.Model.Tables;
-using UniversityEnvironment.View.Forms.AdminForms;
+using UniversityEnvironment.View.Forms.AdminForms.CreatorForms;
+using static UniversityEnvironment.Data.Service.MySqlService;
 using static UniversityEnvironment.View.Utility.AdminViewHelper;
 using static UniversityEnvironment.View.Utility.ViewHelper;
 
-namespace UniversityEnvironment.View.Forms
+namespace UniversityEnvironment.View.Forms.CommonForms
 {
     public partial class TestForm : MaterialForm
     {
+        private List<QuestionAnswerStudent> _questionAnswerStudents = new();
         private readonly User _user;
-        private readonly Course _course;
         private readonly Test _test;
 
-        public TestForm(User user, Course course, Test test)
+        public TestForm(User user, Test test)
         {
-            Text = course.Name;
             _user = user;
-            _course = course;
             _test = test;
             InitializeComponent();
-            UpdateQuestionTable(QuestionTable, _test);
+            Text = test.Name;
+            if(user.Role != Role.Admin)
+            {
+                Height = 368;
+                CreateQuestionButton.Visible = false;
+                DeleteQuestionButton.Visible = false;
+                QuestionTable.Columns["CheckColumn"].Visible = false;
+            }
+            UpdateQuestionTable(QuestionTable, test);
+        }
+
+        public void AddAnswer(QuestionAnswerStudent? answer = null, IEnumerable<QuestionAnswerStudent>? answers = null)
+        {
+            if (answer != null)
+                _questionAnswerStudents.Add(answer);
+            else if (answers != null) _questionAnswerStudents.ForEach(_questionAnswerStudents.Add);
         }
 
         private void CloseButton_Click(object sender, EventArgs e)
@@ -40,17 +45,24 @@ namespace UniversityEnvironment.View.Forms
 
         private void CreateQuestionButton_Click(object sender, EventArgs e)
         {
-            CreateQuestion(_test, UpdateQuestionTable, QuestionTable, _test);
+            ShowNextFormUpdateTable<Test>(this, new QuestionCreatorForm(_test), QuestionTable, _test, UpdateQuestionTable);
         }
 
         private void QuestionTable_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            ClickOnQuestion(1, this, QuestionTable, e, _user, _course, _test);
+            if(_user.Role == Role.Admin) ClickOnQuestion(1, this, QuestionTable, e, _user);
+            else ClickOnQuestion(1, this, QuestionTable, e, _user);
         }
 
         private void DeleteQuestionButton_Click(object sender, EventArgs e)
         {
             DeleteQuestion(_test.Id, QuestionTable, false);
+        }
+
+        private void SendAnswersButton_Click(object sender, EventArgs e)
+        {
+            Create<QuestionAnswerStudent>(null, _questionAnswerStudents);
+            Create<TestStudent>(new() { Mark = 0, StudentId = _user.Id, TestId = _test.Id });
         }
     }
 }

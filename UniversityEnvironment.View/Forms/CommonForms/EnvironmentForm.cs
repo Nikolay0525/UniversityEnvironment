@@ -1,22 +1,12 @@
 ﻿using MaterialSkin.Controls;
-using System;
-using System.IO;
-using System.Windows.Forms;
-using System.Xml.Linq;
-using UniversityEnvironment.View.Utility;
-using System.Collections.Generic;
-using static UniversityEnvironment.View.Validator.ViewValidator;
-
+using UniversityEnvironment.Data.Enums;
+using UniversityEnvironment.Data.Model.MtoMTables;
+using UniversityEnvironment.Data.Model.Tables;
+using UniversityEnvironment.View.Enums;
 using static UniversityEnvironment.Data.Service.MySqlService;
 using static UniversityEnvironment.View.Utility.ViewHelper;
-using UniversityEnvironment.View.Enums;
-using UniversityEnvironment.Data.Enums;
-using UniversityEnvironment.Data.Model.Tables;
-using UniversityEnvironment.Data.Model.MtoMTables;
-using UniversityEnvironment.Data;
-using Microsoft.VisualBasic.Devices;
 
-namespace UniversityEnvironment.View.Forms
+namespace UniversityEnvironment.View.Forms.CommonForms
 
 {
     public partial class EnvironmentForm : MaterialForm
@@ -30,12 +20,16 @@ namespace UniversityEnvironment.View.Forms
             PersonName.Text = user.FirstName + " " + user.LastName;
             PersonRole.Text = user.Role.ToString();
             AvailableCoursesTableUpdate(AvailableCoursesTable, FindAll<Course>().ToList());
-            if (_user.Role == Role.Teacher) 
+            if (_user.Role == Role.Teacher)
             {
                 UpdateTableWithActualCourses<CourseTeacher>(ActualCoursesTable, user);
                 TabControl.TabPages.RemoveAt(2);
-            } 
-            else UpdateTableWithActualCourses<CourseStudent>(ActualCoursesTable, user);
+            }
+            else
+            {
+                UpdateNotificationTable(MessageTable, _user);
+                UpdateTableWithActualCourses<CourseStudent>(ActualCoursesTable, user);
+            }
         }
 
         private void SignButton_Click(object sender, EventArgs e)
@@ -78,6 +72,11 @@ namespace UniversityEnvironment.View.Forms
         private void CloseButton_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void MessageTable_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            ClickOnNotification(MessageTable, e, _user);
         }
     }
 }

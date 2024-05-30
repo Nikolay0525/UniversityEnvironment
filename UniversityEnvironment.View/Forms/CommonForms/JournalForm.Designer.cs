@@ -1,4 +1,4 @@
-﻿namespace UniversityEnvironment.View.Forms
+﻿namespace UniversityEnvironment.View.Forms.CommonForms
 {
     partial class JournalForm
     {
@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             JournalTable = new DataGridView();
-            StudentName = new DataGridViewTextBoxColumn();
             ApplyButton = new Button();
             CloseButton = new Button();
             ((System.ComponentModel.ISupportInitialize)JournalTable).BeginInit();
@@ -41,24 +40,18 @@
             JournalTable.AllowUserToDeleteRows = false;
             JournalTable.BackgroundColor = SystemColors.Control;
             JournalTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            JournalTable.Columns.AddRange(new DataGridViewColumn[] { StudentName });
             JournalTable.Location = new Point(-1, 64);
             JournalTable.Name = "JournalTable";
-            JournalTable.ReadOnly = true;
+            JournalTable.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             JournalTable.Size = new Size(601, 294);
             JournalTable.TabIndex = 0;
-            // 
-            // StudentName
-            // 
-            StudentName.HeaderText = "Student";
-            StudentName.Name = "StudentName";
-            StudentName.ReadOnly = true;
+            JournalTable.CellContentClick += JournalTable_CellContentClick;
             // 
             // ApplyButton
             // 
             ApplyButton.BackColor = SystemColors.ControlLightLight;
             ApplyButton.FlatStyle = FlatStyle.Flat;
-            ApplyButton.Location = new Point(12, 364);
+            ApplyButton.Location = new Point(307, 364);
             ApplyButton.Name = "ApplyButton";
             ApplyButton.Size = new Size(281, 31);
             ApplyButton.TabIndex = 1;
@@ -70,7 +63,7 @@
             // 
             CloseButton.BackColor = SystemColors.ControlLightLight;
             CloseButton.FlatStyle = FlatStyle.Flat;
-            CloseButton.Location = new Point(299, 364);
+            CloseButton.Location = new Point(12, 364);
             CloseButton.Name = "CloseButton";
             CloseButton.Size = new Size(289, 31);
             CloseButton.TabIndex = 1;
@@ -89,6 +82,7 @@
             Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
             Margin = new Padding(4);
             Name = "JournalForm";
+            Sizable = false;
             ((System.ComponentModel.ISupportInitialize)JournalTable).EndInit();
             ResumeLayout(false);
         }
@@ -96,7 +90,6 @@
         #endregion
 
         private DataGridView JournalTable;
-        private DataGridViewTextBoxColumn StudentName;
         private Button ApplyButton;
         private Button CloseButton;
     }

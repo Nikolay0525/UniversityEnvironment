@@ -1,4 +1,4 @@
-﻿namespace UniversityEnvironment.View.Forms
+﻿namespace UniversityEnvironment.View.Forms.CommonForms
 {
     partial class UserForm
     {
@@ -39,6 +39,7 @@
             ScienceDegreeLabel = new Label();
             ScienceDegreeBox = new Label();
             CloseButton = new Button();
+            DeductButton = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -78,7 +79,7 @@
             // 
             SurnameLabel.AutoSize = true;
             SurnameLabel.BackColor = SystemColors.ControlLightLight;
-            SurnameLabel.Location = new Point(187, 127);
+            SurnameLabel.Location = new Point(188, 121);
             SurnameLabel.Name = "SurnameLabel";
             SurnameLabel.Size = new Size(72, 20);
             SurnameLabel.TabIndex = 5;
@@ -88,7 +89,7 @@
             // 
             RoleLabel.AutoSize = true;
             RoleLabel.BackColor = SystemColors.ControlLightLight;
-            RoleLabel.Location = new Point(204, 175);
+            RoleLabel.Location = new Point(202, 164);
             RoleLabel.Name = "RoleLabel";
             RoleLabel.Size = new Size(40, 20);
             RoleLabel.TabIndex = 5;
@@ -103,14 +104,14 @@
             // 
             // SurnameBox
             // 
-            SurnameBox.Location = new Point(154, 147);
+            SurnameBox.Location = new Point(154, 141);
             SurnameBox.Name = "SurnameBox";
             SurnameBox.Size = new Size(138, 23);
             SurnameBox.TabIndex = 5;
             // 
             // RoleBox
             // 
-            RoleBox.Location = new Point(154, 195);
+            RoleBox.Location = new Point(154, 184);
             RoleBox.Name = "RoleBox";
             RoleBox.Size = new Size(138, 23);
             RoleBox.TabIndex = 5;
@@ -119,7 +120,7 @@
             // 
             ScienceDegreeLabel.AutoSize = true;
             ScienceDegreeLabel.BackColor = SystemColors.ControlLightLight;
-            ScienceDegreeLabel.Location = new Point(170, 227);
+            ScienceDegreeLabel.Location = new Point(170, 207);
             ScienceDegreeLabel.Name = "ScienceDegreeLabel";
             ScienceDegreeLabel.Size = new Size(111, 20);
             ScienceDegreeLabel.TabIndex = 9;
@@ -127,7 +128,7 @@
             // 
             // ScienceDegreeBox
             // 
-            ScienceDegreeBox.Location = new Point(154, 247);
+            ScienceDegreeBox.Location = new Point(154, 227);
             ScienceDegreeBox.Name = "ScienceDegreeBox";
             ScienceDegreeBox.Size = new Size(138, 23);
             ScienceDegreeBox.TabIndex = 8;
@@ -136,19 +137,32 @@
             // 
             CloseButton.BackColor = SystemColors.ControlLightLight;
             CloseButton.FlatStyle = FlatStyle.Flat;
-            CloseButton.Location = new Point(154, 281);
+            CloseButton.Location = new Point(154, 316);
             CloseButton.Name = "CloseButton";
-            CloseButton.Size = new Size(138, 75);
+            CloseButton.Size = new Size(138, 40);
             CloseButton.TabIndex = 10;
             CloseButton.Text = "Go back";
             CloseButton.UseVisualStyleBackColor = false;
             CloseButton.Click += CloseButton_Click;
+            // 
+            // DeductButton
+            // 
+            DeductButton.BackColor = SystemColors.ControlLightLight;
+            DeductButton.FlatStyle = FlatStyle.Flat;
+            DeductButton.Location = new Point(154, 260);
+            DeductButton.Name = "DeductButton";
+            DeductButton.Size = new Size(138, 50);
+            DeductButton.TabIndex = 10;
+            DeductButton.Text = "Deduct from course";
+            DeductButton.UseVisualStyleBackColor = false;
+            DeductButton.Click += DeductButton_Click;
             // 
             // UserForm
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(304, 368);
+            Controls.Add(DeductButton);
             Controls.Add(CloseButton);
             Controls.Add(ScienceDegreeLabel);
             Controls.Add(ScienceDegreeBox);
@@ -163,6 +177,7 @@
             Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
             Margin = new Padding(4);
             Name = "UserForm";
+            Sizable = false;
             Text = "Profile";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
@@ -181,6 +196,7 @@
         protected Label RoleBox;
         protected Label ScienceDegreeLabel;
         protected Label ScienceDegreeBox;
-        private Button CloseButton;
+        protected Button CloseButton;
+        protected Button DeductButton;
     }
 }

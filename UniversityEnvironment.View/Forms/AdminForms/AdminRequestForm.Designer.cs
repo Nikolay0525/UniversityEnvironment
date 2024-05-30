@@ -168,6 +168,7 @@
             Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
             Margin = new Padding(4);
             Name = "AdminRequestForm";
+            Sizable = false;
             Text = "Request";
             ResumeLayout(false);
             PerformLayout();

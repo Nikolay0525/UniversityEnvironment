@@ -1,27 +1,10 @@
-﻿    using System;
-using System.IO;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using MaterialSkin;
-using MaterialSkin.Controls;
+﻿using MaterialSkin.Controls;
 using UniversityEnvironment.Data.Model.Tables;
-using UniversityEnvironment.Data.Model.MtoMTables;
-using static UniversityEnvironment.View.Utility.AuthorizationHelper;
-
-using static UniversityEnvironment.View.Validator.ViewValidator;
-using UniversityEnvironment.Data.Enums;
-using System.CodeDom;
-using UniversityEnvironment.Data.Model;
-using UniversityEnvironment.Data;
 using static UniversityEnvironment.Data.Service.MySqlService;
+using static UniversityEnvironment.View.Utility.AuthorizationHelper;
+using static UniversityEnvironment.View.Validator.ViewValidator;
 
-namespace UniversityEnvironment.View.Forms
+namespace UniversityEnvironment.View.Forms.CommonForms
 {
     public partial class RegistrationForm : MaterialForm
     {

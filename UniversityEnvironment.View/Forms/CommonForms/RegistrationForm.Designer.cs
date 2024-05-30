@@ -1,4 +1,4 @@
-﻿namespace UniversityEnvironment.View.Forms
+﻿namespace UniversityEnvironment.View.Forms.CommonForms
 {
     partial class RegistrationForm
     {
@@ -199,6 +199,7 @@
             Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
             Margin = new Padding(4);
             Name = "RegistrationForm";
+            Sizable = false;
             Text = "Registration";
             RoleGroupBox.ResumeLayout(false);
             RoleGroupBox.PerformLayout();

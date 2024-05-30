@@ -1,4 +1,4 @@
-﻿namespace UniversityEnvironment.View.Forms
+﻿namespace UniversityEnvironment.View.Forms.CommonForms
 {
     partial class LoginForm
     {
@@ -180,6 +180,7 @@
             Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
             Margin = new Padding(4);
             Name = "LoginForm";
+            Sizable = false;
             Text = "Login";
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();

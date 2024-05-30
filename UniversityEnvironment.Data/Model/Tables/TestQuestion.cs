@@ -8,6 +8,7 @@ namespace UniversityEnvironment.Data.Model.Tables
 {
     public sealed class TestQuestion : EnvironmentObject
     {
+        public bool ManyAnswers { get; set; }
         public string? QuestionText { get; set; }
         public Guid TestId { get; set; }
         public Test? Test { get; set; }

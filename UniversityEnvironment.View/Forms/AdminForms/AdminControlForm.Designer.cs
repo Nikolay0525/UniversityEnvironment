@@ -62,8 +62,7 @@
             DeleteCourseButton = new Button();
             CreateCourseButton = new Button();
             AvailableCoursesTable = new DataGridView();
-            IdColumn = new DataGridViewTextBoxColumn();
-            RowCheck = new DataGridViewCheckBoxColumn();
+            CheckColumn = new DataGridViewCheckBoxColumn();
             CourseColumn = new DataGridViewTextBoxColumn();
             FacultyColumn = new DataGridViewTextBoxColumn();
             tabControl1.SuspendLayout();
@@ -437,26 +436,20 @@
             AvailableCoursesTable.AllowUserToDeleteRows = false;
             AvailableCoursesTable.BackgroundColor = SystemColors.Control;
             AvailableCoursesTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            AvailableCoursesTable.Columns.AddRange(new DataGridViewColumn[] { IdColumn, RowCheck, CourseColumn, FacultyColumn });
+            AvailableCoursesTable.Columns.AddRange(new DataGridViewColumn[] { CheckColumn, CourseColumn, FacultyColumn });
             AvailableCoursesTable.Location = new Point(172, 28);
             AvailableCoursesTable.Name = "AvailableCoursesTable";
             AvailableCoursesTable.Size = new Size(414, 268);
             AvailableCoursesTable.TabIndex = 7;
             AvailableCoursesTable.CellContentClick += AvailableCoursesTable_CellContentClick;
             // 
-            // IdColumn
+            // CheckColumn
             // 
-            IdColumn.HeaderText = "ID";
-            IdColumn.Name = "IdColumn";
-            IdColumn.Visible = false;
-            // 
-            // RowCheck
-            // 
-            RowCheck.HeaderText = "";
-            RowCheck.Name = "RowCheck";
-            RowCheck.Resizable = DataGridViewTriState.True;
-            RowCheck.SortMode = DataGridViewColumnSortMode.Automatic;
-            RowCheck.Width = 20;
+            CheckColumn.HeaderText = "";
+            CheckColumn.Name = "CheckColumn";
+            CheckColumn.Resizable = DataGridViewTriState.True;
+            CheckColumn.SortMode = DataGridViewColumnSortMode.Automatic;
+            CheckColumn.Width = 20;
             // 
             // CourseColumn
             // 
@@ -479,6 +472,7 @@
             Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
             Margin = new Padding(4);
             Name = "AdminControlForm";
+            Sizable = false;
             tabControl1.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
             tabPage1.PerformLayout();
@@ -530,8 +524,7 @@
         private DataGridViewTextBoxColumn FromUsernameColumn;
         private DataGridViewTextBoxColumn MessageColumn;
         private DataGridViewTextBoxColumn TypeColumn;
-        private DataGridViewTextBoxColumn IdColumn;
-        private DataGridViewCheckBoxColumn RowCheck;
+        private DataGridViewCheckBoxColumn CheckColumn;
         private DataGridViewTextBoxColumn CourseColumn;
         private DataGridViewTextBoxColumn FacultyColumn;
     }

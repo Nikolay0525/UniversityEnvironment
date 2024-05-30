@@ -1,4 +1,4 @@
-﻿namespace UniversityEnvironment.View.Forms
+﻿namespace UniversityEnvironment.View.Forms.CommonForms
 {
     partial class QuestionForm
     {
@@ -33,8 +33,9 @@
             QuestionLabel = new Label();
             CreateAnswerButton = new Button();
             DeleteAnswerButton = new Button();
+            SendAnswersButton = new Button();
             IdColumn = new DataGridViewTextBoxColumn();
-            RowCheck = new DataGridViewCheckBoxColumn();
+            CheckColumn = new DataGridViewCheckBoxColumn();
             AnswerColumn = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)AnswerTable).BeginInit();
             SuspendLayout();
@@ -45,10 +46,11 @@
             AnswerTable.AllowUserToDeleteRows = false;
             AnswerTable.BackgroundColor = SystemColors.Control;
             AnswerTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            AnswerTable.Columns.AddRange(new DataGridViewColumn[] { IdColumn, RowCheck, AnswerColumn });
+            AnswerTable.Columns.AddRange(new DataGridViewColumn[] { IdColumn, CheckColumn, AnswerColumn });
             AnswerTable.Location = new Point(11, 114);
             AnswerTable.Margin = new Padding(4);
             AnswerTable.Name = "AnswerTable";
+            AnswerTable.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             AnswerTable.Size = new Size(280, 233);
             AnswerTable.TabIndex = 0;
             AnswerTable.CellContentClick += AnswerTable_CellContentClick;
@@ -59,7 +61,7 @@
             CloseButton.FlatStyle = FlatStyle.Flat;
             CloseButton.Location = new Point(11, 354);
             CloseButton.Name = "CloseButton";
-            CloseButton.Size = new Size(280, 37);
+            CloseButton.Size = new Size(142, 37);
             CloseButton.TabIndex = 1;
             CloseButton.Text = "Go back";
             CloseButton.UseVisualStyleBackColor = false;
@@ -67,11 +69,10 @@
             // 
             // QuestionLabel
             // 
-            QuestionLabel.AutoSize = true;
             QuestionLabel.BackColor = SystemColors.ControlLightLight;
-            QuestionLabel.Location = new Point(153, 84);
+            QuestionLabel.Location = new Point(11, 90);
             QuestionLabel.Name = "QuestionLabel";
-            QuestionLabel.Size = new Size(0, 20);
+            QuestionLabel.Size = new Size(280, 20);
             QuestionLabel.TabIndex = 2;
             QuestionLabel.TextAlign = ContentAlignment.MiddleCenter;
             // 
@@ -99,44 +100,60 @@
             DeleteAnswerButton.UseVisualStyleBackColor = false;
             DeleteAnswerButton.Click += DeleteAnswerButton_Click;
             // 
+            // SendAnswersButton
+            // 
+            SendAnswersButton.BackColor = SystemColors.ControlLightLight;
+            SendAnswersButton.FlatStyle = FlatStyle.Flat;
+            SendAnswersButton.Location = new Point(159, 354);
+            SendAnswersButton.Name = "SendAnswersButton";
+            SendAnswersButton.Size = new Size(132, 37);
+            SendAnswersButton.TabIndex = 1;
+            SendAnswersButton.Text = "Send answers";
+            SendAnswersButton.UseVisualStyleBackColor = false;
+            SendAnswersButton.Click += SendAnswersButton_Click;
+            // 
             // IdColumn
             // 
             IdColumn.HeaderText = "ID";
             IdColumn.Name = "IdColumn";
+            IdColumn.ReadOnly = true;
+            IdColumn.Resizable = DataGridViewTriState.False;
             IdColumn.Visible = false;
             IdColumn.Width = 21;
             // 
-            // RowCheck
+            // CheckColumn
             // 
-            RowCheck.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            RowCheck.HeaderText = "";
-            RowCheck.Name = "RowCheck";
-            RowCheck.Resizable = DataGridViewTriState.True;
-            RowCheck.SortMode = DataGridViewColumnSortMode.Automatic;
-            RowCheck.Width = 19;
+            CheckColumn.HeaderText = "";
+            CheckColumn.Name = "CheckColumn";
+            CheckColumn.Resizable = DataGridViewTriState.True;
+            CheckColumn.SortMode = DataGridViewColumnSortMode.Automatic;
+            CheckColumn.Width = 19;
             // 
             // AnswerColumn
             // 
-            AnswerColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             AnswerColumn.HeaderText = "Answer";
             AnswerColumn.Name = "AnswerColumn";
+            AnswerColumn.ReadOnly = true;
+            AnswerColumn.Resizable = DataGridViewTriState.False;
+            AnswerColumn.Width = 218;
             // 
             // QuestionForm
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(304, 440);
+            ClientSize = new Size(304, 435);
             Controls.Add(DeleteAnswerButton);
             Controls.Add(CreateAnswerButton);
             Controls.Add(QuestionLabel);
+            Controls.Add(SendAnswersButton);
             Controls.Add(CloseButton);
             Controls.Add(AnswerTable);
             Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
             Margin = new Padding(4);
             Name = "QuestionForm";
+            Sizable = false;
             ((System.ComponentModel.ISupportInitialize)AnswerTable).EndInit();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
@@ -146,8 +163,9 @@
         private Label QuestionLabel;
         private Button CreateAnswerButton;
         private Button DeleteAnswerButton;
+        private Button SendAnswersButton;
         private DataGridViewTextBoxColumn IdColumn;
-        private DataGridViewCheckBoxColumn RowCheck;
+        private DataGridViewCheckBoxColumn CheckColumn;
         private DataGridViewTextBoxColumn AnswerColumn;
     }
 }

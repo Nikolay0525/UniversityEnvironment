@@ -1,31 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Drawing.Text;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using MaterialSkin;
-using MaterialSkin.Controls;
-using UniversityEnvironment.View.Forms;
-using UniversityEnvironment.View.Utility;
-using static UniversityEnvironment.View.Utility.AuthorizationHelper;
-using static UniversityEnvironment.View.Utility.ViewHelper;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿using MaterialSkin.Controls;
 using UniversityEnvironment.Data.Enums;
 using UniversityEnvironment.Data.Model.Tables;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using UniversityEnvironment.Data;
+using UniversityEnvironment.View.Utility;
 using static UniversityEnvironment.Data.Service.MySqlService;
+using static UniversityEnvironment.View.Utility.AuthorizationHelper;
+using static UniversityEnvironment.View.Utility.ViewHelper;
 //using Microsoft.VisualBasic.ApplicationServices;
 
 
-namespace UniversityEnvironment.View.Forms
+namespace UniversityEnvironment.View.Forms.CommonForms
 {
     public partial class LoginForm : MaterialForm
     {

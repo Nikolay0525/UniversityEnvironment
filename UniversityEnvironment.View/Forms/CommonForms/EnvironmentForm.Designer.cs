@@ -1,4 +1,4 @@
-﻿namespace UniversityEnvironment.View.Forms
+﻿namespace UniversityEnvironment.View.Forms.CommonForms
 {
     partial class EnvironmentForm
     {
@@ -50,6 +50,7 @@
             AvailableFacultyColumn = new DataGridViewTextBoxColumn();
             tabPage3 = new TabPage();
             MessageTable = new DataGridView();
+            IdColumn = new DataGridViewTextBoxColumn();
             InitialsColumn = new DataGridViewTextBoxColumn();
             FromCourseColumn = new DataGridViewTextBoxColumn();
             MessageColumn = new DataGridViewTextBoxColumn();
@@ -141,6 +142,7 @@
             ActualCoursesTable.Location = new Point(171, 26);
             ActualCoursesTable.Name = "ActualCoursesTable";
             ActualCoursesTable.ReadOnly = true;
+            ActualCoursesTable.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             ActualCoursesTable.Size = new Size(414, 231);
             ActualCoursesTable.TabIndex = 2;
             ActualCoursesTable.CellContentClick += ActualCoursesTable_CellContentClick;
@@ -150,6 +152,7 @@
             CourseColumn.HeaderText = "Course";
             CourseColumn.Name = "CourseColumn";
             CourseColumn.ReadOnly = true;
+            CourseColumn.Resizable = DataGridViewTriState.False;
             CourseColumn.Width = 150;
             // 
             // FacultyColumn
@@ -157,6 +160,7 @@
             FacultyColumn.HeaderText = "Faculty";
             FacultyColumn.Name = "FacultyColumn";
             FacultyColumn.ReadOnly = true;
+            FacultyColumn.Resizable = DataGridViewTriState.False;
             FacultyColumn.Width = 220;
             // 
             // label2
@@ -219,7 +223,7 @@
             UnsignButton.FlatStyle = FlatStyle.Flat;
             UnsignButton.Location = new Point(8, 175);
             UnsignButton.Name = "UnsignButton";
-            UnsignButton.Size = new Size(158, 121);
+            UnsignButton.Size = new Size(153, 121);
             UnsignButton.TabIndex = 4;
             UnsignButton.Text = "Unsign from courses";
             UnsignButton.UseVisualStyleBackColor = false;
@@ -231,7 +235,7 @@
             SignButton.FlatStyle = FlatStyle.Flat;
             SignButton.Location = new Point(8, 28);
             SignButton.Name = "SignButton";
-            SignButton.Size = new Size(158, 141);
+            SignButton.Size = new Size(153, 141);
             SignButton.TabIndex = 4;
             SignButton.Text = "Sign on courses";
             SignButton.UseVisualStyleBackColor = false;
@@ -244,16 +248,17 @@
             AvailableCoursesTable.BackgroundColor = SystemColors.Control;
             AvailableCoursesTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             AvailableCoursesTable.Columns.AddRange(new DataGridViewColumn[] { RowCheck, AvailableCourseColumn, AvailableFacultyColumn });
-            AvailableCoursesTable.Location = new Point(172, 28);
+            AvailableCoursesTable.Location = new Point(167, 28);
             AvailableCoursesTable.Name = "AvailableCoursesTable";
-            AvailableCoursesTable.Size = new Size(414, 268);
+            AvailableCoursesTable.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            AvailableCoursesTable.Size = new Size(419, 268);
             AvailableCoursesTable.TabIndex = 3;
             // 
             // RowCheck
             // 
             RowCheck.HeaderText = "";
             RowCheck.Name = "RowCheck";
-            RowCheck.Resizable = DataGridViewTriState.True;
+            RowCheck.Resizable = DataGridViewTriState.False;
             RowCheck.SortMode = DataGridViewColumnSortMode.Automatic;
             RowCheck.Width = 20;
             // 
@@ -261,13 +266,17 @@
             // 
             AvailableCourseColumn.HeaderText = "Course";
             AvailableCourseColumn.Name = "AvailableCourseColumn";
+            AvailableCourseColumn.ReadOnly = true;
+            AvailableCourseColumn.Resizable = DataGridViewTriState.False;
             AvailableCourseColumn.Width = 150;
             // 
             // AvailableFacultyColumn
             // 
             AvailableFacultyColumn.HeaderText = "Faculty";
             AvailableFacultyColumn.Name = "AvailableFacultyColumn";
-            AvailableFacultyColumn.Width = 200;
+            AvailableFacultyColumn.ReadOnly = true;
+            AvailableFacultyColumn.Resizable = DataGridViewTriState.False;
+            AvailableFacultyColumn.Width = 206;
             // 
             // tabPage3
             // 
@@ -286,29 +295,43 @@
             MessageTable.AllowUserToDeleteRows = false;
             MessageTable.BackgroundColor = SystemColors.Control;
             MessageTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            MessageTable.Columns.AddRange(new DataGridViewColumn[] { InitialsColumn, FromCourseColumn, MessageColumn });
+            MessageTable.Columns.AddRange(new DataGridViewColumn[] { IdColumn, InitialsColumn, FromCourseColumn, MessageColumn });
             MessageTable.Location = new Point(0, 0);
             MessageTable.Name = "MessageTable";
             MessageTable.Size = new Size(592, 304);
             MessageTable.TabIndex = 4;
+            MessageTable.CellContentClick += MessageTable_CellContentClick;
+            // 
+            // IdColumn
+            // 
+            IdColumn.HeaderText = "Id";
+            IdColumn.Name = "IdColumn";
+            IdColumn.ReadOnly = true;
+            IdColumn.Visible = false;
             // 
             // InitialsColumn
             // 
             InitialsColumn.HeaderText = "Initials";
             InitialsColumn.Name = "InitialsColumn";
-            InitialsColumn.Width = 200;
+            InitialsColumn.ReadOnly = true;
+            InitialsColumn.Resizable = DataGridViewTriState.False;
+            InitialsColumn.Width = 150;
             // 
             // FromCourseColumn
             // 
             FromCourseColumn.HeaderText = "Course";
             FromCourseColumn.Name = "FromCourseColumn";
+            FromCourseColumn.ReadOnly = true;
+            FromCourseColumn.Resizable = DataGridViewTriState.False;
             FromCourseColumn.Width = 149;
             // 
             // MessageColumn
             // 
             MessageColumn.HeaderText = "Message";
             MessageColumn.Name = "MessageColumn";
-            MessageColumn.Width = 200;
+            MessageColumn.ReadOnly = true;
+            MessageColumn.Resizable = DataGridViewTriState.False;
+            MessageColumn.Width = 250;
             // 
             // EnvironmentForm
             // 
@@ -319,6 +342,7 @@
             Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
             Margin = new Padding(4);
             Name = "EnvironmentForm";
+            Sizable = false;
             Text = "Environment";
             TabControl.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
@@ -351,14 +375,15 @@
         private Button UnsignButton;
         private TabPage tabPage3;
         private DataGridView MessageTable;
-        private DataGridViewTextBoxColumn InitialsColumn;
-        private DataGridViewTextBoxColumn FromCourseColumn;
-        private DataGridViewTextBoxColumn MessageColumn;
         private Label label3;
         private DataGridViewTextBoxColumn CourseColumn;
         private DataGridViewTextBoxColumn FacultyColumn;
         private DataGridViewCheckBoxColumn RowCheck;
         private DataGridViewTextBoxColumn AvailableCourseColumn;
         private DataGridViewTextBoxColumn AvailableFacultyColumn;
+        private DataGridViewTextBoxColumn IdColumn;
+        private DataGridViewTextBoxColumn InitialsColumn;
+        private DataGridViewTextBoxColumn FromCourseColumn;
+        private DataGridViewTextBoxColumn MessageColumn;
     }
 }

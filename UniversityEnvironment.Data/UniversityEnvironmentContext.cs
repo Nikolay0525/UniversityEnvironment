@@ -23,6 +23,7 @@ namespace UniversityEnvironment.Data
         public DbSet<Admin> Admins { get; set; }
         public DbSet<Teacher> Teachers { get; set; }
         public DbSet<Student> Students { get; set; }
+        public DbSet<StudentMessage> StudentMessages { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<Test> Tests { get; set; }
         public DbSet<TestQuestion> TestQuestions { get; set; }

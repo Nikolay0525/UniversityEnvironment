@@ -76,10 +76,13 @@
             Controls.Add(label1);
             Controls.Add(FacultyNameBox);
             Controls.Add(CourseNameBox);
-            Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
-            Margin = new Padding(4);
             Name = "CourseCreatorForm";
+            Sizable = false;
             Text = "Course creator";
+            Controls.SetChildIndex(CourseNameBox, 0);
+            Controls.SetChildIndex(FacultyNameBox, 0);
+            Controls.SetChildIndex(label1, 0);
+            Controls.SetChildIndex(label2, 0);
             ResumeLayout(false);
             PerformLayout();
         }

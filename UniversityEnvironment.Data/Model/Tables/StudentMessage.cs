@@ -8,8 +8,10 @@ namespace UniversityEnvironment.Data.Model.Tables
 {
     public class StudentMessage : EnvironmentObject
     {
+        public string? Initials { get; set; }
         public string? MessageText { get; set; }
+        public string? CourseName {  get; set; }
         public Guid StudentId { get; set; }
-        public Student? student { get; set; }
+        public Student? Student { get; set; }
     }
 }

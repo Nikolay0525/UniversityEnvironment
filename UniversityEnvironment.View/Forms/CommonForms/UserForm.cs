@@ -1,37 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using MaterialSkin;
-using MaterialSkin.Controls;
-using UniversityEnvironment.Data;
+﻿using MaterialSkin.Controls;
+using System.Diagnostics.Contracts;
 using UniversityEnvironment.Data.Model.Tables;
 using static UniversityEnvironment.Data.Service.MySqlService;
+using static UniversityEnvironment.View.Utility.ViewHelper;
 
-namespace UniversityEnvironment.View.Forms
+namespace UniversityEnvironment.View.Forms.CommonForms
 {
     public partial class UserForm : MaterialForm
     {
-        protected User _user;
+        protected Course? _course;
+        protected User? _realUser;
+        protected User _profileUser;
         public UserForm()
         {
 
         }
-        public UserForm(User user)
+
+        public UserForm(User profileUser,Course? course = null,User? realUser = null)
         {
             InitializeComponent();
-            _user = user;
-            NameBox.Text = user.FirstName;
-            SurnameBox.Text = user.LastName;
-            RoleBox.Text = user.Role.ToString();
-            if (user.Role == Data.Enums.Role.Teacher)
+            _course = course;
+            _profileUser = profileUser;
+            _realUser = realUser;
+            NameBox.Text = _profileUser.FirstName;
+            SurnameBox.Text = _profileUser.LastName;
+            RoleBox.Text = _profileUser.Role.ToString();
+            if(realUser != null && (realUser.Role == Data.Enums.Role.Student || realUser.Role == Data.Enums.Role.Admin))
             {
-                var teacher = FindByFilter<Teacher>(t => t.Id == user.Id);
+                DeductButton.Visible = false;
+                CloseButton.Height = 96;
+                CloseButton.Top = 260;
+            }
+            if (_profileUser.Role == Data.Enums.Role.Teacher)
+            {
+                var teacher = FindByFilter<Teacher>(t => t.Id == _profileUser.Id);
                 ArgumentNullException.ThrowIfNull(teacher);
                 ScienceDegreeBox.Text = teacher.ScienceDegree;
             }
@@ -40,6 +42,13 @@ namespace UniversityEnvironment.View.Forms
                 ScienceDegreeBox.Hide();
                 ScienceDegreeLabel.Hide();
             }
+            FillCourseList(CoursesList, _profileUser);
+        }
+
+        private void DeductButton_Click(object sender, EventArgs e)
+        {
+            if (_course == null || _realUser == null) return;
+            DeductStudentFromCourse(this, _course, _realUser, _profileUser);
         }
 
         private void CloseButton_Click(object sender, EventArgs e)

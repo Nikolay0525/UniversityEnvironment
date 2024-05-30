@@ -66,6 +66,7 @@
             Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
             Margin = new Padding(4);
             Name = "CreatorForm";
+            Sizable = false;
             Text = "CreatorForm";
             ResumeLayout(false);
         }
