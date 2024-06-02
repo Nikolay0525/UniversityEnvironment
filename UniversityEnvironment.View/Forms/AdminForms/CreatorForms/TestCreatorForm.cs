@@ -14,13 +14,15 @@ namespace UniversityEnvironment.View.Forms.AdminForms
 
         override protected void CreateButton_Click(object sender, EventArgs e)
         {
+            if (Validators.ViewValidators.ValidateStringOnLength("name", TestNameBox.Text, 2, 20)
+                || Validators.ViewValidators.ValidateStringOnLength("description", DescriptionBox.Text, 2, 30)) return;
             Test test = new()
             {
                 Name = TestNameBox.Text,
                 Description = DescriptionBox.Text,
                 CourseId = _courseId
             };
-            Create<Test>(test);
+            Create(test);
             Close();
         }
     }

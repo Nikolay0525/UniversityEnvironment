@@ -1,20 +1,18 @@
 ﻿using MaterialSkin.Controls;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using UniversityEnvironment.Data.Enums;
 using UniversityEnvironment.Data.Model.MtoMTables;
 using UniversityEnvironment.Data.Model.Tables;
 using UniversityEnvironment.View.Enums;
 using UniversityEnvironment.View.Forms.CommonForms;
 using static UniversityEnvironment.Data.Service.MySqlService;
+using static UniversityEnvironment.View.Validators.ViewValidators;
 //using Microsoft.VisualBasic.ApplicationServices;
 
 namespace UniversityEnvironment.View.Utility
 {
     internal static class ViewHelper
     {
-        /*internal delegate void VoidOperation();
-        internal delegate T? GenericOperationWithUserObj<T>(T obj) where T : User;
-        internal delegate void GenericOperationWithTable<T>(DataGridView table, T obj);*/
+
         #region Form event operations
         internal static void ShowNextForm(MaterialForm current, MaterialForm next)
         {
@@ -34,7 +32,7 @@ namespace UniversityEnvironment.View.Utility
         #region Table operation methods
         internal static void AvailableCoursesTableUpdate(DataGridView table, IEnumerable<Course> courses)
         {
-            ArgumentNullException.ThrowIfNull(courses);
+            if (ValidateNull(courses, "available courses")) return;
             table.Rows.Clear();
 
             foreach (var course in courses)
@@ -44,7 +42,7 @@ namespace UniversityEnvironment.View.Utility
         }
         internal static void ActualCoursesTableAddRows(DataGridView table, IEnumerable<Course> courses)
         {
-            ArgumentNullException.ThrowIfNull(courses);
+            if (ValidateNull(courses, "actual courses")) return;
 
             foreach (var course in courses)
             {
@@ -57,7 +55,7 @@ namespace UniversityEnvironment.View.Utility
             var courseList = FindAll<Course>().ToList();
             List<T> courseUser = FindAll<T>(u => u.UserId == user.Id).ToList();
             courseList.RemoveAll(course => !courseUser.Any(cu => cu.CourseId == course.Id));
-            ArgumentNullException.ThrowIfNull(courseList);
+            if (ValidateNull(courseList, "courses list")) return;
             ActualCoursesTableAddRows(table, courseList);
         }
 
@@ -66,24 +64,25 @@ namespace UniversityEnvironment.View.Utility
             List<Course> courses = FindAll<Course>().ToList();
             var userCourses = new List<T>();
             var foundedUser = FindByFilter<Q>(u => u.Id == user.Id);
-            ArgumentNullException.ThrowIfNull(foundedUser);
+            if (ValidateNull(foundedUser, "foundedUser")) return;
             for (int i = 0; i < courses.Count; i++)
             {
-                var rowCheck = table.Rows[i].Cells[0].Value;
-                if (rowCheck != null && bool.TryParse(rowCheck.ToString(), out bool parsed) && parsed)
+                var rowCheck = table.Rows[i].Cells[0].Value.ToString();
+                if (ValidateNull(rowCheck, "rowCheck")) return;
+                if (bool.TryParse(rowCheck, out bool parsed) && parsed)
                 {
                     userCourses.Add(new() { UserId = user.Id, CourseId = courses[i].Id });
                 }
             }
             if (@op == 0)
             {
-                var count = Create<T>(null,userCourses);
+                var count = Create(null,userCourses);
                 if (count == 0) return;
                 MessageBox.Show("Successfully signed on courses!", "Environment", MessageBoxButtons.OK);
             }
             else
             {
-                var count = Remove<T>(null,userCourses);
+                var count = Remove(null,userCourses);
                 if (count == 0) return;
                 MessageBox.Show("Successfully unsigned from courses!", "Environment", MessageBoxButtons.OK);
             }
@@ -104,7 +103,7 @@ namespace UniversityEnvironment.View.Utility
         internal static void UpdateTestsTable(DataGridView table, Course course, User user)
         {
             var tests = FindAll<Test>(t => t.CourseId == course.Id);
-            if (tests == null) return;
+            if (ValidateNull(tests, "tests on course")) return;
             table.Rows.Clear();
             bool completed = false;
             foreach (var test in tests) 
@@ -118,7 +117,7 @@ namespace UniversityEnvironment.View.Utility
         internal static void UpdateQuestionTable(DataGridView table, Test test, User user)
         {
             var questions = FindAll<TestQuestion>(q => q.TestId == test.Id);
-            if (questions == null) return;
+            if (ValidateNull(questions, "questions on test")) return;
             table.Rows.Clear();
             foreach (var question in questions) { table.Rows.Add(question.Id,question.ManyAnswers ,false, question.QuestionText); }
 
@@ -126,7 +125,7 @@ namespace UniversityEnvironment.View.Utility
         internal static void UpdateAnswerTable(DataGridView table, TestQuestion testQuestion)
         {
             var answers = FindAll<QuestionAnswer>(a => a.TestQuestionId == testQuestion.Id);
-            if (answers == null) return;
+            if (ValidateNull(answers, "answers on question")) return;
             table.Rows.Clear();
             foreach (var answer in answers) { table.Rows.Add(answer.Id,false, answer.AnswerText); }
 
@@ -134,7 +133,7 @@ namespace UniversityEnvironment.View.Utility
         internal static void UpdateNotificationTable(DataGridView table, User user)
         {
             var messages = FindAll<StudentMessage>(m => m.StudentId == user.Id);
-            if (messages == null) return;
+            if (ValidateNull(messages, "message to student")) return;
             table.Rows.Clear();
             foreach (var message in messages) { table.Rows.Add(message.Id,message.Initials, message.CourseName, message.MessageText); }
         }
@@ -147,12 +146,14 @@ namespace UniversityEnvironment.View.Utility
                 studentAnswersTable.Rows.Clear();
                 DataGridViewRow selectedRow = answersTable.Rows[e.RowIndex];
                 var selectedAnswerId = selectedRow.Cells["IdColumn"].Value.ToString();
-                if (selectedAnswerId != null && Guid.TryParse(selectedAnswerId, out Guid parsedId))
+                if (ValidateNull(selectedAnswerId, "selectedAnswerId")) return;
+                if (Guid.TryParse(selectedAnswerId, out Guid parsedId))
                 {
                     foreach(var studentAnswer in FindAll<QuestionAnswerStudent>(qas => qas.QuestionAnswerId == parsedId))
                     {
                         var foundedStudent = FindByFilter<Student>(s => s.Id == studentAnswer.StudentId);
-                        if (foundedStudent != null) studentAnswersTable.Rows.Add(foundedStudent.FirstName + foundedStudent.LastName);
+                        if (foundedStudent != null) 
+                            studentAnswersTable.Rows.Add(foundedStudent.FirstName + foundedStudent.LastName);
                     }
                 }
             }
@@ -165,12 +166,13 @@ namespace UniversityEnvironment.View.Utility
             if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
             {
                 DataGridViewRow selectedRow = notificationTable.Rows[e.RowIndex];
-                var selectedMessageId = selectedRow.Cells["IdColumn"].Value;
-                if (selectedMessageId != null && Guid.TryParse(selectedMessageId.ToString(), out Guid parsedId))
+                var selectedMessageId = selectedRow.Cells["IdColumn"].Value.ToString();
+                if (ValidateNull(selectedMessageId, "selectedMessageId")) return;
+                if (selectedMessageId != null && Guid.TryParse(selectedMessageId, out Guid parsedId))
                 {
                     if (MessageBox.Show("Want to delete message?", "Environment", MessageBoxButtons.OKCancel)
                         == DialogResult.Cancel) return;
-                    Remove<StudentMessage>(FindByFilter<StudentMessage>(sm => sm.Id == parsedId));
+                    Remove(FindByFilter<StudentMessage>(sm => sm.Id == parsedId));
                     UpdateNotificationTable(notificationTable, user);
                 }
             }
@@ -182,10 +184,10 @@ namespace UniversityEnvironment.View.Utility
             {
                 DataGridViewRow selectedRow = table.Rows[e.RowIndex];
                 string? selectedCourse = selectedRow.Cells["CourseColumn"].Value.ToString();
-                if (selectedCourse == null) return;
+                if (ValidateNull(selectedCourse, "selectedCourse")) return;
                 var course = FindByFilter<Course>(c => c.Name == selectedCourse);
-                if (course == null) return;
-                ShowNextForm(form, new CourseForm(user, course));
+                if (ValidateNull(course, "selectedCourse")) return;
+                ShowNextForm(form, new CourseForm(user, course!));
             }
         }
         internal static void ClickOnTeacherTable
@@ -195,11 +197,12 @@ namespace UniversityEnvironment.View.Utility
             {
                 DataGridViewRow selectedRow = table.Rows[e.RowIndex];
                 string? selectedTeacherId = selectedRow.Cells["TeacherIdColumn"].Value.ToString();
-                if (selectedTeacherId != null && Guid.TryParse(selectedTeacherId, out Guid parsedId))
+                if (ValidateNull(selectedTeacherId, "selectedTeacherId")) return;
+                if (Guid.TryParse(selectedTeacherId, out Guid parsedId))
                 {
                     var teacher = FindByFilter<Teacher>(t => t.Id == parsedId);
-                    if (teacher == null) return;
-                    ShowNextForm(form, new UserForm(teacher,course, realUser));
+                    if (ValidateNull(teacher, "teacher")) return;
+                    ShowNextForm(form, new UserForm(teacher!,course, realUser));
                 }
             }
         }
@@ -210,31 +213,33 @@ namespace UniversityEnvironment.View.Utility
             if (e.RowIndex >= 0 && e.ColumnIndex >= columnIndex)
             {
                 DataGridViewRow selectedRow = table.Rows[e.RowIndex];
-                string? selectedTest = selectedRow.Cells["IdColumn"].Value.ToString();
+                var selectedTest = selectedRow.Cells["IdColumn"].Value.ToString();
+                if (ValidateNull(selectedTest, "selectedTest")) return;
                 Test? test = null;
-                if (selectedTest != null && Guid.TryParse(selectedTest, out Guid parsedId))
+                if (Guid.TryParse(selectedTest, out Guid parsedId))
                 {
                     test = FindByFilter<Test>(t => t.Id == parsedId);
                 }
-                if (test == null) return;
-                ShowNextForm(thisForm, new TestForm(thisForm, user, test));
+                if (ValidateNull(test, "test")) return;
+                ShowNextForm(thisForm, new TestForm(thisForm, user, test!));
             }
         }
         internal static Guid? ClickOnQuestion
-            (int columnIndex,TestForm currentTestForm, DataGridView table,DataGridViewCellEventArgs e, User user)
+            (int columnIndex,TestForm currentTestForm, DataGridView table,DataGridViewCellEventArgs e, User user, Test test)
         {
             if (e.RowIndex >= 0 && e.ColumnIndex >= columnIndex)
             {
                 DataGridViewRow selectedRow = table.Rows[e.RowIndex];
                 var selectedQuestion = selectedRow.Cells["IdColumn"].Value.ToString();
+                if (ValidateNull(selectedQuestion, "selectedQuestionId")) return null;
                 TestQuestion? question = null;
-                if(selectedQuestion != null && Guid.TryParse(selectedQuestion, out Guid parsedId))
+                if(Guid.TryParse(selectedQuestion, out Guid parsedId))
                 {
                     question = FindByFilter<TestQuestion>(q => q.Id == parsedId);
                 }
-                if (question == null) return null;
-                ShowNextForm(currentTestForm, new QuestionForm(currentTestForm, user, question));
-                return question.Id;
+                if (ValidateNull(question, "question")) return null;
+                ShowNextForm(currentTestForm, new QuestionForm(currentTestForm, user, test, question!));
+                return question!.Id;
             }
             return null;
         }
@@ -268,9 +273,10 @@ namespace UniversityEnvironment.View.Utility
                 {
                     var answerId = answerTable.Rows[i].Cells[0].Value.ToString();
                     var rowCheck = answerTable.Rows[i].Cells[1].Value.ToString();
-
-                    if (rowCheck != null && bool.TryParse(rowCheck, out bool parsed) && parsed
-                        && answerId != null && Guid.TryParse(answerId, out Guid parsedId))
+                    if (ValidateNull(answerId, "answerId")) return;
+                    if (ValidateNull(rowCheck, "rowCheck")) return;
+                    if (bool.TryParse(rowCheck, out bool parsed) && parsed
+                        && Guid.TryParse(answerId, out Guid parsedId))
                     {
                         studentAnswers.Add(new() { StudentId = user.Id, QuestionAnswerId = parsedId });
                     }
@@ -316,7 +322,6 @@ namespace UniversityEnvironment.View.Utility
                 journalTable.Columns.Add(testColumn);
                 testStudents.AddRange(FindAll<TestStudent>(ts => ts.TestId == test.Id));
             }
-            if (testStudents == null) return;
 
             Dictionary<Guid, DataGridViewRow> studentRows = new();
 
@@ -355,11 +360,13 @@ namespace UniversityEnvironment.View.Utility
                         if (foundedTest != null && foundedStudent != null && foundedTest.Name == cell.OwningColumn.Name)
                         {
                             var idCell = row.Cells["IdColumn"].Value.ToString();
-                            if (idCell != null && Guid.TryParse(idCell, out Guid parsedId))
+                            if (ValidateNull(idCell, "id in cell")) return;
+                            if (Guid.TryParse(idCell, out Guid parsedId))
                             {
                                 if (parsedId != foundedStudent.Id) continue;
                                 var cellValue = cell.Value.ToString();
-                                if (cellValue != null && int.TryParse(cellValue, out int mark))
+                                if (ValidateNull(idCell, "cell value")) return;
+                                if (int.TryParse(cellValue, out int mark))
                                 {
                                     testStudent.Mark = mark;
                                 }
@@ -377,13 +384,14 @@ namespace UniversityEnvironment.View.Utility
             {
                 DataGridViewRow selectedRow = journalTable.Rows[e.RowIndex];
                 var selectedStudentId = selectedRow.Cells["IdColumn"].Value.ToString();
+                if (ValidateNull(selectedStudentId, "selectedStudentId")) return;
                 Student? student = null;
-                if (selectedStudentId != null && Guid.TryParse(selectedStudentId, out Guid parsedId))
+                if (Guid.TryParse(selectedStudentId, out Guid parsedId))
                 {
                     student = FindByFilter<Student>(s => s.Id == parsedId);
                 }
-                if (student == null) return;
-                ShowNextForm(currentForm, new UserForm(student, course, user));
+                if (ValidateNull(student, "student")) return;
+                ShowNextForm(currentForm, new UserForm(student!, course, user));
             }
         }
 
@@ -395,10 +403,8 @@ namespace UniversityEnvironment.View.Utility
             foreach (var courseTeacher in allCoursesOfUser)
             {
                 var course = allCourses.Find(c => c.Id == courseTeacher.CourseId);
-                if (course != null && course.Name != null)
-                {
-                    coursesList.Items.Add(course.Name);
-                }
+                if (ValidateNull(course, "course")) return;
+                coursesList.Items.Add(course!.Name!);
             }
         }
 

@@ -14,13 +14,14 @@ namespace UniversityEnvironment.View.Forms.AdminForms.CreatorForms
 
         protected override void CreateButton_Click(object sender, EventArgs e)
         {
+            if (Validators.ViewValidators.ValidateStringOnLength("text of question", QuestionTextBox.Text, 1, 50)) return;
             TestQuestion question = new()
             {
                 ManyAnswers = ManyAnswersButton.Checked,
                 QuestionText = QuestionTextBox.Text,
                 TestId = _testId
             };
-            Create<TestQuestion>(question);
+            Create(question);
             Close();
         }
     }

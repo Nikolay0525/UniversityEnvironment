@@ -7,6 +7,7 @@ using UniversityEnvironment.View.Forms;
 using static UniversityEnvironment.Data.Service.MySqlService;
 using static UniversityEnvironment.View.Utility.AuthorizationHelper;
 using static UniversityEnvironment.View.Utility.ViewHelper;
+using static UniversityEnvironment.View.Validators.ViewValidators;
 
 namespace UniversityEnvironment.View.Utility
 {
@@ -67,13 +68,13 @@ namespace UniversityEnvironment.View.Utility
             where T : User
         {
             user = SetUserRole<T>(username);
-            ArgumentNullException.ThrowIfNull(user);
-            ShowNextForm(thisForm, createForm(user), operation);
+            if (ValidateNull(user, "user")) return;
+            ShowNextForm(thisForm, createForm(user!), operation);
         }
 
         internal static void UpdateRequestsTable<T>(DataGridView table, IEnumerable<T> users) where T : User
         {
-            ArgumentNullException.ThrowIfNull(users);
+            if (ValidateNull(users, "users")) return;
             table.Rows.Clear();
 
             foreach (var user in users)
@@ -85,7 +86,7 @@ namespace UniversityEnvironment.View.Utility
 
         internal static void UpdateUsersTable<T>(DataGridView table, IEnumerable<T> users) where T : User
         {
-            ArgumentNullException.ThrowIfNull(users);
+            if (ValidateNull(users, "users")) return;
             table.Rows.Clear();
 
             foreach (var user in users)
@@ -181,7 +182,8 @@ namespace UniversityEnvironment.View.Utility
                     Password = admin.Password,
                     Confirmed = admin.Confirmed,
                     ForgetPassword = admin.ForgetPassword,
-                    CanChangePassword = admin.CanChangePassword
+                    CanChangePassword = admin.CanChangePassword,
+                    SuperAdmin = admin.SuperAdmin
                 })
                 .ToList();
         }
@@ -254,13 +256,13 @@ namespace UniversityEnvironment.View.Utility
             (TestQuestion testQuestion, Action<DataGridView, T> operation, DataGridView table, T obj)
         {
             string? answer = Microsoft.VisualBasic.Interaction.InputBox("Enter answer:", "Entering text", "");
-            if (answer == null || answer == "") return;
+            if (ValidateNull(answer, "answer") || ValidateStringOnLength("answer", answer, 1, 50)) return;
             QuestionAnswer questionAnswer = new()
             {
                 AnswerText = answer,
                 TestQuestionId = testQuestion.Id
             };
-            Create<QuestionAnswer>(questionAnswer);
+            Create(questionAnswer);
             operation(table, obj);
         }
 
@@ -271,22 +273,24 @@ namespace UniversityEnvironment.View.Utility
             {
                 List<QuestionAnswer> allAnswers = FindAll<QuestionAnswer>().ToList();
                 answers.AddRange(allAnswers.Where(answer => answer.TestQuestionId == testQuestionId));
-                Remove<QuestionAnswer>(null,answers);
+                Remove(null,answers);
                 return;
             }
             if (answerTable == null) return;
             for (int i = 0; i < answerTable.RowCount; i++)
             {
-                var id = answerTable.Rows[i].Cells[0].Value;
-                var check = answerTable.Rows[i].Cells[1].Value;
-                var description = answerTable.Rows[i].Cells[2].Value;
-                if (id != null && Guid.TryParse(id.ToString(), out Guid parsedId) &&
-                    check != null && bool.TryParse(check.ToString(), out bool checkParsed) && checkParsed)
+                var id = answerTable.Rows[i].Cells[0].Value.ToString();
+                var check = answerTable.Rows[i].Cells[1].Value.ToString();
+                var description = answerTable.Rows[i].Cells[2].Value.ToString();
+                if (ValidateNull(id, "id") || ValidateNull(check, "check") ||
+                    ValidateNull(description, "description")) return;
+                if (Guid.TryParse(id, out Guid parsedId) &&
+                    bool.TryParse(check, out bool checkParsed) && checkParsed)
                 {
-                    answers.Add(new() { Id = parsedId, AnswerText = description.ToString(), TestQuestionId = testQuestionId });
+                    answers.Add(new() { Id = parsedId, AnswerText = description, TestQuestionId = testQuestionId });
                 }
             }
-            var count = Remove<QuestionAnswer>(null,answers);
+            var count = Remove(null,answers);
             if (count == 0) return;
             MessageBox.Show("Successfully deleted answers!", "Test", MessageBoxButtons.OK);
         }
@@ -301,25 +305,27 @@ namespace UniversityEnvironment.View.Utility
                 {
                     DeleteAnswer(question.Id, null, true);
                 }
-                Remove<TestQuestion>(null, questions);
+                Remove(null, questions);
                 return;
             }
             if (questionTable == null) return;
             for (int i = 0; i < questionTable.RowCount; i++)
             {
-                var id = questionTable.Rows[i].Cells[0].Value;
-                var manyQuestion = questionTable.Rows[i].Cells[1].Value;
-                var check = questionTable.Rows[i].Cells[2].Value;
-                var text = questionTable.Rows[i].Cells[3].Value;
-                if (id != null && Guid.TryParse(id.ToString(), out Guid parsedId) &&
-                    check != null && bool.TryParse(check.ToString(), out bool checkParsed) && checkParsed &&
-                    manyQuestion != null && bool.TryParse(manyQuestion.ToString(), out bool manyQuestionParsed))
+                var id = questionTable.Rows[i].Cells[0].Value.ToString();
+                var manyQuestion = questionTable.Rows[i].Cells[1].Value.ToString();
+                var check = questionTable.Rows[i].Cells[2].Value.ToString();
+                var text = questionTable.Rows[i].Cells[3].Value.ToString();
+                if (ValidateNull(id, "id") || ValidateNull(check, "check") ||
+                    ValidateNull(check, "check") || ValidateNull(text, "text")) return;
+                if (Guid.TryParse(id, out Guid parsedId) &&
+                    bool.TryParse(check, out bool checkParsed) && checkParsed &&
+                    bool.TryParse(manyQuestion, out bool manyQuestionParsed))
                 {
-                    questions.Add(new() { Id = parsedId, ManyAnswers = manyQuestionParsed, QuestionText = text.ToString(), TestId = testId });
+                    questions.Add(new() { Id = parsedId, ManyAnswers = manyQuestionParsed, QuestionText = text, TestId = testId });
                     DeleteAnswer(parsedId, questionTable, deleteAll = true);
                 }
             }
-            var count = Remove<TestQuestion>(null, questions);
+            var count = Remove(null, questions);
             if (count == 0) return;
             MessageBox.Show("Successfully deleted questions!", "Test", MessageBoxButtons.OK);
         }
@@ -334,30 +340,32 @@ namespace UniversityEnvironment.View.Utility
                 {
                     DeleteQuestion(test.Id, null, true);
                 }
-                Remove<Test>(null, tests);
+                Remove(null, tests);
                 return;
             }
             if (testTable == null) return; 
             for (int i = 0; i < testTable.RowCount; i++)
             {
-                var id = testTable.Rows[i].Cells[0].Value;
-                var check = testTable.Rows[i].Cells[1].Value;
-                var name = testTable.Rows[i].Cells[2].Value;
-                var description = testTable.Rows[i].Cells[3].Value;
-                if (id != null && Guid.TryParse(id.ToString(), out Guid parsedId) &&
-                    check != null && bool.TryParse(check.ToString(), out bool checkParsed) && checkParsed)
+                var id = testTable.Rows[i].Cells[0].Value.ToString();
+                var check = testTable.Rows[i].Cells[1].Value.ToString();
+                var name = testTable.Rows[i].Cells[2].Value.ToString();
+                var description = testTable.Rows[i].Cells[3].Value.ToString();
+                if (ValidateNull(id, "id") || ValidateNull(check, "check") ||
+                    ValidateNull(name, "name") || ValidateNull(description, "description")) return;
+                if (Guid.TryParse(id, out Guid parsedId) &&
+                    bool.TryParse(check, out bool checkParsed) && checkParsed)
                 {
                     tests.Add(new()
                     {
                         Id = parsedId,
-                        Name = name.ToString(),
-                        Description = description.ToString(),
+                        Name = name,
+                        Description = description,
                         CourseId = courseId
                     });
                     DeleteQuestion(parsedId, null, true);
                 }
             }
-            var count = Remove<Test>(null, tests);
+            var count = Remove(null, tests);
             if (count == 0) return;
             MessageBox.Show("Successfully deleted tests!", "Course", MessageBoxButtons.OK);
         }
@@ -366,23 +374,25 @@ namespace UniversityEnvironment.View.Utility
             List<Course> courses = new();
             for (int i = 0; i < courseTable.RowCount; i++)
             {
-                var id = courseTable.Rows[i].Cells[0].Value;
-                var check = courseTable.Rows[i].Cells[1].Value;
-                var name = courseTable.Rows[i].Cells[2].Value;
-                var faculty = courseTable.Rows[i].Cells[3].Value;
-                if (id != null && Guid.TryParse(id.ToString(), out Guid parsedId) &&
-                    check != null && bool.TryParse(check.ToString(), out bool checkParsed) && checkParsed)
+                var id = courseTable.Rows[i].Cells[0].Value.ToString();
+                var check = courseTable.Rows[i].Cells[1].Value.ToString();
+                var name = courseTable.Rows[i].Cells[2].Value.ToString();
+                var faculty = courseTable.Rows[i].Cells[3].Value.ToString();
+                if (ValidateNull(id, "id") || ValidateNull(check, "check") ||
+                    ValidateNull(name, "courseName") || ValidateNull(faculty, "facultyName")) return;
+                if (Guid.TryParse(id, out Guid parsedId) &&
+                    bool.TryParse(check, out bool checkParsed) && checkParsed)
                 {
                     courses.Add(new()
                     {
                         Id = parsedId,
-                        Name = name.ToString(),
-                        FacultyName = faculty.ToString(),
+                        Name = name,
+                        FacultyName = faculty,
                     });
                     DeleteTest(parsedId, null ,true);
                 }
             }
-            var count = Remove<Course>(null, courses);
+            var count = Remove(null, courses);
             if (count == 0) return;
             MessageBox.Show("Successfully deleted courses!", "Admin Control", MessageBoxButtons.OK);
         }
@@ -390,8 +400,31 @@ namespace UniversityEnvironment.View.Utility
         {
             List<T> users = FindAll<T>().ToList();
             T? user = users.FirstOrDefault(a => a.Id == id);
-            if (user != null) Remove<T>(user);
+            if (ValidateNull(user, "user")) return;
+            Remove(user);
             currentForm.Close();
+        }
+        #endregion
+
+        #region RequestForm
+        internal static void GenericAccept<T>(Action<T> action, AdminRequestForm thisForm, User user) where T : User
+        {
+            var foundedUser = FindByFilter<T>(a => user.Username == a.Username);
+            if (ValidateNull(foundedUser, "foundedUser")) return;
+            action.Invoke(foundedUser!);
+            Update(foundedUser);
+            thisForm.Close();
+        }
+        internal static void GenericDecline<T>
+            (AdminRequestForm thisForm, User user, Func<T?, IEnumerable<T>?, int>? func = null, Action<T>? action = null, Func<T?, IEnumerable<T>?, T?>? op = null)
+            where T : User
+        {
+            var foundedUser = FindByFilter<T>(a => user.Username == a.Username);
+            if (ValidateNull(foundedUser, "foundedUser")) return;
+            func?.Invoke(foundedUser, null);
+            action?.Invoke(foundedUser!);
+            op?.Invoke(foundedUser, null);
+            thisForm.Close();
         }
         #endregion
     }

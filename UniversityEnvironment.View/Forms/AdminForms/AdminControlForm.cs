@@ -67,6 +67,7 @@ namespace UniversityEnvironment.View.Forms
             {
                 DataGridViewRow selectedRow = UsersTable.Rows[e.RowIndex];
                 string? selectedUsername = selectedRow.Cells["UsernameColumn"].Value.ToString();
+                if (Validators.ViewValidators.ValidateNull(selectedUsername, "selectedUsername")) return;
                 User? user = new();
                 if (_roleFlag == Role.Admin)
                 {
@@ -92,6 +93,8 @@ namespace UniversityEnvironment.View.Forms
                 DataGridViewRow selectedRow = RequestsTable.Rows[e.RowIndex];
                 string? selectedUsername = selectedRow.Cells["FromUsernameColumn"].Value.ToString();
                 string? selectedRequest = selectedRow.Cells["TypeColumn"].Value.ToString();
+                if (Validators.ViewValidators.ValidateNull(selectedUsername, "selectedUsername") 
+                    || Validators.ViewValidators.ValidateNull(selectedRequest, "selectedRequest")) return;
                 User? user = new();
                 if (_roleFlag == Role.Admin)
                 {
@@ -105,7 +108,6 @@ namespace UniversityEnvironment.View.Forms
                 {
                     GenericClickOnUsers<Student>(user, selectedUsername, StudentRequestUpdate, this, user => new AdminRequestForm(user, selectedRequest));
                 }
-
             }
         }
 

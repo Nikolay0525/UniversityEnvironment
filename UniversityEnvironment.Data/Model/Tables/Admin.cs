@@ -11,6 +11,7 @@ namespace UniversityEnvironment.Data.Model.Tables
     {
         public override Role Role => Role.Admin;
         public override bool Confirmed { get; set; } = false;
+        public bool SuperAdmin { get; set; } = false;
     }
 
 }

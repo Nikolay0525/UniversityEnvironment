@@ -37,12 +37,12 @@ namespace UniversityEnvironment.View.Forms.CommonForms
         }
         private void TestsTable_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if(TestCompleted(TestsTable, e))
+            if(TestCompleted(TestsTable, e) && _user.Role == Role.Student)
             {
                 MessageBox.Show("You already completed this test.", "Course", MessageBoxButtons.OK);
                 return;
             }
-            ClickOnTest(1, this, TestsTable, e, _user);
+            ClickOnTest(2, this, TestsTable, e, _user);
         }
 
         private void CloseButton_Click(object sender, EventArgs e)

@@ -40,6 +40,7 @@
             ScienceDegreeBox = new Label();
             CloseButton = new Button();
             DeductButton = new Button();
+            CoursesLabel = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -60,9 +61,9 @@
             // 
             CoursesList.FormattingEnabled = true;
             CoursesList.ItemHeight = 20;
-            CoursesList.Location = new Point(12, 212);
+            CoursesList.Location = new Point(12, 232);
             CoursesList.Name = "CoursesList";
-            CoursesList.Size = new Size(136, 144);
+            CoursesList.Size = new Size(136, 124);
             CoursesList.TabIndex = 3;
             // 
             // NameLabel
@@ -157,6 +158,16 @@
             DeductButton.UseVisualStyleBackColor = false;
             DeductButton.Click += DeductButton_Click;
             // 
+            // CoursesLabel
+            // 
+            CoursesLabel.AutoSize = true;
+            CoursesLabel.BackColor = SystemColors.ControlLightLight;
+            CoursesLabel.Location = new Point(48, 209);
+            CoursesLabel.Name = "CoursesLabel";
+            CoursesLabel.Size = new Size(66, 20);
+            CoursesLabel.TabIndex = 9;
+            CoursesLabel.Text = "Courses";
+            // 
             // UserForm
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
@@ -164,6 +175,7 @@
             ClientSize = new Size(304, 368);
             Controls.Add(DeductButton);
             Controls.Add(CloseButton);
+            Controls.Add(CoursesLabel);
             Controls.Add(ScienceDegreeLabel);
             Controls.Add(ScienceDegreeBox);
             Controls.Add(RoleBox);
@@ -198,5 +210,6 @@
         protected Label ScienceDegreeBox;
         protected Button CloseButton;
         protected Button DeductButton;
+        protected Label CoursesLabel;
     }
 }

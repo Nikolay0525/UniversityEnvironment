@@ -13,52 +13,56 @@ namespace UniversityEnvironment.View.Validators
 {
     internal static class ViewValidators
     {
-        internal static bool ValidateStringOnLength(string title,string text, int minLength)
+        internal static bool ValidateStringOnLength(string objName,string obj, int minLength, int? maxLength = null)
         {
-            if(text.Length < minLength)
+            if(obj.Length < minLength)
             {
-                MessageBox.Show($"You're {title} is short, you must have atleast {minLength} symbols in it.", "Registration");
-                return false;
+                MessageBox.Show($"You're {objName} is too short, you must have atleast {minLength} symbols in it.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return true;
             }
-            return true;
+            else if(maxLength != null && obj.Length > maxLength)
+            {
+                MessageBox.Show($"You're {objName} is too long, you must have not more than {maxLength} symbols in it.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return true;
+            }
+            return false;
         }
         #region Login
-        internal static bool ValidateCorrectInput
+        internal static bool ValidateUserCorrectInput
             (string username, string fname, string lname, string password)
         {
-            bool usernameValidate = ValidateStringOnLength("username", username, 4);
-            if (!usernameValidate) return usernameValidate;
+            bool usernameValidate = ValidateStringOnLength("username", username, 4, 20);
+            if (usernameValidate) return true;
 
-            bool fnameValidate = ValidateStringOnLength("name", fname, 2);
-            if (!fnameValidate) return fnameValidate;
+            bool fnameValidate = ValidateStringOnLength("name", fname, 2, 30);
+            if (fnameValidate) return true;
 
-            bool lnameValidate = ValidateStringOnLength("surname", lname, 2);
-            if (!lnameValidate) return lnameValidate;
+            bool lnameValidate = ValidateStringOnLength("surname", lname, 2, 30);
+            if (lnameValidate) return true;
 
-            bool passwordValidate = ValidateStringOnLength("password", password, 2);
-            if (!lnameValidate) return lnameValidate;
+            bool passwordValidate = ValidateStringOnLength("password", password, 4, 20);
+            if (lnameValidate) return true;
 
-            return true;
-        }
-        internal static bool ValidateScienceDegree
-            (string degree)
-        {
-            if (degree.Length < 4) 
-            {
-                MessageBox.Show("You're username is short, you must have atleast 4 symbols in it.", "Registration");
-                return false;
-            }
-            return true;
+            return false;
         }
 
-        internal static bool ValidateNull<T>(T? obj, string title, string message)
+        internal static bool ValidateNull<T>(T? obj, string objName)
         {
             if (obj == null)
             {
-                MessageBox.Show($"Something went wrong. {message}", title, MessageBoxButtons.OK);
-                return false;
+                MessageBox.Show($"Something went wrong. The {objName} cannot be null", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return true;
             }
-            return true;
+            return false;
+        }
+        internal static bool ValidateNull<T>(IEnumerable<T>? obj, string objectsName)
+        {
+            if (obj == null)
+            {
+                MessageBox.Show($"Something went wrong. The {objectsName} cannot be null", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return true;
+            }
+            return false;
         }
 
         internal static bool ValidateUserExists(string userName)

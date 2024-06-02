@@ -19,26 +19,6 @@ namespace UniversityEnvironment.View.Forms.CommonForms
             MaterialFormSkinChanger.SetParametersOfForm(this);
         }
 
-        private T? SetUserRole<T>() where T : User
-        {
-            var userCheck = FindByFilter<T>(u => u.Username == UsernameTextBox.Text);
-            if (userCheck == null) return null;
-            T? user = userCheck.CanChangePassword
-                ? userCheck
-                : FindByFilter<T>(u => u.Username == UsernameTextBox.Text && u.Password == PasswordTextBox.Text);
-            if (user == null) return null;
-
-            if (user.CanChangePassword)
-            {
-                user.Password = PasswordTextBox.Text;
-                user.CanChangePassword = false;
-                user.ForgetPassword = false;
-                Update<T>(user);
-            }
-
-            return user;
-        }
-
         private void RegisterButton_Click(object sender, EventArgs e)
         {
             ShowNextForm(this, new RegistrationForm());
@@ -49,15 +29,15 @@ namespace UniversityEnvironment.View.Forms.CommonForms
             User? user = new();
             if (AdminCheck.Checked)
             {
-                user = SetUserRole<Admin>();
+                user = SetUserRole<Admin>(UsernameTextBox.Text, PasswordTextBox.Text);
             }
             else if (TeacherCheck.Checked)
             {
-                user = SetUserRole<Teacher>();
+                user = SetUserRole<Teacher>(UsernameTextBox.Text, PasswordTextBox.Text);
             }
             else
             {
-                user = SetUserRole<Student>();
+                user = SetUserRole<Student>(UsernameTextBox.Text, PasswordTextBox.Text);
             }
 
             #region Validation
@@ -85,23 +65,18 @@ namespace UniversityEnvironment.View.Forms.CommonForms
         {
             var username = Microsoft.VisualBasic.Interaction.InputBox("Enter you're username...", "Forget password", "");
             if (username == "") return;
-            User? user = new();
             if (AdminCheck.Checked)
             {
-                user = ForgetPasswordRequest<Admin>(username);
+                ForgetPasswordRequest<Admin>(username);
             }
             else if (TeacherCheck.Checked)
             {
-                user = ForgetPasswordRequest<Teacher>(username);
+                ForgetPasswordRequest<Teacher>(username);
             }
             else if (StudentCheck.Checked)
             {
-                user = ForgetPasswordRequest<Student>(username);
+                ForgetPasswordRequest<Student>(username);
             }
-
-            #region Validation
-            if (ValidateNull<User>(user, "Login", "No such user")) return;
-            #endregion
 
             MessageBox.Show("Wait until admins review you're request, then you will be able to enter you're new password when logging", "Login", MessageBoxButtons.OK);
         }

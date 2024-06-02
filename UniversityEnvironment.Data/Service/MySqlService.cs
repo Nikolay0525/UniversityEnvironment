@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using UniversityEnvironment.Data.Model.MtoMTables;
 
 namespace UniversityEnvironment.Data.Service
 {

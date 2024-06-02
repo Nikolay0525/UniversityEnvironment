@@ -28,14 +28,14 @@ namespace UniversityEnvironment.View.Forms.CommonForms
             if(realUser != null && (realUser.Role == Data.Enums.Role.Student || realUser.Role == Data.Enums.Role.Admin))
             {
                 DeductButton.Visible = false;
-                CloseButton.Height = 96;
-                CloseButton.Top = 260;
+                CloseButton.Height = 144;
+                CloseButton.Top = 212;
             }
             if (_profileUser.Role == Data.Enums.Role.Teacher)
             {
                 var teacher = FindByFilter<Teacher>(t => t.Id == _profileUser.Id);
-                ArgumentNullException.ThrowIfNull(teacher);
-                ScienceDegreeBox.Text = teacher.ScienceDegree;
+                Validators.ViewValidators.ValidateNull(teacher, "teacher");
+                ScienceDegreeBox.Text = teacher!.ScienceDegree;
             }
             else
             {

@@ -151,7 +151,7 @@
             // UsersMessageBox
             // 
             UsersMessageBox.AutoSize = true;
-            UsersMessageBox.ForeColor = Color.IndianRed;
+            UsersMessageBox.ForeColor = Color.Red;
             UsersMessageBox.Location = new Point(330, 5);
             UsersMessageBox.Name = "UsersMessageBox";
             UsersMessageBox.Size = new Size(92, 20);
@@ -290,7 +290,7 @@
             // RequestMessageBox
             // 
             RequestMessageBox.AutoSize = true;
-            RequestMessageBox.ForeColor = Color.IndianRed;
+            RequestMessageBox.ForeColor = Color.Red;
             RequestMessageBox.Location = new Point(258, 3);
             RequestMessageBox.Name = "RequestMessageBox";
             RequestMessageBox.Size = new Size(92, 20);

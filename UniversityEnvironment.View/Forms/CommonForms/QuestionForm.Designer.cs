@@ -39,6 +39,7 @@
             SendAnswersButton = new Button();
             StudentAnswerTable = new DataGridView();
             StudentNameColumn = new DataGridViewTextBoxColumn();
+            GuideLineAnswer = new Label();
             ((System.ComponentModel.ISupportInitialize)AnswerTable).BeginInit();
             ((System.ComponentModel.ISupportInitialize)StudentAnswerTable).BeginInit();
             SuspendLayout();
@@ -144,13 +145,13 @@
             // 
             StudentAnswerTable.AllowUserToAddRows = false;
             StudentAnswerTable.AllowUserToDeleteRows = false;
-            StudentAnswerTable.BackgroundColor = SystemColors.ControlLight;
+            StudentAnswerTable.BackgroundColor = SystemColors.Control;
             StudentAnswerTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             StudentAnswerTable.Columns.AddRange(new DataGridViewColumn[] { StudentNameColumn });
-            StudentAnswerTable.Location = new Point(296, 63);
+            StudentAnswerTable.Location = new Point(296, 114);
             StudentAnswerTable.Name = "StudentAnswerTable";
             StudentAnswerTable.ReadOnly = true;
-            StudentAnswerTable.Size = new Size(200, 373);
+            StudentAnswerTable.Size = new Size(200, 322);
             StudentAnswerTable.TabIndex = 6;
             // 
             // StudentNameColumn
@@ -160,6 +161,17 @@
             StudentNameColumn.Name = "StudentNameColumn";
             StudentNameColumn.ReadOnly = true;
             // 
+            // GuideLineAnswer
+            // 
+            GuideLineAnswer.BackColor = SystemColors.ControlLightLight;
+            GuideLineAnswer.ForeColor = Color.Black;
+            GuideLineAnswer.Location = new Point(296, 64);
+            GuideLineAnswer.Name = "GuideLineAnswer";
+            GuideLineAnswer.Size = new Size(200, 46);
+            GuideLineAnswer.TabIndex = 2;
+            GuideLineAnswer.Text = "Choose any answer, to see student answers";
+            GuideLineAnswer.TextAlign = ContentAlignment.MiddleCenter;
+            // 
             // QuestionForm
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
@@ -168,6 +180,7 @@
             Controls.Add(StudentAnswerTable);
             Controls.Add(DeleteAnswerButton);
             Controls.Add(CreateAnswerButton);
+            Controls.Add(GuideLineAnswer);
             Controls.Add(QuestionLabel);
             Controls.Add(SendAnswersButton);
             Controls.Add(CloseButton);
@@ -194,5 +207,6 @@
         private DataGridViewCheckBoxColumn CheckColumn;
         private DataGridViewTextBoxColumn AnswerColumn;
         private DataGridViewTextBoxColumn StudentNameColumn;
+        private Label GuideLineAnswer;
     }
 }

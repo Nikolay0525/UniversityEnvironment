@@ -12,28 +12,34 @@ namespace UniversityEnvironment.View.Forms.CommonForms
         private readonly User _user;
         private readonly TestQuestion _testQuestion;
 
-        public QuestionForm(TestForm currentTestForm, User user, TestQuestion testQuestion)
+        public QuestionForm(TestForm currentTestForm, User user, Test test, TestQuestion testQuestion)
         {
             _currentTestForm = currentTestForm;
             _user = user;
             _testQuestion = testQuestion;
             InitializeComponent();
+            Text = test.Name;
+            GuideLineAnswer.Visible = false;
             if (user.Role != Role.Admin)
             {
                 Height = 398;
                 CreateAnswerButton.Visible = false;
                 DeleteAnswerButton.Visible = false;
             }
-            if (user.Role != Role.Teacher)
+            if (user.Role == Role.Student)
             {
                 Width = 304;
                 StudentAnswerTable.Visible = false;
             }
-            if (!_testQuestion.ManyAnswers)
+            if (!_testQuestion.ManyAnswers &&( user.Role == Role.Admin || user.Role == Role.Teacher))
             {
-                CloseButton.Width = 280;
+                if(user.Role == Role.Admin || user.Role == Role.Teacher)
+                {
+                    CloseButton.Width = 280;
+                    SendAnswersButton.Visible = false;
+                }
                 AnswerTable.Columns["CheckColumn"].Visible = false;
-                SendAnswersButton.Visible = false;
+                GuideLineAnswer.Visible = true;
             }
             QuestionLabel.Text = testQuestion.QuestionText;
             UpdateAnswerTable(AnswerTable, _testQuestion);
@@ -50,6 +56,7 @@ namespace UniversityEnvironment.View.Forms.CommonForms
         private void AnswerTable_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (_testQuestion.ManyAnswers && _user.Role == Role.Student) return;
+            GuideLineAnswer.Visible = false;
             AnswerOnQuestion(_currentTestForm, this, _testQuestion.ManyAnswers, AnswerTable, StudentAnswerTable, _testQuestion.Id, _user, e);
         }
         private void SendAnswersButton_Click(object sender, EventArgs e)

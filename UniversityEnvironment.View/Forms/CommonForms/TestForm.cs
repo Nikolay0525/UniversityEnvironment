@@ -24,7 +24,12 @@ namespace UniversityEnvironment.View.Forms.CommonForms
             _test = test;
             InitializeComponent();
             Text = test.Name;
-            if(user.Role != Role.Admin)
+            if (user.Role == Role.Admin || user.Role == Role.Teacher)
+            {
+                SendAnswersButton.Visible = false;
+                CloseButton.Width = 280;
+            }
+            if (user.Role != Role.Admin)
             {
                 Height = 368;
                 CreateQuestionButton.Visible = false;
@@ -53,7 +58,7 @@ namespace UniversityEnvironment.View.Forms.CommonForms
         private void QuestionTable_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             _fakeQuestionAnswerToCompareWithOriginal = new(_questionAnswerStudents);
-            _lastQuestion = ClickOnQuestion(1, this, QuestionTable, e, _user);
+            _lastQuestion = ClickOnQuestion(3, this, QuestionTable, e, _user,_test);
         }
 
         private void DeleteQuestionButton_Click(object sender, EventArgs e)
@@ -65,7 +70,7 @@ namespace UniversityEnvironment.View.Forms.CommonForms
         {
             foreach(var list in _questionAnswerStudents.Values)
             {
-                Create<QuestionAnswerStudent>(null, list);
+                Create(null, list);
             }
             Create<TestStudent>(new() { Mark = 0, StudentId = _user.Id, TestId = _test.Id });
             MessageBox.Show("Successfully sended answers, wait for checking...", "Test", MessageBoxButtons.OK);
