@@ -1,4 +1,5 @@
 ﻿using MaterialSkin.Controls;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using UniversityEnvironment.Data.Enums;
 using UniversityEnvironment.Data.Model.MtoMTables;
 using UniversityEnvironment.Data.Model.Tables;
@@ -11,9 +12,9 @@ namespace UniversityEnvironment.View.Utility
 {
     internal static class ViewHelper
     {
-        internal delegate void VoidOperation();
+        /*internal delegate void VoidOperation();
         internal delegate T? GenericOperationWithUserObj<T>(T obj) where T : User;
-        internal delegate void GenericOperationWithTable<T>(DataGridView table, T obj);
+        internal delegate void GenericOperationWithTable<T>(DataGridView table, T obj);*/
         #region Form event operations
         internal static void ShowNextForm(MaterialForm current, MaterialForm next)
         {
@@ -21,7 +22,7 @@ namespace UniversityEnvironment.View.Utility
             next.FormClosed += (s, arg) => current.Show();
             next.Show();
         }
-        internal static void ShowNextForm(MaterialForm current, MaterialForm next, VoidOperation operation)
+        internal static void ShowNextForm(MaterialForm current, MaterialForm next, Action operation)
         {
             current.Hide();
             next.FormClosed += (s, arg) => current.Show();
@@ -98,17 +99,23 @@ namespace UniversityEnvironment.View.Utility
                 var teacher = allTeachers.FirstOrDefault(t => t.Id == courseTeacher.UserId);
                 if (teacher != null) teachers.Add(teacher);
             }
-            teachers.ForEach(t => table.Rows.Add(t.FirstName + " " + t.LastName));
+            teachers.ForEach(t => table.Rows.Add(t.Id,t.FirstName + " " + t.LastName));
         }
-        internal static void UpdateTestsTable(DataGridView table, Course course)
+        internal static void UpdateTestsTable(DataGridView table, Course course, User user)
         {
             var tests = FindAll<Test>(t => t.CourseId == course.Id);
             if (tests == null) return;
             table.Rows.Clear();
-            foreach (var test in tests) { table.Rows.Add(test.Id,false, test.Name, test.Description); }
+            bool completed = false;
+            foreach (var test in tests) 
+            { 
+                if(user.Role == Role.Student) completed = FindByFilter<TestStudent>
+                        (ts => ts.TestId == test.Id && ts.StudentId == user.Id) != null ? true : false;
+                table.Rows.Add(test.Id, completed, test.Name, test.Description);
+            }
 
         }
-        internal static void UpdateQuestionTable(DataGridView table, Test test)
+        internal static void UpdateQuestionTable(DataGridView table, Test test, User user)
         {
             var questions = FindAll<TestQuestion>(q => q.TestId == test.Id);
             if (questions == null) return;
@@ -130,6 +137,25 @@ namespace UniversityEnvironment.View.Utility
             if (messages == null) return;
             table.Rows.Clear();
             foreach (var message in messages) { table.Rows.Add(message.Id,message.Initials, message.CourseName, message.MessageText); }
+        }
+        internal static void UpdateStudentAnswersTable
+            (int columnIndex, DataGridViewCellEventArgs e, 
+            DataGridView answersTable,DataGridView studentAnswersTable)
+        {
+            if (e != null && e.RowIndex! >= 0 && e.ColumnIndex! >= columnIndex)
+            {
+                studentAnswersTable.Rows.Clear();
+                DataGridViewRow selectedRow = answersTable.Rows[e.RowIndex];
+                var selectedAnswerId = selectedRow.Cells["IdColumn"].Value.ToString();
+                if (selectedAnswerId != null && Guid.TryParse(selectedAnswerId, out Guid parsedId))
+                {
+                    foreach(var studentAnswer in FindAll<QuestionAnswerStudent>(qas => qas.QuestionAnswerId == parsedId))
+                    {
+                        var foundedStudent = FindByFilter<Student>(s => s.Id == studentAnswer.StudentId);
+                        if (foundedStudent != null) studentAnswersTable.Rows.Add(foundedStudent.FirstName + foundedStudent.LastName);
+                    }
+                }
+            }
         }
         #endregion
         #region ClickOnMethods
@@ -162,9 +188,24 @@ namespace UniversityEnvironment.View.Utility
                 ShowNextForm(form, new CourseForm(user, course));
             }
         }
+        internal static void ClickOnTeacherTable
+            (MaterialForm form,DataGridView table, DataGridViewCellEventArgs e, User realUser, Course course)
+        {
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+            {
+                DataGridViewRow selectedRow = table.Rows[e.RowIndex];
+                string? selectedTeacherId = selectedRow.Cells["TeacherIdColumn"].Value.ToString();
+                if (selectedTeacherId != null && Guid.TryParse(selectedTeacherId, out Guid parsedId))
+                {
+                    var teacher = FindByFilter<Teacher>(t => t.Id == parsedId);
+                    if (teacher == null) return;
+                    ShowNextForm(form, new UserForm(teacher,course, realUser));
+                }
+            }
+        }
         
         internal static void ClickOnTest
-            (int columnIndex,MaterialForm form,DataGridView table, DataGridViewCellEventArgs e, User user)
+            (int columnIndex,CourseForm thisForm,DataGridView table, DataGridViewCellEventArgs e, User user)
         {
             if (e.RowIndex >= 0 && e.ColumnIndex >= columnIndex)
             {
@@ -176,10 +217,10 @@ namespace UniversityEnvironment.View.Utility
                     test = FindByFilter<Test>(t => t.Id == parsedId);
                 }
                 if (test == null) return;
-                ShowNextForm(form, new TestForm(user, test));
+                ShowNextForm(thisForm, new TestForm(thisForm, user, test));
             }
         }
-        internal static void ClickOnQuestion
+        internal static Guid? ClickOnQuestion
             (int columnIndex,TestForm currentTestForm, DataGridView table,DataGridViewCellEventArgs e, User user)
         {
             if (e.RowIndex >= 0 && e.ColumnIndex >= columnIndex)
@@ -191,45 +232,63 @@ namespace UniversityEnvironment.View.Utility
                 {
                     question = FindByFilter<TestQuestion>(q => q.Id == parsedId);
                 }
-                if (question == null) return;
+                if (question == null) return null;
                 ShowNextForm(currentTestForm, new QuestionForm(currentTestForm, user, question));
+                return question.Id;
+            }
+            return null;
+        }
+        internal static void SetCheckedToQuestion(Guid testQuestionId,DataGridView questionTable)
+        {
+            foreach(DataGridViewRow row in questionTable.Rows)
+            {
+                var id = row.Cells["IdColumn"].Value.ToString();
+                if (id == null) continue;
+                if (id == "true") break;
+                if (Guid.TryParse(id, out Guid parsedId))
+                {
+                    if (parsedId == testQuestionId) row.Cells["CheckColumn"].Value = true;
+                }
             }
         }
         internal static void AnswerOnQuestion
-            (TestForm currentTestForm, QuestionForm currentForm, bool manyQuestion,DataGridView table,
-            Guid testQuestionId, User user, DataGridViewCellEventArgs? e = null)
+            (TestForm currentTestForm, QuestionForm currentForm, bool manyQuestion,DataGridView answerTable, 
+            DataGridView studentAnswerTable, Guid testQuestionId, User user, DataGridViewCellEventArgs? e = null)
         {
-            int columnIndex = (manyQuestion || user.Role == Role.Admin) ? 1 : 0;
-            var studentAnswers = new List<QuestionAnswerStudent>();
+            int columnIndex = manyQuestion ? 1 : 0;
+            if(e != null &&(user.Role == Role.Admin || user.Role == Role.Teacher))
+            {
+                UpdateStudentAnswersTable(columnIndex,e, answerTable ,studentAnswerTable);
+                return;
+            }
+            List<QuestionAnswerStudent> studentAnswers = new();
             if (manyQuestion)
             {
-                List<QuestionAnswerStudent> allStudentAnswers = FindAll<QuestionAnswerStudent>().ToList();
-                for (int i = 0; i < allStudentAnswers.Count; i++)
+                for (int i = 0; i < answerTable.Rows.Count; i++)
                 {
-                    var answerId = table.Rows[i].Cells[0].Value;
-                    var rowCheck = table.Rows[i].Cells[1].Value;
+                    var answerId = answerTable.Rows[i].Cells[0].Value.ToString();
+                    var rowCheck = answerTable.Rows[i].Cells[1].Value.ToString();
 
-                    if (rowCheck != null && bool.TryParse(rowCheck.ToString(), out bool parsed) && parsed
-                        && answerId != null && Guid.TryParse(answerId.ToString(), out Guid parsedId))
+                    if (rowCheck != null && bool.TryParse(rowCheck, out bool parsed) && parsed
+                        && answerId != null && Guid.TryParse(answerId, out Guid parsedId))
                     {
                         studentAnswers.Add(new() { StudentId = user.Id, QuestionAnswerId = parsedId });
                     }
                 }
-                currentTestForm.AddAnswer(null, studentAnswers);
+                currentTestForm.AddAnswer(testQuestionId , studentAnswers);
                 currentForm.Close();
             }
             else if(e != null && e.RowIndex! >= 0 && e.ColumnIndex! >= columnIndex)
             {
                 if (MessageBox.Show("Are you sure in you're answer?", "Test", MessageBoxButtons.OKCancel) 
                     == DialogResult.Cancel) return;
-                DataGridViewRow selectedRow = table.Rows[e.RowIndex];
-                var selectedAnswerId = selectedRow.Cells["IdColumn"].Value;
-                QuestionAnswerStudent? answer = null;
-                if (selectedAnswerId != null && Guid.TryParse(selectedAnswerId.ToString(), out Guid parsedId))
+                DataGridViewRow selectedRow = answerTable.Rows[e.RowIndex];
+                var selectedAnswerId = selectedRow.Cells["IdColumn"].Value.ToString();
+                if (selectedAnswerId != null && Guid.TryParse(selectedAnswerId, out Guid parsedId))
                 {
-                    answer = new() { StudentId = user.Id, QuestionAnswerId = parsedId };
+                    studentAnswers.Add(new() { StudentId = user.Id, QuestionAnswerId = parsedId });
                 }
-                if (answer != null) currentTestForm.AddAnswer(answer);
+                currentTestForm.AddAnswer(testQuestionId, studentAnswers);
                 currentForm.Close();
             }
         }
@@ -295,11 +354,12 @@ namespace UniversityEnvironment.View.Utility
                         Test? foundedTest = FindByFilter<Test>(t => t.Id == testStudent.TestId);
                         if (foundedTest != null && foundedStudent != null && foundedTest.Name == cell.OwningColumn.Name)
                         {
-                            var idCell = row.Cells["IdColumn"].Value;
-                            if (idCell != null && Guid.TryParse(idCell.ToString(), out Guid parsedId))
+                            var idCell = row.Cells["IdColumn"].Value.ToString();
+                            if (idCell != null && Guid.TryParse(idCell, out Guid parsedId))
                             {
                                 if (parsedId != foundedStudent.Id) continue;
-                                if (int.TryParse(cell.Value.ToString(), out int mark))
+                                var cellValue = cell.Value.ToString();
+                                if (cellValue != null && int.TryParse(cellValue, out int mark))
                                 {
                                     testStudent.Mark = mark;
                                 }
@@ -395,11 +455,11 @@ namespace UniversityEnvironment.View.Utility
                     CourseName = course.Name,
                     StudentId = student.Id
                 });
-                MessageBox.Show("Student was deducted succesfully.");
+                MessageBox.Show("Student was deducted succesfully.", "Course", MessageBoxButtons.OK);
                 currentForm.Close();
                 return;
             }
-            MessageBox.Show("You cannot deduct this student, because he doesn't have marks below 3");
+            MessageBox.Show("You cannot deduct this student, because he doesn't have marks below 3", "Course", MessageBoxButtons.OK);
             return;
         }
     }

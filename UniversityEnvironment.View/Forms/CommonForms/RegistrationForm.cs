@@ -2,7 +2,7 @@
 using UniversityEnvironment.Data.Model.Tables;
 using static UniversityEnvironment.Data.Service.MySqlService;
 using static UniversityEnvironment.View.Utility.AuthorizationHelper;
-using static UniversityEnvironment.View.Validator.ViewValidator;
+using static UniversityEnvironment.View.Validators.ViewValidators;
 
 namespace UniversityEnvironment.View.Forms.CommonForms
 {
@@ -16,6 +16,7 @@ namespace UniversityEnvironment.View.Forms.CommonForms
         private void RegistrateAccountButton_Click(object sender, EventArgs e)
         {
             #region Validation
+            if(ValidateCorrectInput(UsernameTextBox.Text, FirstNameTextBox.Text, LastNameTextBox.Text, PasswordTextBox.Text))
             if (ValidateUserExists(UsernameTextBox.Text))
             {
                 MessageBox.Show("Account with such name exist...", "Registration", MessageBoxButtons.OK);
@@ -28,7 +29,7 @@ namespace UniversityEnvironment.View.Forms.CommonForms
                 User userToCreate = CreateUser<Admin>(UsernameTextBox.Text, FirstNameTextBox.Text, LastNameTextBox.Text, PasswordTextBox.Text);
                 var admin = userToCreate as Admin;
                 ArgumentNullException.ThrowIfNull(admin);
-                if (!FindAll<Admin>().Any()) 
+                if (!FindAll<Admin>().Any())
                 {
                     admin.Confirmed = true;
                     MessageBox.Show("You are the first admin and the main, be fair!", "Registration", MessageBoxButtons.OK);
@@ -41,7 +42,14 @@ namespace UniversityEnvironment.View.Forms.CommonForms
                 User userToCreate = CreateUser<Teacher>(UsernameTextBox.Text, FirstNameTextBox.Text, LastNameTextBox.Text, PasswordTextBox.Text);
                 var teacher = userToCreate as Teacher;
                 ArgumentNullException.ThrowIfNull(teacher);
-                teacher.ScienceDegree = Microsoft.VisualBasic.Interaction.InputBox("Enter you're science degree:", "Entering text", "");
+                while (1==1)
+                {
+                    string scienceDegree = Microsoft.VisualBasic.Interaction.InputBox("Enter you're science degree:", "Entering text", "");
+                    if(ValidateStringOnLength("science degree", scienceDegree, 1)) continue;
+                    teacher.ScienceDegree = scienceDegree;
+                    break;
+                }
+
                 teacher.CoursesTeachers = new();
                 Create<Teacher>(teacher);
                 MessageBox.Show("Request on creating sended", "Registration", MessageBoxButtons.OK);
@@ -62,6 +70,11 @@ namespace UniversityEnvironment.View.Forms.CommonForms
         private void GoBackButton_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void ShowPasswordCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            PasswordTextBox.PasswordChar = ShowPasswordCheck.Checked ? '\0' : '*';
         }
     }
 }

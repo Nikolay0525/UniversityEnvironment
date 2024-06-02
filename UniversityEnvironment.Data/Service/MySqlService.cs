@@ -54,14 +54,13 @@ namespace UniversityEnvironment.Data.Service
             if(obj != null)
             {
                 context.Entry(obj).State = EntityState.Modified;
-                return obj;
             }
             else if(objects != null)
             {
                 foreach (var objj in objects) { context.Entry(objj).State = EntityState.Modified; }
             }
             context.SaveChanges();
-            return null;
+            return obj;
         }
 
         public static int Remove<T>(T? obj = null,IEnumerable<T>? objects = null) where T : class

@@ -24,6 +24,11 @@ namespace UniversityEnvironment.View.Forms.CommonForms
                 CreateAnswerButton.Visible = false;
                 DeleteAnswerButton.Visible = false;
             }
+            if (user.Role != Role.Teacher)
+            {
+                Width = 304;
+                StudentAnswerTable.Visible = false;
+            }
             if (!_testQuestion.ManyAnswers)
             {
                 CloseButton.Width = 280;
@@ -44,12 +49,12 @@ namespace UniversityEnvironment.View.Forms.CommonForms
         }
         private void AnswerTable_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (_testQuestion.ManyAnswers) return;
-            AnswerOnQuestion(_currentTestForm,this, _testQuestion.ManyAnswers, AnswerTable, _testQuestion.Id, _user, e);
+            if (_testQuestion.ManyAnswers && _user.Role == Role.Student) return;
+            AnswerOnQuestion(_currentTestForm, this, _testQuestion.ManyAnswers, AnswerTable, StudentAnswerTable, _testQuestion.Id, _user, e);
         }
         private void SendAnswersButton_Click(object sender, EventArgs e)
         {
-            AnswerOnQuestion(_currentTestForm,this, _testQuestion.ManyAnswers, AnswerTable, _testQuestion.Id, _user);
+            AnswerOnQuestion(_currentTestForm, this, _testQuestion.ManyAnswers, AnswerTable, StudentAnswerTable, _testQuestion.Id, _user);
         }
         private void CloseButton_Click(object sender, EventArgs e)
         {

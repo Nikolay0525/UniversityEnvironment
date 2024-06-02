@@ -31,7 +31,10 @@ namespace UniversityEnvironment.Data
         public UniversityEnvironmentContext() { }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var json = File.ReadAllText("E:/Desktop/Labs/OOP/UniversityEnvironment/UniversityEnvironment.Data/ConnectionString.json");
+            
+            string projectDirectory = Directory.GetParent(Environment.CurrentDirectory).FullName;
+            if(projectDirectory.Contains("Debug")) projectDirectory = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName;
+            var json = File.ReadAllText(projectDirectory + "/ConnectionString.json");
             var jsonConverted = JsonConvert.DeserializeObject<Connection>(json);
             optionsBuilder.UseMySql(jsonConverted.ConnectionString, new MySqlServerVersion(jsonConverted.Version));
             optionsBuilder.LogTo(message => Debug.WriteLine(message));

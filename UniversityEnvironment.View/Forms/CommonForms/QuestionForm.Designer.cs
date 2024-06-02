@@ -29,15 +29,18 @@
         private void InitializeComponent()
         {
             AnswerTable = new DataGridView();
+            IdColumn = new DataGridViewTextBoxColumn();
+            CheckColumn = new DataGridViewCheckBoxColumn();
+            AnswerColumn = new DataGridViewTextBoxColumn();
             CloseButton = new Button();
             QuestionLabel = new Label();
             CreateAnswerButton = new Button();
             DeleteAnswerButton = new Button();
             SendAnswersButton = new Button();
-            IdColumn = new DataGridViewTextBoxColumn();
-            CheckColumn = new DataGridViewCheckBoxColumn();
-            AnswerColumn = new DataGridViewTextBoxColumn();
+            StudentAnswerTable = new DataGridView();
+            StudentNameColumn = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)AnswerTable).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)StudentAnswerTable).BeginInit();
             SuspendLayout();
             // 
             // AnswerTable
@@ -54,6 +57,31 @@
             AnswerTable.Size = new Size(280, 233);
             AnswerTable.TabIndex = 0;
             AnswerTable.CellContentClick += AnswerTable_CellContentClick;
+            // 
+            // IdColumn
+            // 
+            IdColumn.HeaderText = "ID";
+            IdColumn.Name = "IdColumn";
+            IdColumn.ReadOnly = true;
+            IdColumn.Resizable = DataGridViewTriState.False;
+            IdColumn.Visible = false;
+            IdColumn.Width = 21;
+            // 
+            // CheckColumn
+            // 
+            CheckColumn.HeaderText = "";
+            CheckColumn.Name = "CheckColumn";
+            CheckColumn.Resizable = DataGridViewTriState.True;
+            CheckColumn.SortMode = DataGridViewColumnSortMode.Automatic;
+            CheckColumn.Width = 19;
+            // 
+            // AnswerColumn
+            // 
+            AnswerColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            AnswerColumn.HeaderText = "Answer";
+            AnswerColumn.Name = "AnswerColumn";
+            AnswerColumn.ReadOnly = true;
+            AnswerColumn.Resizable = DataGridViewTriState.False;
             // 
             // CloseButton
             // 
@@ -108,40 +136,36 @@
             SendAnswersButton.Name = "SendAnswersButton";
             SendAnswersButton.Size = new Size(132, 37);
             SendAnswersButton.TabIndex = 1;
-            SendAnswersButton.Text = "Send answers";
+            SendAnswersButton.Text = "Answer";
             SendAnswersButton.UseVisualStyleBackColor = false;
             SendAnswersButton.Click += SendAnswersButton_Click;
             // 
-            // IdColumn
+            // StudentAnswerTable
             // 
-            IdColumn.HeaderText = "ID";
-            IdColumn.Name = "IdColumn";
-            IdColumn.ReadOnly = true;
-            IdColumn.Resizable = DataGridViewTriState.False;
-            IdColumn.Visible = false;
-            IdColumn.Width = 21;
+            StudentAnswerTable.AllowUserToAddRows = false;
+            StudentAnswerTable.AllowUserToDeleteRows = false;
+            StudentAnswerTable.BackgroundColor = SystemColors.ControlLight;
+            StudentAnswerTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            StudentAnswerTable.Columns.AddRange(new DataGridViewColumn[] { StudentNameColumn });
+            StudentAnswerTable.Location = new Point(296, 63);
+            StudentAnswerTable.Name = "StudentAnswerTable";
+            StudentAnswerTable.ReadOnly = true;
+            StudentAnswerTable.Size = new Size(200, 373);
+            StudentAnswerTable.TabIndex = 6;
             // 
-            // CheckColumn
+            // StudentNameColumn
             // 
-            CheckColumn.HeaderText = "";
-            CheckColumn.Name = "CheckColumn";
-            CheckColumn.Resizable = DataGridViewTriState.True;
-            CheckColumn.SortMode = DataGridViewColumnSortMode.Automatic;
-            CheckColumn.Width = 19;
-            // 
-            // AnswerColumn
-            // 
-            AnswerColumn.HeaderText = "Answer";
-            AnswerColumn.Name = "AnswerColumn";
-            AnswerColumn.ReadOnly = true;
-            AnswerColumn.Resizable = DataGridViewTriState.False;
-            AnswerColumn.Width = 218;
+            StudentNameColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            StudentNameColumn.HeaderText = "Student";
+            StudentNameColumn.Name = "StudentNameColumn";
+            StudentNameColumn.ReadOnly = true;
             // 
             // QuestionForm
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(304, 435);
+            ClientSize = new Size(496, 435);
+            Controls.Add(StudentAnswerTable);
             Controls.Add(DeleteAnswerButton);
             Controls.Add(CreateAnswerButton);
             Controls.Add(QuestionLabel);
@@ -153,6 +177,7 @@
             Name = "QuestionForm";
             Sizable = false;
             ((System.ComponentModel.ISupportInitialize)AnswerTable).EndInit();
+            ((System.ComponentModel.ISupportInitialize)StudentAnswerTable).EndInit();
             ResumeLayout(false);
         }
 
@@ -164,8 +189,10 @@
         private Button CreateAnswerButton;
         private Button DeleteAnswerButton;
         private Button SendAnswersButton;
+        private DataGridView StudentAnswerTable;
         private DataGridViewTextBoxColumn IdColumn;
         private DataGridViewCheckBoxColumn CheckColumn;
         private DataGridViewTextBoxColumn AnswerColumn;
+        private DataGridViewTextBoxColumn StudentNameColumn;
     }
 }

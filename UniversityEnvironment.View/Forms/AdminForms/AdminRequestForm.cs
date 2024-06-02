@@ -1,9 +1,7 @@
 ﻿using MaterialSkin.Controls;
-using System;
 using UniversityEnvironment.Data.Enums;
 using UniversityEnvironment.Data.Model.Tables;
 using static UniversityEnvironment.Data.Service.MySqlService;
-using static UniversityEnvironment.View.Utility.ViewHelper;
 
 namespace UniversityEnvironment.View.Forms
 {
@@ -18,7 +16,7 @@ namespace UniversityEnvironment.View.Forms
             UsernameBox.Text = user.Username;
             FullNameBox.Text = user.FirstName + " " + user.LastName;
             RoleBox.Text = user.Role.ToString();
-            if (user.Role == Data.Enums.Role.Teacher)
+            if (user.Role == Role.Teacher)
             {
                 var teacher = FindByFilter<Teacher>(t => t.Id == user.Id);
                 ArgumentNullException.ThrowIfNull(teacher);

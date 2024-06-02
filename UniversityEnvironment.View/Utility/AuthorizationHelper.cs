@@ -24,7 +24,7 @@ namespace UniversityEnvironment.View.Utility
         }
         internal static T? ForgetPasswordRequest<T>(string username) where T : User
         {
-            var user = FindByFilter<T>(u => u.Username == u.Username);
+            var user = FindByFilter<T>(u => u.Username == username);
             if (user == null) return null;
             user.ForgetPassword = true;
             return Update<T>(user);

@@ -80,6 +80,7 @@
             // 
             PasswordTextBox.Location = new Point(12, 170);
             PasswordTextBox.Name = "PasswordTextBox";
+            PasswordTextBox.PasswordChar = '*';
             PasswordTextBox.Size = new Size(280, 27);
             PasswordTextBox.TabIndex = 2;
             // 
@@ -113,9 +114,9 @@
             groupBox1.Controls.Add(StudentCheck);
             groupBox1.Controls.Add(TeacherCheck);
             groupBox1.Controls.Add(AdminCheck);
-            groupBox1.Location = new Point(12, 203);
+            groupBox1.Location = new Point(18, 203);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(88, 93);
+            groupBox1.Size = new Size(80, 93);
             groupBox1.TabIndex = 11;
             groupBox1.TabStop = false;
             // 
@@ -125,10 +126,10 @@
             StudentCheck.Checked = true;
             StudentCheck.Location = new Point(0, 68);
             StudentCheck.Name = "StudentCheck";
-            StudentCheck.Size = new Size(89, 24);
+            StudentCheck.Size = new Size(81, 24);
             StudentCheck.TabIndex = 0;
             StudentCheck.TabStop = true;
-            StudentCheck.Text = "Student?";
+            StudentCheck.Text = "Student";
             StudentCheck.UseVisualStyleBackColor = true;
             // 
             // TeacherCheck
@@ -136,10 +137,10 @@
             TeacherCheck.AutoSize = true;
             TeacherCheck.Location = new Point(0, 40);
             TeacherCheck.Name = "TeacherCheck";
-            TeacherCheck.Size = new Size(92, 24);
+            TeacherCheck.Size = new Size(84, 24);
             TeacherCheck.TabIndex = 0;
             TeacherCheck.TabStop = true;
-            TeacherCheck.Text = "Teacher?";
+            TeacherCheck.Text = "Teacher";
             TeacherCheck.UseVisualStyleBackColor = true;
             // 
             // AdminCheck
@@ -149,7 +150,7 @@
             AdminCheck.Size = new Size(107, 30);
             AdminCheck.TabIndex = 0;
             AdminCheck.TabStop = true;
-            AdminCheck.Text = "Admin?";
+            AdminCheck.Text = "Admin";
             AdminCheck.UseVisualStyleBackColor = true;
             // 
             // ForgetButton

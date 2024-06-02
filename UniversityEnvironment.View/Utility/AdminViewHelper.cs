@@ -16,21 +16,21 @@ namespace UniversityEnvironment.View.Utility
         internal static readonly int RowsPerPage = 10;
 
         public static void NextPage(Role role, ref int currentPage,
-        VoidOperation? adminOperation = null, Action? teacherOperation = null, VoidOperation? studentOperation = null)
+        Action? adminOperation = null, Action? teacherOperation = null, Action? studentOperation = null)
         {
             currentPage++;
             ExecuteRoleOperation(role, adminOperation, teacherOperation, studentOperation);
         }
 
         public static void PreviousPage(Role role, ref int currentPage,
-            VoidOperation? adminOperation = null, Action? teacherOperation = null, VoidOperation? studentOperation = null)
+            Action? adminOperation = null, Action? teacherOperation = null, Action? studentOperation = null)
         {
             currentPage = currentPage > 0 ? currentPage - 1 : currentPage;
             ExecuteRoleOperation(role, adminOperation, teacherOperation, studentOperation);
         }
 
         private static void ExecuteRoleOperation(Role role,
-            VoidOperation? adminOperation = null, Action? teacherOperation = null, VoidOperation? studentOperation = null)
+            Action? adminOperation = null, Action? teacherOperation = null, Action? studentOperation = null)
         {
             switch (role)
             {
@@ -47,11 +47,11 @@ namespace UniversityEnvironment.View.Utility
         }
 
         internal static void ShowNextFormUpdateTable<T>
-            (MaterialForm current, MaterialForm next, DataGridView table, T obj, Action<DataGridView, T> updateAction)
+            (MaterialForm current, MaterialForm next, DataGridView table, T obj, User user, Action<DataGridView, T, User> updateAction)
         {
             current.Hide();
             next.FormClosed += (s, arg) => current.Show();
-            next.FormClosed += (s, arg) => updateAction(table, obj);
+            next.FormClosed += (s, arg) => updateAction(table, obj, user);
             next.Show();
         }
         internal static void ShowNextFormUpdateCourseTable(MaterialForm current, MaterialForm next, DataGridView table)
@@ -63,7 +63,7 @@ namespace UniversityEnvironment.View.Utility
         }
 
         internal static void GenericClickOnUsers<T>
-            (User? user, string? username, VoidOperation operation,MaterialForm thisForm, Func<User, MaterialForm> createForm)
+            (User? user, string? username, Action operation,MaterialForm thisForm, Func<User, MaterialForm> createForm)
             where T : User
         {
             user = SetUserRole<T>(username);
@@ -93,9 +93,7 @@ namespace UniversityEnvironment.View.Utility
                 if (user.Confirmed) table.Rows.Add(user.Username, user.FirstName + " " + user.LastName, user.Role);
             }
         }
-        internal static List<Admin> AdminsRequest(int currentPage,UniversityEnvironmentContext context) // make one request with
-            // expression in params to change cond. dynamicly, then i don't need Sciencedegree at all so it make sense to 
-            // make request where selected only fields of User model
+        internal static List<Admin> AdminsRequest(int currentPage,UniversityEnvironmentContext context) 
         {
             return context.Admins
                 .AsNoTracking()
@@ -253,7 +251,7 @@ namespace UniversityEnvironment.View.Utility
 
         #region Creation,Removing
         internal static void CreateAnswer<T>
-            (TestQuestion testQuestion, GenericOperationWithTable<T> operation, DataGridView table, T obj)
+            (TestQuestion testQuestion, Action<DataGridView, T> operation, DataGridView table, T obj)
         {
             string? answer = Microsoft.VisualBasic.Interaction.InputBox("Enter answer:", "Entering text", "");
             if (answer == null || answer == "") return;
@@ -386,7 +384,7 @@ namespace UniversityEnvironment.View.Utility
             }
             var count = Remove<Course>(null, courses);
             if (count == 0) return;
-            MessageBox.Show("Successfully deleted courses!", "Admin Panel", MessageBoxButtons.OK);
+            MessageBox.Show("Successfully deleted courses!", "Admin Control", MessageBoxButtons.OK);
         }
         internal static void FindAndRemove<T>(MaterialForm currentForm, Guid id) where T : User
         {

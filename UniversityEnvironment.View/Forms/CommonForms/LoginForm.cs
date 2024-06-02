@@ -5,6 +5,7 @@ using UniversityEnvironment.View.Utility;
 using static UniversityEnvironment.Data.Service.MySqlService;
 using static UniversityEnvironment.View.Utility.AuthorizationHelper;
 using static UniversityEnvironment.View.Utility.ViewHelper;
+using static UniversityEnvironment.View.Validators.ViewValidators;
 //using Microsoft.VisualBasic.ApplicationServices;
 
 
@@ -82,7 +83,7 @@ namespace UniversityEnvironment.View.Forms.CommonForms
 
         private void ForgetButton_Click(object sender, EventArgs e)
         {
-            string username = Microsoft.VisualBasic.Interaction.InputBox("Enter you're username...", "Forget password", "");
+            var username = Microsoft.VisualBasic.Interaction.InputBox("Enter you're username...", "Forget password", "");
             if (username == "") return;
             User? user = new();
             if (AdminCheck.Checked)
@@ -93,17 +94,13 @@ namespace UniversityEnvironment.View.Forms.CommonForms
             {
                 user = ForgetPasswordRequest<Teacher>(username);
             }
-            else
+            else if (StudentCheck.Checked)
             {
                 user = ForgetPasswordRequest<Student>(username);
             }
 
             #region Validation
-            if (user == null)
-            {
-                MessageBox.Show("Wrong username...", "Login", MessageBoxButtons.OK);
-                return;
-            }
+            if (ValidateNull<User>(user, "Login", "No such user")) return;
             #endregion
 
             MessageBox.Show("Wait until admins review you're request, then you will be able to enter you're new password when logging", "Login", MessageBoxButtons.OK);

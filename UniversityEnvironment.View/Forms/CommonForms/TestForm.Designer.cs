@@ -30,13 +30,13 @@
         {
             CloseButton = new Button();
             QuestionTable = new DataGridView();
-            SendAnswersButton = new Button();
-            CreateQuestionButton = new Button();
-            DeleteQuestionButton = new Button();
             IdColumn = new DataGridViewTextBoxColumn();
             ManyAnswerColumn = new DataGridViewCheckBoxColumn();
             CheckColumn = new DataGridViewCheckBoxColumn();
             QuestionColumn = new DataGridViewTextBoxColumn();
+            SendAnswersButton = new Button();
+            CreateQuestionButton = new Button();
+            DeleteQuestionButton = new Button();
             ((System.ComponentModel.ISupportInitialize)QuestionTable).BeginInit();
             SuspendLayout();
             // 
@@ -65,6 +65,40 @@
             QuestionTable.Size = new Size(280, 246);
             QuestionTable.TabIndex = 1;
             QuestionTable.CellContentClick += QuestionTable_CellContentClick;
+            // 
+            // IdColumn
+            // 
+            IdColumn.HeaderText = "ID";
+            IdColumn.Name = "IdColumn";
+            IdColumn.ReadOnly = true;
+            IdColumn.Resizable = DataGridViewTriState.False;
+            IdColumn.Visible = false;
+            IdColumn.Width = 30;
+            // 
+            // ManyAnswerColumn
+            // 
+            ManyAnswerColumn.HeaderText = "ManyAnswer";
+            ManyAnswerColumn.Name = "ManyAnswerColumn";
+            ManyAnswerColumn.ReadOnly = true;
+            ManyAnswerColumn.Resizable = DataGridViewTriState.False;
+            ManyAnswerColumn.SortMode = DataGridViewColumnSortMode.Automatic;
+            ManyAnswerColumn.Visible = false;
+            // 
+            // CheckColumn
+            // 
+            CheckColumn.HeaderText = "";
+            CheckColumn.MinimumWidth = 21;
+            CheckColumn.Name = "CheckColumn";
+            CheckColumn.Resizable = DataGridViewTriState.False;
+            CheckColumn.Width = 21;
+            // 
+            // QuestionColumn
+            // 
+            QuestionColumn.HeaderText = "Question";
+            QuestionColumn.Name = "QuestionColumn";
+            QuestionColumn.ReadOnly = true;
+            QuestionColumn.Resizable = DataGridViewTriState.False;
+            QuestionColumn.Width = 216;
             // 
             // SendAnswersButton
             // 
@@ -101,40 +135,6 @@
             DeleteQuestionButton.Text = "Delete";
             DeleteQuestionButton.UseVisualStyleBackColor = false;
             DeleteQuestionButton.Click += DeleteQuestionButton_Click;
-            // 
-            // IdColumn
-            // 
-            IdColumn.HeaderText = "ID";
-            IdColumn.Name = "IdColumn";
-            IdColumn.ReadOnly = true;
-            IdColumn.Resizable = DataGridViewTriState.False;
-            IdColumn.Visible = false;
-            IdColumn.Width = 30;
-            // 
-            // ManyAnswerColumn
-            // 
-            ManyAnswerColumn.HeaderText = "ManyAnswer";
-            ManyAnswerColumn.Name = "ManyAnswerColumn";
-            ManyAnswerColumn.ReadOnly = true;
-            ManyAnswerColumn.Resizable = DataGridViewTriState.False;
-            ManyAnswerColumn.SortMode = DataGridViewColumnSortMode.Automatic;
-            ManyAnswerColumn.Visible = false;
-            // 
-            // CheckColumn
-            // 
-            CheckColumn.HeaderText = "";
-            CheckColumn.MinimumWidth = 21;
-            CheckColumn.Name = "CheckColumn";
-            CheckColumn.Resizable = DataGridViewTriState.False;
-            CheckColumn.Width = 21;
-            // 
-            // QuestionColumn
-            // 
-            QuestionColumn.HeaderText = "Question";
-            QuestionColumn.Name = "QuestionColumn";
-            QuestionColumn.ReadOnly = true;
-            QuestionColumn.Resizable = DataGridViewTriState.False;
-            QuestionColumn.Width = 216;
             // 
             // TestForm
             // 

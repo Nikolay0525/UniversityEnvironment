@@ -1,10 +1,10 @@
 ﻿using MaterialSkin.Controls;
-using Microsoft.VisualBasic.ApplicationServices;
 using UniversityEnvironment.Data.Enums;
 using UniversityEnvironment.Data.Model.Tables;
 using UniversityEnvironment.View.Forms.AdminForms;
 using static UniversityEnvironment.View.Utility.AdminViewHelper;
 using static UniversityEnvironment.View.Utility.ViewHelper;
+using static UniversityEnvironment.View.Validators.ViewValidators;
 
 namespace UniversityEnvironment.View.Forms.CommonForms
 {
@@ -24,9 +24,10 @@ namespace UniversityEnvironment.View.Forms.CommonForms
                 Height = 400;
                 CreateTestButton.Visible = false;
                 DeleteTestButton.Visible = false;
+                TestsTable.Columns["CheckColumn"].ReadOnly = true;
             }
             UpdateTeacherTable(TeacherTable, _course);
-            UpdateTestsTable(TestsTable, _course);
+            UpdateTestsTable(TestsTable, _course, _user);
         }
 
         private void JournalButton_Click(object sender, EventArgs e)
@@ -36,6 +37,11 @@ namespace UniversityEnvironment.View.Forms.CommonForms
         }
         private void TestsTable_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            if(TestCompleted(TestsTable, e))
+            {
+                MessageBox.Show("You already completed this test.", "Course", MessageBoxButtons.OK);
+                return;
+            }
             ClickOnTest(1, this, TestsTable, e, _user);
         }
 
@@ -46,7 +52,7 @@ namespace UniversityEnvironment.View.Forms.CommonForms
 
         private void CreateButton_Click(object sender, EventArgs e)
         {
-            ShowNextFormUpdateTable<Course>(this, new TestCreatorForm(_course), TestsTable, _course, UpdateTestsTable);
+            ShowNextFormUpdateTable<Course>(this, new TestCreatorForm(_course), TestsTable, _course, _user, UpdateTestsTable);
         }
 
         private void DeleteTestButton_Click(object sender, EventArgs e)
@@ -56,7 +62,7 @@ namespace UniversityEnvironment.View.Forms.CommonForms
 
         private void TeacherTable_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            GenericClickOnUsers<Teacher>(_user, selectedUsername, TeachersUsersUpdate, this, user => new AdminUserForm(user));
+            ClickOnTeacherTable(this, TeacherTable, e, _user, _course);
         }
     }
 }

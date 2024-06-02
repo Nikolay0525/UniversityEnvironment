@@ -42,6 +42,7 @@
             Student = new RadioButton();
             Teacher = new RadioButton();
             Admin = new RadioButton();
+            ShowPasswordCheck = new CheckBox();
             RoleGroupBox.SuspendLayout();
             SuspendLayout();
             // 
@@ -49,9 +50,9 @@
             // 
             RegistrateAccountButton.BackColor = SystemColors.ControlLightLight;
             RegistrateAccountButton.FlatStyle = FlatStyle.Flat;
-            RegistrateAccountButton.Location = new Point(120, 260);
+            RegistrateAccountButton.Location = new Point(111, 260);
             RegistrateAccountButton.Name = "RegistrateAccountButton";
-            RegistrateAccountButton.Size = new Size(172, 49);
+            RegistrateAccountButton.Size = new Size(181, 49);
             RegistrateAccountButton.TabIndex = 3;
             RegistrateAccountButton.Text = "Registrate";
             RegistrateAccountButton.UseVisualStyleBackColor = false;
@@ -73,7 +74,7 @@
             // 
             label1.AutoSize = true;
             label1.BackColor = SystemColors.ControlLightLight;
-            label1.Location = new Point(169, 202);
+            label1.Location = new Point(15, 203);
             label1.Name = "label1";
             label1.Size = new Size(79, 20);
             label1.TabIndex = 4;
@@ -111,9 +112,10 @@
             // 
             // PasswordTextBox
             // 
-            PasswordTextBox.Location = new Point(120, 225);
+            PasswordTextBox.Location = new Point(111, 198);
             PasswordTextBox.Name = "PasswordTextBox";
-            PasswordTextBox.Size = new Size(172, 27);
+            PasswordTextBox.PasswordChar = '*';
+            PasswordTextBox.Size = new Size(181, 27);
             PasswordTextBox.TabIndex = 5;
             // 
             // LastNameTextBox
@@ -143,9 +145,9 @@
             RoleGroupBox.Controls.Add(Student);
             RoleGroupBox.Controls.Add(Teacher);
             RoleGroupBox.Controls.Add(Admin);
-            RoleGroupBox.Location = new Point(12, 216);
+            RoleGroupBox.Location = new Point(16, 226);
             RoleGroupBox.Name = "RoleGroupBox";
-            RoleGroupBox.Size = new Size(88, 93);
+            RoleGroupBox.Size = new Size(79, 83);
             RoleGroupBox.TabIndex = 12;
             RoleGroupBox.TabStop = false;
             // 
@@ -153,38 +155,51 @@
             // 
             Student.AutoSize = true;
             Student.Checked = true;
-            Student.Location = new Point(0, 68);
+            Student.Location = new Point(0, 61);
             Student.Name = "Student";
-            Student.Size = new Size(89, 24);
+            Student.Size = new Size(81, 24);
             Student.TabIndex = 0;
             Student.TabStop = true;
-            Student.Text = "Student?";
+            Student.Text = "Student";
             Student.UseVisualStyleBackColor = true;
             // 
             // Teacher
             // 
             Teacher.AutoSize = true;
-            Teacher.Location = new Point(0, 40);
+            Teacher.Location = new Point(0, 35);
             Teacher.Name = "Teacher";
-            Teacher.Size = new Size(92, 24);
+            Teacher.Size = new Size(84, 24);
             Teacher.TabIndex = 0;
-            Teacher.Text = "Teacher?";
+            Teacher.Text = "Teacher";
             Teacher.UseVisualStyleBackColor = true;
             // 
             // Admin
             // 
-            Admin.Location = new Point(0, 10);
+            Admin.Location = new Point(0, 5);
             Admin.Name = "Admin";
             Admin.Size = new Size(107, 30);
             Admin.TabIndex = 0;
-            Admin.Text = "Admin?";
+            Admin.Text = "Admin";
             Admin.UseVisualStyleBackColor = true;
+            // 
+            // ShowPasswordCheck
+            // 
+            ShowPasswordCheck.BackColor = SystemColors.ControlLightLight;
+            ShowPasswordCheck.Location = new Point(111, 231);
+            ShowPasswordCheck.Name = "ShowPasswordCheck";
+            ShowPasswordCheck.Size = new Size(181, 23);
+            ShowPasswordCheck.TabIndex = 13;
+            ShowPasswordCheck.Text = "Show password";
+            ShowPasswordCheck.TextAlign = ContentAlignment.MiddleCenter;
+            ShowPasswordCheck.UseVisualStyleBackColor = false;
+            ShowPasswordCheck.CheckedChanged += ShowPasswordCheck_CheckedChanged;
             // 
             // RegistrationForm
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(304, 368);
+            Controls.Add(ShowPasswordCheck);
             Controls.Add(RoleGroupBox);
             Controls.Add(FirstNameTextBox);
             Controls.Add(UsernameTextBox);
@@ -225,5 +240,6 @@
         private RadioButton Student;
         private RadioButton Teacher;
         private RadioButton Admin;
+        private CheckBox ShowPasswordCheck;
     }
 }

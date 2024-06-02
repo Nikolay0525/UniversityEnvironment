@@ -101,7 +101,7 @@
             label3.AutoSize = true;
             label3.Location = new Point(315, 3);
             label3.Name = "label3";
-            label3.Size = new Size(101, 20);
+            label3.Size = new Size(128, 25);
             label3.TabIndex = 5;
             label3.Text = "Your courses";
             // 
@@ -142,6 +142,7 @@
             ActualCoursesTable.Location = new Point(171, 26);
             ActualCoursesTable.Name = "ActualCoursesTable";
             ActualCoursesTable.ReadOnly = true;
+            ActualCoursesTable.RowHeadersWidth = 51;
             ActualCoursesTable.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             ActualCoursesTable.Size = new Size(414, 231);
             ActualCoursesTable.TabIndex = 2;
@@ -150,6 +151,7 @@
             // CourseColumn
             // 
             CourseColumn.HeaderText = "Course";
+            CourseColumn.MinimumWidth = 6;
             CourseColumn.Name = "CourseColumn";
             CourseColumn.ReadOnly = true;
             CourseColumn.Resizable = DataGridViewTriState.False;
@@ -158,6 +160,7 @@
             // FacultyColumn
             // 
             FacultyColumn.HeaderText = "Faculty";
+            FacultyColumn.MinimumWidth = 6;
             FacultyColumn.Name = "FacultyColumn";
             FacultyColumn.ReadOnly = true;
             FacultyColumn.Resizable = DataGridViewTriState.False;
@@ -168,7 +171,7 @@
             label2.AutoSize = true;
             label2.Location = new Point(64, 246);
             label2.Name = "label2";
-            label2.Size = new Size(40, 20);
+            label2.Size = new Size(51, 25);
             label2.TabIndex = 1;
             label2.Text = "Role";
             // 
@@ -177,7 +180,7 @@
             label1.AutoSize = true;
             label1.Location = new Point(50, 182);
             label1.Name = "label1";
-            label1.Size = new Size(79, 20);
+            label1.Size = new Size(100, 25);
             label1.TabIndex = 1;
             label1.Text = "Full name";
             // 
@@ -213,7 +216,7 @@
             label4.AutoSize = true;
             label4.Location = new Point(310, 5);
             label4.Name = "label4";
-            label4.Size = new Size(133, 20);
+            label4.Size = new Size(169, 25);
             label4.TabIndex = 6;
             label4.Text = "Available courses";
             // 
@@ -250,21 +253,25 @@
             AvailableCoursesTable.Columns.AddRange(new DataGridViewColumn[] { RowCheck, AvailableCourseColumn, AvailableFacultyColumn });
             AvailableCoursesTable.Location = new Point(167, 28);
             AvailableCoursesTable.Name = "AvailableCoursesTable";
+            AvailableCoursesTable.RowHeadersWidth = 51;
             AvailableCoursesTable.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             AvailableCoursesTable.Size = new Size(419, 268);
             AvailableCoursesTable.TabIndex = 3;
             // 
             // RowCheck
             // 
+            RowCheck.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             RowCheck.HeaderText = "";
+            RowCheck.MinimumWidth = 6;
             RowCheck.Name = "RowCheck";
             RowCheck.Resizable = DataGridViewTriState.False;
             RowCheck.SortMode = DataGridViewColumnSortMode.Automatic;
-            RowCheck.Width = 20;
+            RowCheck.Width = 23;
             // 
             // AvailableCourseColumn
             // 
             AvailableCourseColumn.HeaderText = "Course";
+            AvailableCourseColumn.MinimumWidth = 6;
             AvailableCourseColumn.Name = "AvailableCourseColumn";
             AvailableCourseColumn.ReadOnly = true;
             AvailableCourseColumn.Resizable = DataGridViewTriState.False;
@@ -273,6 +280,7 @@
             // AvailableFacultyColumn
             // 
             AvailableFacultyColumn.HeaderText = "Faculty";
+            AvailableFacultyColumn.MinimumWidth = 6;
             AvailableFacultyColumn.Name = "AvailableFacultyColumn";
             AvailableFacultyColumn.ReadOnly = true;
             AvailableFacultyColumn.Resizable = DataGridViewTriState.False;
@@ -298,6 +306,7 @@
             MessageTable.Columns.AddRange(new DataGridViewColumn[] { IdColumn, InitialsColumn, FromCourseColumn, MessageColumn });
             MessageTable.Location = new Point(0, 0);
             MessageTable.Name = "MessageTable";
+            MessageTable.RowHeadersWidth = 51;
             MessageTable.Size = new Size(592, 304);
             MessageTable.TabIndex = 4;
             MessageTable.CellContentClick += MessageTable_CellContentClick;
@@ -305,13 +314,16 @@
             // IdColumn
             // 
             IdColumn.HeaderText = "Id";
+            IdColumn.MinimumWidth = 6;
             IdColumn.Name = "IdColumn";
             IdColumn.ReadOnly = true;
             IdColumn.Visible = false;
+            IdColumn.Width = 125;
             // 
             // InitialsColumn
             // 
             InitialsColumn.HeaderText = "Initials";
+            InitialsColumn.MinimumWidth = 6;
             InitialsColumn.Name = "InitialsColumn";
             InitialsColumn.ReadOnly = true;
             InitialsColumn.Resizable = DataGridViewTriState.False;
@@ -320,6 +332,7 @@
             // FromCourseColumn
             // 
             FromCourseColumn.HeaderText = "Course";
+            FromCourseColumn.MinimumWidth = 6;
             FromCourseColumn.Name = "FromCourseColumn";
             FromCourseColumn.ReadOnly = true;
             FromCourseColumn.Resizable = DataGridViewTriState.False;
@@ -328,6 +341,7 @@
             // MessageColumn
             // 
             MessageColumn.HeaderText = "Message";
+            MessageColumn.MinimumWidth = 6;
             MessageColumn.Name = "MessageColumn";
             MessageColumn.ReadOnly = true;
             MessageColumn.Resizable = DataGridViewTriState.False;
@@ -335,8 +349,7 @@
             // 
             // EnvironmentForm
             // 
-            AutoScaleDimensions = new SizeF(9F, 20F);
-            AutoScaleMode = AutoScaleMode.Font;
+            AutoScaleMode = AutoScaleMode.None;
             ClientSize = new Size(600, 400);
             Controls.Add(TabControl);
             Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
@@ -378,12 +391,12 @@
         private Label label3;
         private DataGridViewTextBoxColumn CourseColumn;
         private DataGridViewTextBoxColumn FacultyColumn;
-        private DataGridViewCheckBoxColumn RowCheck;
-        private DataGridViewTextBoxColumn AvailableCourseColumn;
-        private DataGridViewTextBoxColumn AvailableFacultyColumn;
         private DataGridViewTextBoxColumn IdColumn;
         private DataGridViewTextBoxColumn InitialsColumn;
         private DataGridViewTextBoxColumn FromCourseColumn;
         private DataGridViewTextBoxColumn MessageColumn;
+        private DataGridViewCheckBoxColumn RowCheck;
+        private DataGridViewTextBoxColumn AvailableCourseColumn;
+        private DataGridViewTextBoxColumn AvailableFacultyColumn;
     }
 }

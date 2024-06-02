@@ -29,16 +29,17 @@
         private void InitializeComponent()
         {
             TeacherTable = new DataGridView();
-            UserName = new DataGridViewTextBoxColumn();
             CloseButton = new Button();
             JournalButton = new Button();
             TestsTable = new DataGridView();
-            DeleteTestButton = new Button();
-            CreateTestButton = new Button();
             IdColumn = new DataGridViewTextBoxColumn();
             CheckColumn = new DataGridViewCheckBoxColumn();
             TestName = new DataGridViewTextBoxColumn();
             TestDescription = new DataGridViewTextBoxColumn();
+            DeleteTestButton = new Button();
+            CreateTestButton = new Button();
+            TeacherIdColumn = new DataGridViewTextBoxColumn();
+            UserName = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)TeacherTable).BeginInit();
             ((System.ComponentModel.ISupportInitialize)TestsTable).BeginInit();
             SuspendLayout();
@@ -49,20 +50,13 @@
             TeacherTable.AllowUserToDeleteRows = false;
             TeacherTable.BackgroundColor = SystemColors.Control;
             TeacherTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            TeacherTable.Columns.AddRange(new DataGridViewColumn[] { UserName });
+            TeacherTable.Columns.AddRange(new DataGridViewColumn[] { TeacherIdColumn, UserName });
             TeacherTable.Location = new Point(395, 70);
             TeacherTable.Name = "TeacherTable";
             TeacherTable.ReadOnly = true;
             TeacherTable.Size = new Size(193, 236);
             TeacherTable.TabIndex = 0;
             TeacherTable.CellContentClick += TeacherTable_CellContentClick;
-            // 
-            // UserName
-            // 
-            UserName.HeaderText = "Course teachers";
-            UserName.Name = "UserName";
-            UserName.ReadOnly = true;
-            UserName.Width = 150;
             // 
             // CloseButton
             // 
@@ -101,30 +95,6 @@
             TestsTable.TabIndex = 2;
             TestsTable.CellContentClick += TestsTable_CellContentClick;
             // 
-            // DeleteTestButton
-            // 
-            DeleteTestButton.BackColor = SystemColors.ControlLightLight;
-            DeleteTestButton.FlatStyle = FlatStyle.Flat;
-            DeleteTestButton.Location = new Point(316, 394);
-            DeleteTestButton.Name = "DeleteTestButton";
-            DeleteTestButton.Size = new Size(272, 35);
-            DeleteTestButton.TabIndex = 4;
-            DeleteTestButton.Text = "Delete test";
-            DeleteTestButton.UseVisualStyleBackColor = false;
-            DeleteTestButton.Click += DeleteTestButton_Click;
-            // 
-            // CreateTestButton
-            // 
-            CreateTestButton.BackColor = SystemColors.ControlLightLight;
-            CreateTestButton.FlatStyle = FlatStyle.Flat;
-            CreateTestButton.Location = new Point(11, 394);
-            CreateTestButton.Name = "CreateTestButton";
-            CreateTestButton.Size = new Size(299, 35);
-            CreateTestButton.TabIndex = 5;
-            CreateTestButton.Text = "Create test";
-            CreateTestButton.UseVisualStyleBackColor = false;
-            CreateTestButton.Click += CreateButton_Click;
-            // 
             // IdColumn
             // 
             IdColumn.HeaderText = "ID";
@@ -157,6 +127,44 @@
             TestDescription.Resizable = DataGridViewTriState.False;
             TestDescription.Width = 213;
             // 
+            // DeleteTestButton
+            // 
+            DeleteTestButton.BackColor = SystemColors.ControlLightLight;
+            DeleteTestButton.FlatStyle = FlatStyle.Flat;
+            DeleteTestButton.Location = new Point(316, 394);
+            DeleteTestButton.Name = "DeleteTestButton";
+            DeleteTestButton.Size = new Size(272, 35);
+            DeleteTestButton.TabIndex = 4;
+            DeleteTestButton.Text = "Delete test";
+            DeleteTestButton.UseVisualStyleBackColor = false;
+            DeleteTestButton.Click += DeleteTestButton_Click;
+            // 
+            // CreateTestButton
+            // 
+            CreateTestButton.BackColor = SystemColors.ControlLightLight;
+            CreateTestButton.FlatStyle = FlatStyle.Flat;
+            CreateTestButton.Location = new Point(11, 394);
+            CreateTestButton.Name = "CreateTestButton";
+            CreateTestButton.Size = new Size(299, 35);
+            CreateTestButton.TabIndex = 5;
+            CreateTestButton.Text = "Create test";
+            CreateTestButton.UseVisualStyleBackColor = false;
+            CreateTestButton.Click += CreateButton_Click;
+            // 
+            // TeacherIdColumn
+            // 
+            TeacherIdColumn.HeaderText = "Id";
+            TeacherIdColumn.Name = "TeacherIdColumn";
+            TeacherIdColumn.ReadOnly = true;
+            TeacherIdColumn.Visible = false;
+            // 
+            // UserName
+            // 
+            UserName.HeaderText = "Course teachers";
+            UserName.Name = "UserName";
+            UserName.ReadOnly = true;
+            UserName.Width = 150;
+            // 
             // CourseForm
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
@@ -185,10 +193,11 @@
         private DataGridView TestsTable;
         private Button DeleteTestButton;
         private Button CreateTestButton;
-        private DataGridViewTextBoxColumn UserName;
         private DataGridViewTextBoxColumn IdColumn;
         private DataGridViewCheckBoxColumn CheckColumn;
         private DataGridViewTextBoxColumn TestName;
         private DataGridViewTextBoxColumn TestDescription;
+        private DataGridViewTextBoxColumn TeacherIdColumn;
+        private DataGridViewTextBoxColumn UserName;
     }
 }

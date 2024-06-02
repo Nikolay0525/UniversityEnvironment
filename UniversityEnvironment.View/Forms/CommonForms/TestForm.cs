@@ -11,11 +11,14 @@ namespace UniversityEnvironment.View.Forms.CommonForms
 {
     public partial class TestForm : MaterialForm
     {
-        private List<QuestionAnswerStudent> _questionAnswerStudents = new();
+        private Dictionary<Guid, List<QuestionAnswerStudent>> _questionAnswerStudents = new();
+        private Dictionary<Guid, List<QuestionAnswerStudent>> _fakeQuestionAnswerToCompareWithOriginal = new();
+        private Guid? _lastQuestion = null;
+
         private readonly User _user;
         private readonly Test _test;
 
-        public TestForm(User user, Test test)
+        public TestForm(CourseForm previousForm, User user, Test test)
         {
             _user = user;
             _test = test;
@@ -26,32 +29,31 @@ namespace UniversityEnvironment.View.Forms.CommonForms
                 Height = 368;
                 CreateQuestionButton.Visible = false;
                 DeleteQuestionButton.Visible = false;
-                QuestionTable.Columns["CheckColumn"].Visible = false;
+                QuestionTable.Columns["CheckColumn"].ReadOnly = true;
             }
-            UpdateQuestionTable(QuestionTable, test);
+            UpdateQuestionTable(QuestionTable, test, user);
+            this.VisibleChanged += FormIsShowed_Shown;
         }
 
-        public void AddAnswer(QuestionAnswerStudent? answer = null, IEnumerable<QuestionAnswerStudent>? answers = null)
+        public void AddAnswer(Guid questionId, List<QuestionAnswerStudent>? answers = null)
         {
-            if (answer != null)
-                _questionAnswerStudents.Add(answer);
-            else if (answers != null) _questionAnswerStudents.ForEach(_questionAnswerStudents.Add);
-        }
-
-        private void CloseButton_Click(object sender, EventArgs e)
-        {
-            Close();
+            if (answers != null) 
+            {
+                if (_questionAnswerStudents.ContainsKey(questionId))
+                    _questionAnswerStudents.Remove(questionId);
+                _questionAnswerStudents.Add(questionId, answers);
+            }
         }
 
         private void CreateQuestionButton_Click(object sender, EventArgs e)
         {
-            ShowNextFormUpdateTable<Test>(this, new QuestionCreatorForm(_test), QuestionTable, _test, UpdateQuestionTable);
+            ShowNextFormUpdateTable<Test>(this, new QuestionCreatorForm(_test), QuestionTable, _test, _user, UpdateQuestionTable);
         }
 
         private void QuestionTable_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if(_user.Role == Role.Admin) ClickOnQuestion(1, this, QuestionTable, e, _user);
-            else ClickOnQuestion(1, this, QuestionTable, e, _user);
+            _fakeQuestionAnswerToCompareWithOriginal = new(_questionAnswerStudents);
+            _lastQuestion = ClickOnQuestion(1, this, QuestionTable, e, _user);
         }
 
         private void DeleteQuestionButton_Click(object sender, EventArgs e)
@@ -61,8 +63,26 @@ namespace UniversityEnvironment.View.Forms.CommonForms
 
         private void SendAnswersButton_Click(object sender, EventArgs e)
         {
-            Create<QuestionAnswerStudent>(null, _questionAnswerStudents);
+            foreach(var list in _questionAnswerStudents.Values)
+            {
+                Create<QuestionAnswerStudent>(null, list);
+            }
             Create<TestStudent>(new() { Mark = 0, StudentId = _user.Id, TestId = _test.Id });
+            MessageBox.Show("Successfully sended answers, wait for checking...", "Test", MessageBoxButtons.OK);
+            Close();
+        }
+
+        private void FormIsShowed_Shown(object? sender, EventArgs e)
+        {
+            if(_lastQuestion.HasValue && _lastQuestion != null && (_fakeQuestionAnswerToCompareWithOriginal.Count != _questionAnswerStudents.Count))
+            {
+                SetCheckedToQuestion(_lastQuestion.Value, QuestionTable);
+            }
+        }
+
+        private void CloseButton_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }
