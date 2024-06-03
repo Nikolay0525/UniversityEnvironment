@@ -94,71 +94,33 @@ namespace UniversityEnvironment.View.Utility
                 if (user.Confirmed) table.Rows.Add(user.Username, user.FirstName + " " + user.LastName, user.Role);
             }
         }
-        internal static List<Admin> AdminsRequest(int currentPage,UniversityEnvironmentContext context) 
+        internal static List<T> RequestsQuery<T>(int currentPage, UniversityEnvironmentContext context) where T : User, new()
         {
-            return context.Admins
+            return context.Set<T>()
                 .AsNoTracking()
-                .Where(admin => admin.ForgetPassword == true || admin.Confirmed == false)
+                .Where(user => user.ForgetPassword == true)
                 .Skip(currentPage * RowsPerPage)
                 .Take(RowsPerPage)
-                .OrderBy(admin => admin.Username)
-                .Select(admin => new Admin
+                .OrderBy(user => user.Username)
+                .Select(user => new T
                 {
-                    Username = admin.Username,
-                    FirstName = admin.FirstName,
-                    LastName = admin.LastName,
-                    Password = admin.Password,
-                    Confirmed = admin.Confirmed,
-                    ForgetPassword = admin.ForgetPassword,
-                    CanChangePassword = admin.CanChangePassword
+                    Id = user.Id,
+                    Username = user.Username,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Password = user.Password,
+                    Role = user.Role,
+                    Confirmed = user.Confirmed,
+                    ForgetPassword = user.ForgetPassword,
+                    CanChangePassword = user.CanChangePassword
                 })
                 .ToList();
         }
-        internal static List<Teacher> TeachersRequest(int currentPage, UniversityEnvironmentContext context)
+        
+        internal static List<T> UsersQuery<T>
+            (int currentPage, UniversityEnvironmentContext context, bool? flag = null, string? text = null) where T : User, new()
         {
-            return context.Teachers
-                .AsNoTracking()
-                .Where(teacher => teacher.ForgetPassword == true || teacher.Confirmed == false)
-                .Skip(currentPage * RowsPerPage)
-                .Take(RowsPerPage)
-                .OrderBy(teacher => teacher.Username)
-                .Select(teacher => new Teacher
-                {
-                    Username = teacher.Username,
-                    FirstName = teacher.FirstName,
-                    LastName = teacher.LastName,
-                    Password = teacher.Password,
-                    ScienceDegree = teacher.ScienceDegree,
-                    Confirmed = teacher.Confirmed,
-                    ForgetPassword = teacher.ForgetPassword,
-                    CanChangePassword = teacher.CanChangePassword
-                })
-                .ToList();
-        }
-        internal static List<Student> StudentsRequest(int currentPage, UniversityEnvironmentContext context)
-        {
-            return context.Students
-                .AsNoTracking()
-                .Where(student => student.ForgetPassword == true)
-                .Skip(currentPage * RowsPerPage)
-                .Take(RowsPerPage)
-                .OrderBy(student => student.Username)
-                .Select(student => new Student
-                {
-                    Username = student.Username,
-                    FirstName = student.FirstName,
-                    LastName = student.LastName,
-                    Password = student.Password,
-                    Confirmed = student.Confirmed,
-                    ForgetPassword = student.ForgetPassword,
-                    CanChangePassword = student.CanChangePassword
-                })
-                .ToList();
-        }
-        internal static List<Admin> AdminsUsersRequest
-            (int currentPage, UniversityEnvironmentContext context,bool? flag = null, string? text = null)
-        {
-            IQueryable<Admin> query = context.Admins;
+            IQueryable<T> query = context.Set<T>();
 
             if (flag == true && text != null)
             {
@@ -171,82 +133,20 @@ namespace UniversityEnvironment.View.Utility
 
             return query
                 .AsNoTracking()
-                .OrderBy(admin => admin.Username)
+                .OrderBy(u => u.Username)
                 .Skip(currentPage * RowsPerPage)
                 .Take(RowsPerPage)
-                .Select(admin => new Admin
+                .Select(user => new T
                 {
-                    Username = admin.Username,
-                    FirstName = admin.FirstName,
-                    LastName = admin.LastName,
-                    Password = admin.Password,
-                    Confirmed = admin.Confirmed,
-                    ForgetPassword = admin.ForgetPassword,
-                    CanChangePassword = admin.CanChangePassword,
-                    SuperAdmin = admin.SuperAdmin
-                })
-                .ToList();
-        }
-        internal static List<Teacher> TeachersUsersRequest
-            (int currentPage, UniversityEnvironmentContext context,bool? flag = null, string? text = null)
-        {
-            IQueryable<Teacher> query = context.Teachers;
-
-            if (flag == true && text != null)
-            {
-                query = query.Where(t => EF.Functions.Like(t.Username, $"%{text}%"));
-            }
-            else if (flag == false && text != null)
-            {
-                query = query.Where(t => EF.Functions.Like(t.FirstName + t.LastName, $"%{text}%"));
-            }
-
-            return query
-                .AsNoTracking()
-                .OrderBy(teacher => teacher.Username)
-                .Skip(currentPage * RowsPerPage)
-                .Take(RowsPerPage)
-                .Select(teacher => new Teacher
-                {
-                    Username = teacher.Username,
-                    FirstName = teacher.FirstName,
-                    LastName = teacher.LastName,
-                    Password = teacher.Password,
-                    ScienceDegree = teacher.ScienceDegree,
-                    Confirmed = teacher.Confirmed,
-                    ForgetPassword = teacher.ForgetPassword,
-                    CanChangePassword = teacher.CanChangePassword
-                })
-                .ToList();
-        }
-        internal static List<Student> StudentsUsersRequest
-            (int currentPage, UniversityEnvironmentContext context, bool? flag = null, string? text = null)
-        {
-            IQueryable<Student> query = context.Students;
-
-            if (flag == true && text != null)
-            {
-                query = query.Where(t => EF.Functions.Like(t.Username, $"%{text}%"));
-            }
-            else if (flag == false && text != null)
-            {
-                query = query.Where(t => EF.Functions.Like(t.FirstName + t.LastName, $"%{text}%"));
-            }
-
-            return query
-                .AsNoTracking()
-                .OrderBy(s => s.Username)
-                .Skip(currentPage * RowsPerPage)
-                .Take(RowsPerPage)
-                .Select(student => new Student
-                {
-                    Username = student.Username,
-                    FirstName = student.FirstName,
-                    LastName = student.LastName,
-                    Password = student.Password,
-                    Confirmed = student.Confirmed,
-                    ForgetPassword = student.ForgetPassword,
-                    CanChangePassword = student.CanChangePassword
+                    Id = user.Id,
+                    Username = user.Username,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Password = user.Password,
+                    Role = user.Role,
+                    Confirmed = user.Confirmed,
+                    ForgetPassword = user.ForgetPassword,
+                    CanChangePassword = user.CanChangePassword,
                 })
                 .ToList();
         }

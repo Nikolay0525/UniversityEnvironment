@@ -29,7 +29,7 @@ namespace UniversityEnvironment.View.Forms
         private void AdminsUsersUpdate()
         {
             _roleFlag = Role.Admin;
-            UpdateUsersTable<Admin>(UsersTable, AdminsUsersRequest(_currentPage, _context));
+            UpdateUsersTable(UsersTable, UsersQuery<Admin>(_currentPage, _context));
         }
         private void AdminUsers_Click(object sender, EventArgs e)
         {
@@ -41,7 +41,7 @@ namespace UniversityEnvironment.View.Forms
         private void TeachersUsersUpdate()
         {
             _roleFlag = Role.Teacher;
-            UpdateUsersTable<Teacher>(UsersTable, TeachersUsersRequest(_currentPage, _context));
+            UpdateUsersTable(UsersTable, UsersQuery<Teacher>(_currentPage, _context));
         }
         private void TeacherUsers_Click(object sender, EventArgs e)
         {
@@ -53,7 +53,7 @@ namespace UniversityEnvironment.View.Forms
         private void StudentsUsersUpdate()
         {
             _roleFlag = Role.Student;
-            UpdateUsersTable<Student>(UsersTable, StudentsUsersRequest(_currentPage, _context));
+            UpdateUsersTable(UsersTable, UsersQuery<Student>(_currentPage, _context));
         }
         private void StudentUsers_Click(object sender, EventArgs e)
         {
@@ -114,17 +114,17 @@ namespace UniversityEnvironment.View.Forms
         private void AdminsRequestUpdate()
         {
             _roleFlag = Role.Admin;
-            UpdateRequestsTable<Admin>(RequestsTable, AdminsRequest(_currentPage, _context));
+            UpdateRequestsTable(RequestsTable, RequestsQuery<Admin>(_currentPage, _context));
         }
         private void TeachersRequestUpdate()
         {
             _roleFlag = Role.Teacher;
-            UpdateRequestsTable<Teacher>(RequestsTable, TeachersRequest(_currentPage, _context));
+            UpdateRequestsTable(RequestsTable, RequestsQuery<Teacher>(_currentPage, _context));
         }
         private void StudentRequestUpdate()
         {
             _roleFlag = Role.Student;
-            UpdateRequestsTable<Student>(RequestsTable, StudentsRequest(_currentPage, _context));
+            UpdateRequestsTable(RequestsTable, RequestsQuery<Student>(_currentPage, _context));
         }
 
 
@@ -168,15 +168,15 @@ namespace UniversityEnvironment.View.Forms
         {
             if (_roleFlag == Role.Admin)
             {
-                UpdateUsersTable(UsersTable, AdminsUsersRequest(_currentPage, _context, ByUsernameCheck.Checked, FilterTextBox.Text));
+                UpdateUsersTable(UsersTable, UsersQuery<Admin>(_currentPage, _context, ByUsernameCheck.Checked, FilterTextBox.Text));
             }
             else if (_roleFlag == Role.Teacher)
             {
-                UpdateUsersTable(UsersTable, TeachersUsersRequest(_currentPage, _context, ByUsernameCheck.Checked, FilterTextBox.Text));
+                UpdateUsersTable(UsersTable, UsersQuery<Teacher>(_currentPage, _context, ByUsernameCheck.Checked, FilterTextBox.Text));
             }
             else if (_roleFlag == Role.Student)
             {
-                UpdateUsersTable(UsersTable, StudentsUsersRequest(_currentPage, _context, ByUsernameCheck.Checked, FilterTextBox.Text));
+                UpdateUsersTable(UsersTable, UsersQuery<Student>(_currentPage, _context, ByUsernameCheck.Checked, FilterTextBox.Text));
             }
         }
         #region Courses tab

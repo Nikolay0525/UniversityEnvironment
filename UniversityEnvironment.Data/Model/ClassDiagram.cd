@@ -1,0 +1,196 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="UniversityEnvironment.Data.Model.MtoMTables.CourseStudent">
+    <Position X="3" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\MtoMTables\CourseStudent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniversityEnvironment.Data.Model.Tables.User">
+    <Position X="1" Y="9.5" Width="1.5" />
+    <InheritanceLine Type="UniversityEnvironment.Data.Model.Tables.EnvironmentObject" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="1" Y="6.5" />
+        <Point X="0.604" Y="6.5" />
+        <Point X="0.604" Y="11.25" />
+        <Point X="1" Y="11.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAQAAIAAEQAEAAAAAAAAAIACAAAgAAAAAAg=</HashCode>
+      <FileName>Model\Tables\User.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniversityEnvironment.Data.Model.Tables.TestQuestion">
+    <Position X="8" Y="10.5" Width="1.5" />
+    <InheritanceLine Type="UniversityEnvironment.Data.Model.Tables.EnvironmentObject" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="2.5" Y="6.5" />
+        <Point X="2.865" Y="6.5" />
+        <Point X="2.865" Y="7.844" />
+        <Point X="7.906" Y="7.844" />
+        <Point X="7.906" Y="11.438" />
+        <Point X="8" Y="11.438" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgAAEAAAAAAAAACAAQAAACAAAAAA=</HashCode>
+      <FileName>Model\Tables\TestQuestion.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniversityEnvironment.Data.Model.Tables.Test">
+    <Position X="8" Y="8" Width="1.5" />
+    <InheritanceLine Type="UniversityEnvironment.Data.Model.Tables.EnvironmentObject" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="2.5" Y="6.5" />
+        <Point X="2.865" Y="6.5" />
+        <Point X="2.865" Y="7.852" />
+        <Point X="7.906" Y="7.852" />
+        <Point X="7.906" Y="9.062" />
+        <Point X="8" Y="9.062" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAgAAAAAIAAAAQAAgAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Tables\Test.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniversityEnvironment.Data.Model.Tables.Teacher">
+    <Position X="1" Y="7.5" Width="1.5" />
+    <InheritanceLine Type="UniversityEnvironment.Data.Model.Tables.User" FixedFromPoint="true">
+      <Path>
+        <Point X="1" Y="10.562" />
+        <Point X="0.604" Y="10.562" />
+        <Point X="0.604" Y="8.405" />
+        <Point X="1" Y="8.405" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAAAAAgAAAAAAAAAgAAAAQAA=</HashCode>
+      <FileName>Model\Tables\Teacher.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniversityEnvironment.Data.Model.Tables.StudentMessage">
+    <Position X="5.5" Y="12.75" Width="1.5" />
+    <InheritanceLine Type="UniversityEnvironment.Data.Model.Tables.EnvironmentObject" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="2.5" Y="6.5" />
+        <Point X="2.865" Y="6.5" />
+        <Point X="2.865" Y="7.862" />
+        <Point X="7.265" Y="7.862" />
+        <Point X="7.265" Y="13.938" />
+        <Point X="7" Y="13.938" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AACAAAAAQAAAAAAAAACAAAAAAAAAAAAAAAgAAAACAAA=</HashCode>
+      <FileName>Model\Tables\StudentMessage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniversityEnvironment.Data.Model.Tables.Student">
+    <Position X="1" Y="12.75" Width="1.5" />
+    <InheritanceLine Type="UniversityEnvironment.Data.Model.Tables.User" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="1" Y="11.875" />
+        <Point X="0.625" Y="11.875" />
+        <Point X="0.625" Y="13.438" />
+        <Point X="1" Y="13.438" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAAQAAgAEAAAAAAAAAAgAAAA=</HashCode>
+      <FileName>Model\Tables\Student.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniversityEnvironment.Data.Model.Tables.QuestionAnswer">
+    <Position X="8" Y="12.75" Width="1.5" />
+    <InheritanceLine Type="UniversityEnvironment.Data.Model.Tables.EnvironmentObject" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="2.5" Y="6.5" />
+        <Point X="2.865" Y="6.5" />
+        <Point X="2.865" Y="7.87" />
+        <Point X="7.906" Y="7.87" />
+        <Point X="7.906" Y="13.75" />
+        <Point X="8" Y="13.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAJAAEACAAAAAAAAA=</HashCode>
+      <FileName>Model\Tables\QuestionAnswer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniversityEnvironment.Data.Model.Tables.EnvironmentObject">
+    <Position X="1" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Tables\EnvironmentObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniversityEnvironment.Data.Model.MtoMTables.CourseUser">
+    <Position X="3" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\MtoMTables\CourseUser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniversityEnvironment.Data.Model.MtoMTables.QuestionAnswerStudent">
+    <Position X="10" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAAAAAAAAAAAQAAAAAAAAAAAAAAAACAAQ=</HashCode>
+      <FileName>Model\MtoMTables\QuestionAnswerStudent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniversityEnvironment.Data.Model.MtoMTables.TestStudent">
+    <Position X="10" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAAAAAAAIEAAAAAAAAAAAAAACACAACAAA=</HashCode>
+      <FileName>Model\MtoMTables\TestStudent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniversityEnvironment.Data.Model.Tables.Admin">
+    <Position X="3" Y="5.75" Width="1.5" />
+    <InheritanceLine Type="UniversityEnvironment.Data.Model.Tables.User" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="2.5" Y="10.562" />
+        <Point X="2.74" Y="10.562" />
+        <Point X="2.74" Y="7.732" />
+        <Point X="2.782" Y="7.732" Type="JumpStart" />
+        <Point X="2.948" Y="7.732" Type="JumpEnd" />
+        <Point X="3.688" Y="7.732" />
+        <Point X="3.688" Y="7.367" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAEAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Model\Tables\Admin.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniversityEnvironment.Data.Model.Tables.Course">
+    <Position X="5.5" Y="10.5" Width="1.5" />
+    <InheritanceLine Type="UniversityEnvironment.Data.Model.Tables.EnvironmentObject" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="2.5" Y="6.5" />
+        <Point X="2.865" Y="6.5" />
+        <Point X="2.865" Y="10.26" />
+        <Point X="3.667" Y="10.26" Type="JumpStart" />
+        <Point X="3.833" Y="10.26" Type="JumpEnd" />
+        <Point X="7.265" Y="10.26" />
+        <Point X="7.265" Y="11.688" />
+        <Point X="7" Y="11.688" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAAAAAAAASAAgAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Tables\Course.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniversityEnvironment.Data.Model.MtoMTables.CourseTeacher">
+    <Position X="3" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\MtoMTables\CourseTeacher.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
