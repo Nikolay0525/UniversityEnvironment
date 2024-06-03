@@ -182,7 +182,7 @@ namespace UniversityEnvironment.View.Forms
         #region Courses tab
         private void AvailableCoursesTable_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            ClickOnCourse(1, this, AvailableCoursesTable, e, _user);
+            ClickOnCourse(2, this, AvailableCoursesTable, e, _user);
         }
         #endregion
 

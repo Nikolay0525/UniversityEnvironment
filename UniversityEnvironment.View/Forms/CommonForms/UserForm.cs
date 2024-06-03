@@ -33,6 +33,9 @@ namespace UniversityEnvironment.View.Forms.CommonForms
             }
             if (_profileUser.Role == Data.Enums.Role.Teacher)
             {
+                CloseButton.Height = 96;
+                CloseButton.Top = 260;
+                DeductButton.Visible = false;
                 var teacher = FindByFilter<Teacher>(t => t.Id == _profileUser.Id);
                 Validators.ViewValidators.ValidateNull(teacher, "teacher");
                 ScienceDegreeBox.Text = teacher!.ScienceDegree;

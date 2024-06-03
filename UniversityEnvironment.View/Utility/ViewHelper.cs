@@ -37,7 +37,7 @@ namespace UniversityEnvironment.View.Utility
 
             foreach (var course in courses)
             {
-                table.Rows.Add(false, course.Name, course.FacultyName);
+                table.Rows.Add(course.Id,false, course.Name, course.FacultyName);
             }
         }
         internal static void ActualCoursesTableAddRows(DataGridView table, IEnumerable<Course> courses)
@@ -67,7 +67,7 @@ namespace UniversityEnvironment.View.Utility
             if (ValidateNull(foundedUser, "foundedUser")) return;
             for (int i = 0; i < courses.Count; i++)
             {
-                var rowCheck = table.Rows[i].Cells[0].Value.ToString();
+                var rowCheck = table.Rows[i].Cells[1].Value.ToString();
                 if (ValidateNull(rowCheck, "rowCheck")) return;
                 if (bool.TryParse(rowCheck, out bool parsed) && parsed)
                 {
@@ -208,7 +208,7 @@ namespace UniversityEnvironment.View.Utility
         }
         
         internal static void ClickOnTest
-            (int columnIndex,CourseForm thisForm,DataGridView table, DataGridViewCellEventArgs e, User user)
+            (int columnIndex,CourseForm thisForm,DataGridView table, DataGridViewCellEventArgs e, User user, Course course)
         {
             if (e.RowIndex >= 0 && e.ColumnIndex >= columnIndex)
             {
@@ -221,7 +221,7 @@ namespace UniversityEnvironment.View.Utility
                     test = FindByFilter<Test>(t => t.Id == parsedId);
                 }
                 if (ValidateNull(test, "test")) return;
-                ShowNextForm(thisForm, new TestForm(thisForm, user, test!));
+                ShowNextForm(thisForm, new TestForm(thisForm, user, course, test!));
             }
         }
         internal static Guid? ClickOnQuestion
@@ -303,18 +303,17 @@ namespace UniversityEnvironment.View.Utility
 
         internal static void UpdateJournalTable(DataGridView journalTable, Course course)
         {
-            journalTable.Columns.Clear();
+            journalTable.Columns.Clear();  // Cleaning all stuff from table
             journalTable.Rows.Clear();
-
-            DataGridViewColumn idColumn = new DataGridViewTextBoxColumn();
+            DataGridViewColumn idColumn = new DataGridViewTextBoxColumn(); // Adding of two main columns 
             idColumn.Name = "IdColumn";
             idColumn.HeaderText = "Id";
-            idColumn.Visible = false;
+            idColumn.Visible = false; // invisible column just to put in it Guid, and then get it from it
             journalTable.Columns.Add(idColumn);
-            journalTable.Columns.Add("StudentName", "Student");
-            List<Test> tests = FindAll<Test>(t => t.CourseId == course.Id).ToList();
-            List<TestStudent> testStudents = new();
-            foreach (var test in tests)
+            journalTable.Columns.Add("StudentName", "Student"); 
+            List<Test> tests = FindAll<Test>(t => t.CourseId == course.Id).ToList(); // Finding all tests on course
+            List<TestStudent> testStudents = new(); 
+            foreach (var test in tests) // Adding columns with names of tests on course, and adding all TestStudents on this course
             {
                 DataGridViewTextBoxColumn testColumn = new DataGridViewTextBoxColumn();
                 testColumn.HeaderText = test.Name;
@@ -323,24 +322,25 @@ namespace UniversityEnvironment.View.Utility
                 testStudents.AddRange(FindAll<TestStudent>(ts => ts.TestId == test.Id));
             }
 
-            Dictionary<Guid, DataGridViewRow> studentRows = new();
+            Dictionary<Guid, DataGridViewRow> studentRows = new(); // Dictionary to add students id and rows that belongs to them
 
             foreach (var testStudent in testStudents)
             {
-                Student? foundedStudent = FindByFilter<Student>(s => s.Id == testStudent.StudentId);
-                Test? foundedTest = FindByFilter<Test>(t => t.Id == testStudent.TestId);
-                if (foundedStudent == null || foundedTest == null) continue;
-                if (!studentRows.TryGetValue(foundedStudent.Id, out var existingRow))
+                Student? foundedStudent = FindByFilter<Student>(s => s.Id == testStudent.StudentId); // Finding instance of student
+                Test? foundedTest = FindByFilter<Test>(t => t.Id == testStudent.TestId); // and same for Test for they names.
+                if (foundedStudent == null || foundedTest == null) continue; // Validate if each is not null
+                if (!studentRows.TryGetValue(foundedStudent.Id, out var existingRow)) // Trying to find row by student id in Dictionary
                 {
-                    existingRow = new DataGridViewRow();
+                    existingRow = new DataGridViewRow(); // if we not find creating such one and adding values in main columns
                     existingRow.CreateCells(journalTable);
-                    existingRow.Cells[journalTable.Columns["IdColumn"].Index].Value = foundedStudent.Id.ToString();
-                    existingRow.Cells[journalTable.Columns["StudentName"].Index].Value 
+                    existingRow.Cells[journalTable.Columns["IdColumn"].Index].Value
+                        = foundedStudent.Id.ToString();
+                    existingRow.Cells[journalTable.Columns["StudentName"].Index].Value
                         = foundedStudent.FirstName + " " + foundedStudent.LastName;
                     journalTable.Rows.Add(existingRow);
                     studentRows[foundedStudent.Id] = existingRow;
                 }
-                existingRow.Cells[journalTable.Columns[foundedTest.Name].Index].Value = testStudent.Mark;
+                existingRow.Cells[journalTable.Columns[foundedTest.Name].Index].Value = testStudent.Mark; // if find, set mark for test.
             }
         }
         internal static void ApplyChangesToDBJournal(DataGridView journalTable, Course course)
@@ -451,9 +451,9 @@ namespace UniversityEnvironment.View.Utility
                     }
                 }
 
-                Remove<QuestionAnswerStudent>(null, thisStudentAnswers);
-                Remove<TestStudent>(null, thisStudentCompletedTests);
-                Remove<CourseStudent>(FindByFilter<CourseStudent>(cs => cs.UserId == student.Id && cs.CourseId == course.Id));
+                Remove(null, thisStudentAnswers);
+                Remove(null, thisStudentCompletedTests);
+                Remove(FindByFilter<CourseStudent>(cs => cs.UserId == student.Id && cs.CourseId == course.Id));
                 Create<StudentMessage>(new()
                 {
                     Initials = teacher.FirstName + " " + teacher.LastName,

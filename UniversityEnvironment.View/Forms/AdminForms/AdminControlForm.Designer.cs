@@ -62,6 +62,7 @@
             DeleteCourseButton = new Button();
             CreateCourseButton = new Button();
             AvailableCoursesTable = new DataGridView();
+            IdColumn = new DataGridViewTextBoxColumn();
             CheckColumn = new DataGridViewCheckBoxColumn();
             CourseColumn = new DataGridViewTextBoxColumn();
             FacultyColumn = new DataGridViewTextBoxColumn();
@@ -436,12 +437,19 @@
             AvailableCoursesTable.AllowUserToDeleteRows = false;
             AvailableCoursesTable.BackgroundColor = SystemColors.Control;
             AvailableCoursesTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            AvailableCoursesTable.Columns.AddRange(new DataGridViewColumn[] { CheckColumn, CourseColumn, FacultyColumn });
+            AvailableCoursesTable.Columns.AddRange(new DataGridViewColumn[] { IdColumn, CheckColumn, CourseColumn, FacultyColumn });
             AvailableCoursesTable.Location = new Point(172, 28);
             AvailableCoursesTable.Name = "AvailableCoursesTable";
             AvailableCoursesTable.Size = new Size(414, 268);
             AvailableCoursesTable.TabIndex = 7;
             AvailableCoursesTable.CellContentClick += AvailableCoursesTable_CellContentClick;
+            // 
+            // IdColumn
+            // 
+            IdColumn.HeaderText = "Id";
+            IdColumn.Name = "IdColumn";
+            IdColumn.ReadOnly = true;
+            IdColumn.Visible = false;
             // 
             // CheckColumn
             // 
@@ -524,6 +532,7 @@
         private DataGridViewTextBoxColumn FromUsernameColumn;
         private DataGridViewTextBoxColumn MessageColumn;
         private DataGridViewTextBoxColumn TypeColumn;
+        private DataGridViewTextBoxColumn IdColumn;
         private DataGridViewCheckBoxColumn CheckColumn;
         private DataGridViewTextBoxColumn CourseColumn;
         private DataGridViewTextBoxColumn FacultyColumn;

@@ -70,8 +70,7 @@
             Controls.Add(label2);
             Controls.Add(QuestionTextBox);
             Name = "QuestionCreatorForm";
-            Sizable = false;
-            Text = "QuestionCreatorForm";
+            Text = "Question creator";
             Controls.SetChildIndex(QuestionTextBox, 0);
             Controls.SetChildIndex(label2, 0);
             Controls.SetChildIndex(ManyAnswersButton, 0);

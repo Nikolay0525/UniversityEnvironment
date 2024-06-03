@@ -98,7 +98,7 @@ namespace UniversityEnvironment.View.Utility
         {
             return context.Set<T>()
                 .AsNoTracking()
-                .Where(user => user.ForgetPassword == true)
+                .Where(user => user.ForgetPassword == true || user.Confirmed == false)
                 .Skip(currentPage * RowsPerPage)
                 .Take(RowsPerPage)
                 .OrderBy(user => user.Username)
@@ -120,9 +120,9 @@ namespace UniversityEnvironment.View.Utility
         internal static List<T> UsersQuery<T>
             (int currentPage, UniversityEnvironmentContext context, bool? flag = null, string? text = null) where T : User, new()
         {
-            IQueryable<T> query = context.Set<T>();
+            IQueryable<T> query = context.Set<T>(); // Getting all instances of type T in context
 
-            if (flag == true && text != null)
+            if (flag == true && text != null) // Сhecking if the filter is needed
             {
                 query = query.Where(t => EF.Functions.Like(t.Username, $"%{text}%"));
             }
@@ -131,7 +131,7 @@ namespace UniversityEnvironment.View.Utility
                 query = query.Where(t => EF.Functions.Like(t.FirstName + t.LastName, $"%{text}%"));
             }
 
-            return query
+            return query // Returning the list of instances.
                 .AsNoTracking()
                 .OrderBy(u => u.Username)
                 .Skip(currentPage * RowsPerPage)
@@ -155,8 +155,8 @@ namespace UniversityEnvironment.View.Utility
         internal static void CreateAnswer<T>
             (TestQuestion testQuestion, Action<DataGridView, T> operation, DataGridView table, T obj)
         {
-            string? answer = Microsoft.VisualBasic.Interaction.InputBox("Enter answer:", "Entering text", "");
-            if (ValidateNull(answer, "answer") || ValidateStringOnLength("answer", answer, 1, 50)) return;
+            string? answer = Microsoft.VisualBasic.Interaction.InputBox("Enter answer:", "Answer creator", "");
+            if (ValidateNull(answer, "answer") || answer == "" || ValidateStringOnLength("answer", answer, 1, 50)) return;
             QuestionAnswer questionAnswer = new()
             {
                 AnswerText = answer,

@@ -15,12 +15,16 @@ namespace UniversityEnvironment.View.Forms.CommonForms
         private Dictionary<Guid, List<QuestionAnswerStudent>> _fakeQuestionAnswerToCompareWithOriginal = new();
         private Guid? _lastQuestion = null;
 
+        private CourseForm _previousForm;
+        private Course _course;
         private readonly User _user;
         private readonly Test _test;
 
-        public TestForm(CourseForm previousForm, User user, Test test)
+        public TestForm(CourseForm previousForm, User user, Course course, Test test)
         {
+            _previousForm = previousForm;
             _user = user;
+            _course = course;
             _test = test;
             InitializeComponent();
             Text = test.Name;
@@ -87,6 +91,7 @@ namespace UniversityEnvironment.View.Forms.CommonForms
 
         private void CloseButton_Click(object sender, EventArgs e)
         {
+            UpdateTestsTable(_previousForm.GetTestsTable(), _course, _user);
             Close();
         }
     }

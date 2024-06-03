@@ -1,6 +1,7 @@
 ﻿using UniversityEnvironment.Data.Model.Tables;
 using static UniversityEnvironment.Data.Service.MySqlService;
 using static UniversityEnvironment.View.Validators.ViewValidators;
+using static Microsoft.VisualBasic.Interaction;
 
 namespace UniversityEnvironment.View.Utility
 {
@@ -26,31 +27,30 @@ namespace UniversityEnvironment.View.Utility
             return user;
         }
         internal static void RegistrateUser
-            (bool adminCheck, bool teacherCheck,
-            string username, string firstName, string lastName, string password)
+            (bool adminCheck, bool teacherCheck, string username, string firstName, string lastName, string password)
         {
-            if (adminCheck)
+            if (adminCheck) 
             {
-                User userToCreate = CreateUser<Admin>(username, firstName, lastName, password);
-                var admin = userToCreate as Admin;
-                if(ValidateNull(admin, "admin")) return;
-                if (!FindAll<Admin>().Any())
+                User userToCreate = CreateUser<Admin>(username, firstName, lastName, password); // Creating Admin and assign to User
+                var admin = userToCreate as Admin; // Cast Admin to User
+                if(ValidateNull(admin, "admin")) return; // if it npt successful validator will warn us.
+                if (!FindAll<Admin>().Any()) // Searching if there are any Admin if it's not then we will make SuperAdmin
                 {
-                    admin!.Confirmed = true;
+                    admin!.Confirmed = true; // This field mean that this user can enter the environment and registration success.
                     admin.SuperAdmin = true;
                     MessageBox.Show("You are the first admin and the main, be fair!", "Registration", MessageBoxButtons.OK);
                 }
                 else MessageBox.Show("Request on creating sended", "Registration", MessageBoxButtons.OK);
-                Create(admin);
+                Create(admin); // Creating our Admin
             }
-            else if (teacherCheck)
+            else if (teacherCheck) // Same
             {
                 User userToCreate = CreateUser<Teacher>(username, firstName, lastName, password);
                 var teacher = userToCreate as Teacher;
                 if(ValidateNull(teacher, "teacher")) return;
                 while (1 == 1)
                 {
-                    string scienceDegree = Microsoft.VisualBasic.Interaction.InputBox("Enter you're science degree:", "Entering text", "");
+                    string scienceDegree = InputBox("Enter you're science degree:", "Entering text", "");
                     if (ValidateStringOnLength("science degree", scienceDegree, 1)) continue;
                     teacher!.ScienceDegree = scienceDegree;
                     break;
@@ -58,7 +58,7 @@ namespace UniversityEnvironment.View.Utility
                 Create(teacher);
                 MessageBox.Show("Request on creating sended", "Registration", MessageBoxButtons.OK);
             }
-            else
+            else // Same, except the confirmed moment.
             {
                 User userToCreate = CreateUser<Student>(username, firstName, lastName, password);
                 var student = userToCreate as Student;
@@ -68,7 +68,10 @@ namespace UniversityEnvironment.View.Utility
             }
         }
 
-        internal static T CreateUser<T>(string username, string fname, string lname, string password) where T : User,new()
+        internal static T CreateUser<T>
+            (string username, string fname, 
+            string lname, string password) 
+            where T : User,new()
         {
             var userToCreate = new T()
             {

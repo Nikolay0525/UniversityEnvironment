@@ -31,13 +31,10 @@ namespace UniversityEnvironment.View.Forms.CommonForms
                 Width = 304;
                 StudentAnswerTable.Visible = false;
             }
-            if (!_testQuestion.ManyAnswers &&( user.Role == Role.Admin || user.Role == Role.Teacher))
+            if (!_testQuestion.ManyAnswers || ( user.Role == Role.Admin || user.Role == Role.Teacher))
             {
-                if(user.Role == Role.Admin || user.Role == Role.Teacher)
-                {
-                    CloseButton.Width = 280;
-                    SendAnswersButton.Visible = false;
-                }
+                CloseButton.Width = 280;
+                SendAnswersButton.Visible = false;
                 AnswerTable.Columns["CheckColumn"].Visible = false;
                 GuideLineAnswer.Visible = true;
             }

@@ -17,12 +17,14 @@ namespace UniversityEnvironment.View.Validators
         {
             if(obj.Length < minLength)
             {
-                MessageBox.Show($"You're {objName} is too short, you must have atleast {minLength} symbols in it.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show($"You're {objName} is too short, you must have atleast " +
+                    $"{minLength} symbols in it.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return true;
             }
             else if(maxLength != null && obj.Length > maxLength)
             {
-                MessageBox.Show($"You're {objName} is too long, you must have not more than {maxLength} symbols in it.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show($"You're {objName} is too long, you must have not more than " +
+                    $"{maxLength} symbols in it.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return true;
             }
             return false;
@@ -50,16 +52,18 @@ namespace UniversityEnvironment.View.Validators
         {
             if (obj == null)
             {
-                MessageBox.Show($"Something went wrong. The {objName} cannot be null", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Something went wrong. The {objName} cannot be null", 
+                    "Validation", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return true;
             }
             return false;
         }
-        internal static bool ValidateNull<T>(IEnumerable<T>? obj, string objectsName)
+        internal static bool ValidateNull<T>(IEnumerable<T>? objects, string objectsName)
         {
-            if (obj == null)
+            if (objects == null)
             {
-                MessageBox.Show($"Something went wrong. The {objectsName} cannot be null", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Something went wrong. The {objectsName} cannot be null", 
+                    "Validation", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return true;
             }
             return false;

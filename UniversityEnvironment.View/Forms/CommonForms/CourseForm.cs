@@ -30,6 +30,11 @@ namespace UniversityEnvironment.View.Forms.CommonForms
             UpdateTestsTable(TestsTable, _course, _user);
         }
 
+        public DataGridView GetTestsTable()
+        {
+            return TestsTable;
+        }
+
         private void JournalButton_Click(object sender, EventArgs e)
         {
             ShowNextForm(this, new JournalForm(_user, _course));
@@ -42,7 +47,7 @@ namespace UniversityEnvironment.View.Forms.CommonForms
                 MessageBox.Show("You already completed this test.", "Course", MessageBoxButtons.OK);
                 return;
             }
-            ClickOnTest(2, this, TestsTable, e, _user);
+            ClickOnTest(2, this, TestsTable, e, _user, _course);
         }
 
         private void CloseButton_Click(object sender, EventArgs e)
